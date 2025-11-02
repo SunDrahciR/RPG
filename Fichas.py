@@ -158,11 +158,23 @@ st.markdown("""
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    haki_armamento = st.selectbox("Haki do Armamento", ["Nenhum", "V1", "V2", "V3", "V4", "V5"], index=["Nenhum","V1","V2","V3","V4","V5"].index(st.session_state.get("haki_armamento","Nenhum")))
+    haki_armamento = st.selectbox(
+        "Haki do Armamento",
+        ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
+        key="haki_armamento"
+    )
 with col2:
-    haki_observacao = st.selectbox("Haki da Observação", ["Nenhum", "V1", "V2", "V3", "V4", "V5"], index=["Nenhum","V1","V2","V3","V4","V5"].index(st.session_state.get("haki_observacao","Nenhum")))
+    haki_observacao = st.selectbox(
+        "Haki da Observação",
+        ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
+        key="haki_observacao"
+    )
 with col3:
-    haki_conquistador = st.selectbox("Haki do Conquistador/Rei", ["Nenhum", "V1", "V2", "V3", "V4", "V5"], index=["Nenhum","V1","V2","V3","V4","V5"].index(st.session_state.get("haki_conquistador","Nenhum")))
+    haki_conquistador = st.selectbox(
+        "Haki do Conquistador/Rei",
+        ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
+        key="haki_conquistador"
+    )
 
 # ===============================
 # PROFICIÊNCIAS, ESTILO, HISTÓRIA, ETC
@@ -262,3 +274,4 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
