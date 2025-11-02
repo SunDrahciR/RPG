@@ -28,9 +28,23 @@ def carregar_ficha(upload):
 # ÁREA DE CARREGAMENTO DE FICHA
 
 st.sidebar.header("📂 Gerenciar Ficha")
+
 upload = st.sidebar.file_uploader("Carregar Ficha (.json)", type="json")
 
-dados_carregados = carregar_ficha(upload) if upload else {}
+# Função de carregar e preencher campos automaticamente
+if upload is not None:
+    try:
+        dados_carregados = carregar_ficha(upload)
+
+        # Guardar tudo no session_state para preencher inputs
+        for key, value in dados_carregados.items():
+            st.session_state[key] = value
+
+        st.sidebar.success("✅ Ficha carregada com sucesso!")
+    except Exception as e:
+        st.sidebar.error(f"Erro ao carregar a ficha: {e}")
+else:
+    dados_carregados = {}
 
 
 # INFORMAÇÕES BÁSICAS
@@ -293,3 +307,4 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
