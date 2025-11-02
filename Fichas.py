@@ -36,10 +36,9 @@ if upload is not None:
         for key, value in dados_carregados.items():
             st.session_state[key] = value
         st.sidebar.success("✅ Ficha carregada com sucesso! Os campos foram atualizados.")
-        st.experimental_rerun()  # ← ISSO é o que faltava!
+        st.rerun()  # ✅ Nova função, substitui o experimental_rerun
     except Exception as e:
         st.sidebar.error(f"Erro ao carregar ficha: {e}")
-
 
 # INFORMAÇÕES BÁSICAS
 
@@ -301,5 +300,6 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
