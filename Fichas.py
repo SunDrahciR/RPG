@@ -11,7 +11,6 @@ st.markdown("---")
 # FUNÇÃO PARA SALVAR E CARREGAR
 
 def salvar_ficha(data):
-    """Transforma os dados da ficha em JSON para download."""
     json_data = json.dumps(data, ensure_ascii=False, indent=4)
     st.download_button(
         label="💾 Baixar Ficha (.json)",
@@ -21,30 +20,25 @@ def salvar_ficha(data):
     )
 
 def carregar_ficha(upload):
-    """Carrega os dados de um arquivo JSON enviado."""
     stringio = StringIO(upload.getvalue().decode("utf-8"))
     return json.load(stringio)
 
-# ÁREA DE CARREGAMENTO DE FICHA
-
+# ===============================
+# SIDEBAR — GERENCIAR FICHA
+# ===============================
 st.sidebar.header("📂 Gerenciar Ficha")
-
 upload = st.sidebar.file_uploader("Carregar Ficha (.json)", type="json")
 
-# Função de carregar e preencher campos automaticamente
+# 🔁 Verifica se foi carregado algo novo e atualiza session_state
 if upload is not None:
     try:
         dados_carregados = carregar_ficha(upload)
-
-        # Guardar tudo no session_state para preencher inputs
         for key, value in dados_carregados.items():
             st.session_state[key] = value
-
-        st.sidebar.success("✅ Ficha carregada com sucesso!")
+        st.sidebar.success("✅ Ficha carregada com sucesso! Os campos foram atualizados.")
+        st.experimental_rerun()  # ← ISSO é o que faltava!
     except Exception as e:
-        st.sidebar.error(f"Erro ao carregar a ficha: {e}")
-else:
-    dados_carregados = {}
+        st.sidebar.error(f"Erro ao carregar ficha: {e}")
 
 
 # INFORMAÇÕES BÁSICAS
@@ -307,4 +301,5 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
