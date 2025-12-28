@@ -2,6 +2,8 @@ import streamlit as st
 import json
 from io import StringIO
 
+st.text("DEBUG — ESTE ARQUIVO FOI RECARREGADO")
+
 # ===============================
 # CONFIGURAÇÃO
 # ===============================
@@ -397,6 +399,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
