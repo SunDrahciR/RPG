@@ -178,7 +178,7 @@ def descricao_raca_progressiva(racas, raca, versao):
         textos.append(racas[raca]["V2"])
         textos.append(racas[raca]["V3"])
 
-    return "\n".join(textos)
+    return "\n.".join(textos)
     
 col1, col2 = st.columns(2)
 with col1:
@@ -401,6 +401,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
