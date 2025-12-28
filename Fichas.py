@@ -171,6 +171,8 @@ with col2:
     "Versão da Raça",
     ["V1", "V2", "V3"],
     index=["V1","V2","V3"].index(st.session_state["versao"]) if st.session_state["versao"] else 0
+    )
+        
 if raca == "Híbrido":
     
     racas_base = [r for r in racas.keys() if r != "Híbrido"]
@@ -380,6 +382,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
