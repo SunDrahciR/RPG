@@ -40,11 +40,13 @@ chaves = [
 for chave in chaves:
     if chave not in st.session_state:
         st.session_state[chave] = "" if chave != "subatributos" else {
-            "forca": 10,
-            "intelecto": 10,
-            "resistencia": 10,
-            "velocidade": 10,
-            "elemental": 10
+            "Forca": 0,
+            "Intelecto": 0,
+            "Resistencia": 0,
+            "Velocidade": 0,
+            "Elemental": 0,
+            "M.A": 0,
+            "Vontade": 0
         }
 
 # ===============================
@@ -397,6 +399,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
