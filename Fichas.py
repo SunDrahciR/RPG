@@ -85,39 +85,29 @@ st.header("Raça")
 racas = {
     "Humano": {
         "V1": "Ganha mais bônus ao upar sub-atributos (mestre decide o quanto).",
-        "V2": "Ganha mais bônus ao upar sub-atributos (mestre decide o quanto)."
-              "Os Hakis recebem +5.",
-        "V3": "Ganha mais bônus ao upar sub-atributos (mestre decide o quanto)."
-              "Os Hakis recebem +5."
-              " +5 nos Hakis e +10 em todos os Subatributos",
+        "V2": "Os Hakis recebem +5.",
+        "V3": "+5 nos Hakis e +10 em todos os Subatributos",
         "Fraqueza": "Quando a Raça do inimigo for maior que a sua, leva +10 de Dano"
     },
 
     "Tribo (Braço/Perna Longos)": {
         "V1": "Golpes com o membro respectivo recebem +7 em acerto.",
-        "V2": "Golpes com o membro respectivo recebem +7 em acerto. "
-              " +13 de Dano com o membro, ataques com o membro são considerados Grandes",
-        "V3": "Golpes com o membro respectivo recebem +7 em acerto."
-              "+13 de Dano com o membro, ataques com o membro são considerados Grandes"
-              "+12 de Dano e +20 de Defesa com o membro.",
+        "V2": "+13 de Dano com o membro, ataques com o membro são considerados Grandes",
+        "V3": "+12 de Dano e +20 de Defesa com o membro. (Total: +25 de Dano, +7 de Acerto, Ataques Grandes)",
         "Fraqueza": "Golpes mirando nos membros longos tem +10 de Acerto"
     },
 
     "Tontata": {
         "V1": "+15 em Esquiva e Furtividade",
-        "V2": "+15 em Esquiva e Furtividade"
-              "+23 em Esquiva e Furtividade",
-        "V3": "+15 em Esquiva e Furtividade"
-              "+23 em Esquiva e Furtividade"
-              "+2 em Esquiva e Furtividade e ignora a imunidade a Furtividade do Haki da Observação",
+        "V2": "+23 em Esquiva e Furtividade (Total: +38)",
+        "V3": "+2 em Esquiva e Furtividade e ignora a imunidade a Furtividade do Haki da Observação (Total: +40)",
         "Fraqueza": "-5 de Resistência, 19 também arranca membro"
     },
 
     "Homem-Peixe": {
         "V1": "Dentro da água, seus dados são dobrados.",
         "V2": "Dentro da água, seus dados são triplicados.",
-        "V3": "Dentro da água, seus dados são triplicados."
-              "Dentro da água, Força e Resistência são dobradas.",
+        "V3": "Dentro da água, Força e Resistência são dobradas.",
         "Fraqueza": "Em ambientes secos, todos os resultados são cortados pela metade."
     },
 
@@ -130,11 +120,8 @@ racas = {
 
     "Oni": {
         "V1": "+15 de dano em ambientes de fogo.",
-        "V2": "+15 de dano em ambientes de fogo."
-              "Em ambientes de fogo, o D20 é dobrado e causa +10 de dano.",
-        "V3": "+15 de dano em ambientes de fogo."
-              "Em ambientes de fogo causa +10 de dano."
-              "Em ambientes de fogo, o D20 é quadruplicado.",
+        "V2": "Em ambientes de fogo, o D20 é dobrado e causa +10 de dano.",
+        "V3": "Em ambientes de fogo, o D20 é quadruplicado.",
         "Fraqueza": "Em ambientes de baixa temperatura, recebe -15 em Força e Resistência."
     },
 
@@ -176,6 +163,23 @@ racas = {
     "Híbrido": {"V1": "O gene predominante define o status.", "V2": "A raça secundária começa a se desenvolver."},
 }
 
+def descricao_raca_progressiva(racas, raca, versao):
+    textos = []
+
+    if versao == "V1":
+        textos.append(racas[raca]["V1"])
+
+    elif versao == "V2":
+        textos.append(racas[raca]["V1"])
+        textos.append(racas[raca]["V2"])
+
+    elif versao == "V3":
+        textos.append(racas[raca]["V1"])
+        textos.append(racas[raca]["V2"])
+        textos.append(racas[raca]["V3"])
+
+    return "\n".join(textos)
+    
 col1, col2 = st.columns(2)
 with col1:
     raca = st.selectbox("4. Raça", list(racas.keys()), index=list(racas.keys()).index(st.session_state["raca"]) if st.session_state["raca"] else 0)
@@ -220,8 +224,11 @@ if raca == "Híbrido":
 
 if raca and raca != "Híbrido":
     st.markdown(f"**Descrição da Raça ({raca} - {versao})**")
+
+    descricao = descricao_raca_progressiva(racas, raca, versao)
+
     st.info(
-        f"**Efeito:** {racas[raca][versao]}\n\n"
+        f"{descricao}\n\n"
         f"**Fraqueza:** {racas[raca]['Fraqueza']}"
     )
 
@@ -394,6 +401,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
