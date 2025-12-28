@@ -95,8 +95,8 @@ racas = {
 
     "Tribo (Braço/Perna Longos)": {
         "V1": "Golpes com o membro respectivo recebem +7 em acerto.",
-        "V2": "Golpes com o membro respectivo recebem +7 em acerto."
-              "+13 de Dano com o membro, ataques com o membro são considerados Grandes",
+        "V2": "Golpes com o membro respectivo recebem +7 em acerto. "
+              " +13 de Dano com o membro, ataques com o membro são considerados Grandes",
         "V3": "Golpes com o membro respectivo recebem +7 em acerto."
               "+13 de Dano com o membro, ataques com o membro são considerados Grandes"
               "+12 de Dano e +20 de Defesa com o membro.",
@@ -394,6 +394,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
