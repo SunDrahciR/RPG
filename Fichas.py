@@ -229,13 +229,14 @@ if raca and raca != "Híbrido":
 
     st.markdown(
     f"""
-    <div style="padding: 1rem; border-left: 6px solid #1f77b4; background-color: #f0f2f6;">
-        {descricao}<br><br>
-        <strong>Fraqueza:</strong> {racas[raca]['Fraqueza']}
-    </div>
-    """,
+**Descrição da Raça ({raca} - {versao})**
+
+{descricao}
+
+**Fraqueza:** {racas[raca]['Fraqueza']}
+""",
     unsafe_allow_html=True
-    )
+)
 
 
 
@@ -406,6 +407,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
