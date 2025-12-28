@@ -40,19 +40,19 @@ chaves = [
 for chave in chaves:
     if chave not in st.session_state:
         st.session_state[chave] = "" if chave != "subatributos" else {
-            "Forca": 0,
-            "Intelecto": 0,
-            "Resistencia": 0,
-            "Velocidade": 0,
-            "Elemental": 0,
-            "M.A": 0,
-            "Vontade": 0
+            "forca": 0,
+            "intelecto": 0,
+            "resistencia": 0,
+            "velocidade": 0,
+            "elemental": 0,
+            "ma": 0,
+            "vontade": 0
         }
 
 # ===============================
 # SIDEBAR — GERENCIAR FICHA
 # ===============================
-st.sidebar.header("📂 Gerenciar Ficha")
+st.sidebar.header("Gerenciar Ficha")
 upload = st.sidebar.file_uploader("Carregar Ficha (.json)", type="json")
 
 if upload is not None:
@@ -60,7 +60,7 @@ if upload is not None:
         dados_carregados = carregar_ficha(upload)
         for key, value in dados_carregados.items():
             st.session_state[key] = value
-        st.sidebar.success("✅ Ficha carregada com sucesso! Os campos foram atualizados.")
+        st.sidebar.success("Ficha carregada com sucesso! Os campos foram atualizados.")
     except Exception as e:
         st.sidebar.error(f"Erro ao carregar ficha: {e}")
 
@@ -238,23 +238,36 @@ if raca and raca != "Híbrido":
 st.header("Atributos e Haki")
 
 # Vida
-st.header("❤️ Vida")
+st.header("Vida")
 vida_maxima = st.number_input("Vida Máxima", min_value=1, value=int(st.session_state["vida_maxima"] or 100), step=10)
 vida_atual = st.number_input("Vida Atual", min_value=0, max_value=vida_maxima, value=int(st.session_state["vida_atual"] or vida_maxima), step=1)
 
 # Subatributos
 st.subheader("Subatributos")
 col1, col2, col3 = st.columns(3)
+
 with col1:
     forca = st.number_input("Força", min_value=0, value=st.session_state["subatributos"]["forca"], step=1)
     intelecto = st.number_input("Intelecto", min_value=0, value=st.session_state["subatributos"]["intelecto"], step=1)
+
 with col2:
     resistencia = st.number_input("Resistência", min_value=0, value=st.session_state["subatributos"]["resistencia"], step=1)
     velocidade = st.number_input("Velocidade", min_value=0, value=st.session_state["subatributos"]["velocidade"], step=1)
+
 with col3:
     elemental = st.number_input("Elemento", min_value=0, value=st.session_state["subatributos"]["elemental"], step=1)
+    ma = st.number_input("M.A", min_value=0, value=st.session_state["subatributos"]["ma"], step=1)
+    vontade = st.number_input("Vontade", min_value=0, value=st.session_state["subatributos"]["vontade"], step=1)
 
-subatributos = {"forca": forca, "intelecto": intelecto, "resistencia": resistencia, "velocidade": velocidade, "elemental": elemental}
+subatributos = {
+    "forca": forca,
+    "intelecto": intelecto,
+    "resistencia": resistencia,
+    "velocidade": velocidade,
+    "elemental": elemental,
+    "ma": ma,
+    "vontade": vontade
+}
 
 # Haki
 st.subheader("Haki")
@@ -399,6 +412,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
