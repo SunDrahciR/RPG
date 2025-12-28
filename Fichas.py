@@ -2,8 +2,6 @@ import streamlit as st
 import json
 from io import StringIO
 
-st.text("DEBUG — ESTE ARQUIVO FOI RECARREGADO")
-
 # ===============================
 # CONFIGURAÇÃO
 # ===============================
