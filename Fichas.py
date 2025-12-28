@@ -104,7 +104,7 @@ with col2:
     versao = st.selectbox("Versão da Raça", ["V1", "V2"], index=["V1","V2"].index(st.session_state["versao"]) if st.session_state["versao"] else 0)
 if raca == "Híbrido":
     
-    racas_base = [r for r in racas.key()
+    racas_base = [r for r in racas.key() if r != "Híbrido"]
     col1, col2 = st.columns(2)
     with col1:
         raca1 = st.selectbox(
@@ -308,5 +308,6 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
