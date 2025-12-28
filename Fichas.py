@@ -102,10 +102,44 @@ with col1:
     raca = st.selectbox("4. Raça", list(racas.keys()), index=list(racas.keys()).index(st.session_state["raca"]) if st.session_state["raca"] else 0)
 with col2:
     versao = st.selectbox("Versão da Raça", ["V1", "V2"], index=["V1","V2"].index(st.session_state["versao"]) if st.session_state["versao"] else 0)
+if raca == "Híbrido":
+    
+    racas_base = [r for r in racas.key()
+    col1, col2 = st.columns(2)
+    with col1:
+        raca1 = st.selectbox(
+            "Raça Primária",
+            racas base,
+            key= "hibrido_raca_primaria"
+        )
+        versao1 = st.selectbox(
+            "Versão da Raça Primária",
+            ["V1", "V2"],
+             key = "hibrido_versao_primaria"
+        )
+    with col2:
+        racas_secundarias = [r for r in racas_base if r != raca1]
+        raca2 = st.selectbox(
+            "Raça Secundária",
+            racas_secundarias,
+            key="hibrido_raca_secundaria"
+        )
+        versao2 = st.selectbox(
+            "Versão da Raça Secundária",
+            ["V1", "V2"],
+            key="hibrido_versao_secundaria"
+        )
+
+    st.info(
+        f"🔹 **Primária:** {raca1} ({versao1})\n\n"
+        f"🔸 **Secundária:** {raca2} ({versao2})"
+    )
 
 if raca:
     st.markdown(f"**Descrição da Raça ({raca} - {versao})**")
     st.info(racas[raca][versao])
+
+
 
 # ===============================
 # ATRIBUTOS E HAKI
@@ -274,4 +308,5 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
