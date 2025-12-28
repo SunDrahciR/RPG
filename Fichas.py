@@ -84,40 +84,82 @@ with col1:
 st.header("Raça")
 racas = {
     "Humano": {
-               "V1": "Ganha mais bônus ao upar sub-atributos (mestre decide o quanto)."
-                     "Fraqueza:  Quando a Raça do inimigo for maior que a sua, leva +10 de Dano", 
-               "V2": "Ganha mais bônus ao upar sub-atributos (mestre decide o quanto)"
-               "Os Hakis recebem +5."
-               "Fraqueza:  Quando a Raça do inimigo for maior que a sua, leva +10 de Dano",
-              "V3":"Ganha mais bônus ao upar sub-atributos (mestre decide o quanto)"
-               "Os Hakis recebem +5."
-               "+5 nos Hakis e +10 em todos os Subatributos"},
-    
-    "Tribo (Braço/Perna Longos)": { 
-                                   "V1": "Golpes com o membro respectivo recebem +7 em acerto"
-                                        "Fraqueza: Golpes mirando nos membros longos tem +10 de Acerto",
-                                   "V2": "Golpes com o membro respectivo recebem +7 em acerto."
-                                         "+13 de Dano com o membro, ataques com o membro são considerados Grandes"
-                                         "Fraqueza: Golpes mirando nos membros longos tem +10 de Acerto",
-                                   "V3": "Golpes com o membro respectivo recebem +7 em acerto." 
-                                        "+13 de Dano com o membro, ataques com o membro são considerados Grandes"
-                                        "+12 de Dano e +20 de Defesa com o membro"},
-    
-    "Tontata": {"V1": " +15 em Esquiva e Furtividade"
-                      " Fraqueza: -5 de Resistência, 19 também arranca membro", 
-                "V2": " +15 em Esquiva e Furtividade"
-                      " +23 em Esquiva e Furtividade"
-                      " Fraqueza: -5 de Resistência, 19 também arranca membro",
-                "V3": " +2 em Esquiva e Furtividade e ignora a imunidade a Furtividade do Haki da Observação"},
-    
-    "Homem-Peixe": {"V1": "Em água, força e resistência x2.", "V2": "Em água, força e resistência x3."},
-    "Gigante": {"V1": "+7 em força, ataque e resistência; golpes grandes.", "V2": "+14 em força, ataque e resistência; golpes gigantes."},
-    "Lunarianos": {"V1": "+20 resistência com chama acesa e +20 velocidade com chamas apagadas.", "V2": "+25 resistência com chama acesa e +25 velocidade com chamas apagadas."},
-    "Nativo do Céu (Skypheano/Birkano/Shandiano)": {"V1": "+6 em combate aéreo.", "V2": "Movimento dobra em combate aéreo."},
-    "Oni": {"V1": "+7 em ambientes de fogo.", "V2": "Força e resistência dobram em ambientes de fogo."},
-    "Sereiano": {"V1": "+6 em movimentos dentro da água.", "V2": "Dobra o movimento dentro da água."},
-    "Bucaneiro": {"V1": "+6 em força e resistência.", "V2": "+12 em força e resistência."},
-    "Mink": {"V1": "+7 movimentação/rastreamento e modo Sulong (+35 dano e velocidade).", "V2": "+13 movimentação/rastreamento e modo Sulong (não muda)."},
+        "V1": "Ganha mais bônus ao upar sub-atributos (mestre decide o quanto).",
+        "V2": "Os Hakis recebem +5.",
+        "V3": "Recebe bônus adicionais definidos pelo mestre.",
+        "Fraqueza": "Nenhuma fraqueza racial específica."
+    },
+
+    "Tribo (Braço/Perna Longos)": {
+        "V1": "Golpes com o membro respectivo recebem +7 em acerto.",
+        "V2": "Todos os golpes com o membro se tornam de média distância e grandes.",
+        "V3": "Golpes com o membro recebem +15 de dano adicional.",
+        "Fraqueza": "Golpes que acertam o tronco causam +20 de dano."
+    },
+
+    "Tontata": {
+        "V1": "+7 em esquiva e furtividade, -5 em resistência.",
+        "V2": "+14 em esquiva e furtividade.",
+        "V3": "Esquiva é dobrada contra ataques diretos.",
+        "Fraqueza": "Recebe +20 de dano de ataques em área."
+    },
+
+    "Homem-Peixe": {
+        "V1": "Dentro da água, todos os resultados de dados são dobrados.",
+        "V2": "Dentro da água, todos os resultados de dados são triplicados.",
+        "V3": "Dentro da água, Força e Resistência são dobradas.",
+        "Fraqueza": "Em ambientes secos, todos os resultados são reduzidos à metade."
+    },
+
+    "Nativo do Céu": {
+        "V1": "+15 em testes e ações aéreas.",
+        "V2": "Em combate aéreo, o D20 é dobrado e recebe +10 de movimento no ar.",
+        "V3": "Todos os resultados de movimento aéreo são dobrados.",
+        "Fraqueza": "Enquanto estiver no ar, recebe +25 de dano elétrico."
+    },
+
+    "Oni": {
+        "V1": "+15 de dano em ambientes de fogo.",
+        "V2": "Em ambientes de fogo, o D20 é dobrado e recebe +10 de dano.",
+        "V3": "Em ambientes de fogo, o D20 é quadruplicado.",
+        "Fraqueza": "Em ambientes de baixa temperatura, recebe -15 em Força e Resistência."
+    },
+
+    "Sereiano": {
+        "V1": "Dentro da água, recebe +25 de movimento.",
+        "V2": "Dentro da água, recebe 3D20 adicionais de movimento.",
+        "V3": "Dentro da água, todos os dados de movimento e ataque são dobrados.",
+        "Fraqueza": "Fora da água, não recebe bônus e fica incapacitado de se mover."
+    },
+
+    "Mink": {
+        "V1": "+14 de movimentação e rastreamento. No Modo Sulong: +35 de dano e Velocidade.",
+        "V2": "+16 de movimentação e rastreamento.",
+        "V3": "+20 de movimentação e rastreamento. No Modo Sulong: +15 adicionais de dano e Velocidade.",
+        "Fraqueza": "Ataques Sonoros ou Venenosos causam +30 de dano."
+    },
+
+    "Gigante": {
+        "V1": "+15 em Força e Resistência. Todos os golpes são Grandes.",
+        "V2": "+30 em Força e Resistência. Todos os golpes são Gigantes.",
+        "V3": "Golpes físicos se tornam ataques em área. +10 de dano por alvo adicional.",
+        "Fraqueza": "Todos os inimigos recebem +40 em testes de acerto contra Gigantes."
+    },
+
+    "Lunariano": {
+        "V1": "Chamas acesas: +20 de Resistência. Chamas apagadas: +20 de Velocidade.",
+        "V2": "Os bônus aumentam adicionalmente em +25.",
+        "V3": "Os bônus aumentam adicionalmente em +5 e pode alternar o estado das chamas como Reação.",
+        "Fraqueza": "Com as chamas apagadas, recebe dano proporcional ao bônus ativo."
+    },
+
+    "Bucaneiro": {
+        "V1": "+22 de Resistência.",
+        "V2": "Não é afetado por condições especiais de Grau 1.",
+        "V3": "+28 de Resistência e não é afetado por condições especiais de Grau 2.",
+        "Fraqueza": "Se um aliado perder membros, o Bucaneiro sofre Confusão Grau 3."
+    },
+
     "Híbrido": {"V1": "O gene predominante define o status.", "V2": "A raça secundária começa a se desenvolver."},
 }
 
@@ -159,9 +201,12 @@ if raca == "Híbrido":
         f"🔸 **Secundária:** {raca2} ({versao2})"
     )
 
-if raca:
+if raca and raca != "Híbrido":
     st.markdown(f"**Descrição da Raça ({raca} - {versao})**")
-    st.info(racas[raca][versao])
+    st.info(
+        f"🟢 **Efeito:** {racas[raca][versao]}\n\n"
+        f"🔴 **Fraqueza:** {racas[raca]['Fraqueza']}"
+    )
 
 
 
@@ -332,6 +377,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
