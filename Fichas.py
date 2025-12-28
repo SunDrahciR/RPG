@@ -168,17 +168,15 @@ def descricao_raca_progressiva(racas, raca, versao):
 
     if versao == "V1":
         textos.append(racas[raca]["V1"])
-
     elif versao == "V2":
         textos.append(racas[raca]["V1"])
         textos.append(racas[raca]["V2"])
-
     elif versao == "V3":
         textos.append(racas[raca]["V1"])
         textos.append(racas[raca]["V2"])
         textos.append(racas[raca]["V3"])
 
-    return "<br>".join(textos)
+    return "\n".join(textos)
     
 col1, col2 = st.columns(2)
 with col1:
@@ -227,14 +225,8 @@ if raca and raca != "Híbrido":
 
     descricao = descricao_raca_progressiva(racas, raca, versao)
 
-    st.write(
-        descricao,
-        unsafe_allow_html=True
-    )
-
-    st.write(
-        f"**Fraqueza:** {racas[raca]['Fraqueza']}"
-    )
+    st.text(descricao)
+    st.text(f"Fraqueza: {racas[raca]['Fraqueza']}")
 
 
 
@@ -405,6 +397,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
