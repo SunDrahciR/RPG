@@ -223,20 +223,18 @@ if raca == "Híbrido":
     )
 
 if raca and raca != "Híbrido":
-    st.markdown(f"**Descrição da Raça ({raca} - {versao})**")
+    st.markdown(f"### Descrição da Raça ({raca} - {versao})")
 
     descricao = descricao_raca_progressiva(racas, raca, versao)
 
-    st.markdown(
-    f"""
-**Descrição da Raça ({raca} - {versao})**
+    st.write(
+        descricao,
+        unsafe_allow_html=True
+    )
 
-{descricao}
-
-**Fraqueza:** {racas[raca]['Fraqueza']}
-""",
-    unsafe_allow_html=True
-)
+    st.write(
+        f"**Fraqueza:** {racas[raca]['Fraqueza']}"
+    )
 
 
 
@@ -407,6 +405,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
