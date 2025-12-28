@@ -83,9 +83,33 @@ with col1:
 # ===============================
 st.header("Raça")
 racas = {
-    "Humano": {"V1": "Ganha mais bônus ao upar sub-atributos (mestre decide o quanto).", "V2": "Os Hakis recebem +5."},
-    "Tribo (Braço/Perna Longos)": {"V1": "Golpes com o membro respectivo recebem +7 em acerto.", "V2": "Todos os golpes com o membro viram de média distância e grandes."},
-    "Tontata": {"V1": "+7 em esquiva e furtividade, -5 em resistência.", "V2": "Esquiva e furtividade +14."},
+    "Humano": {
+               "V1": "Ganha mais bônus ao upar sub-atributos (mestre decide o quanto)."
+                     "Fraqueza:  Quando a Raça do inimigo for maior que a sua, leva +10 de Dano", 
+               "V2": "Ganha mais bônus ao upar sub-atributos (mestre decide o quanto)"
+               "Os Hakis recebem +5."
+               "Fraqueza:  Quando a Raça do inimigo for maior que a sua, leva +10 de Dano",
+              "V3":"Ganha mais bônus ao upar sub-atributos (mestre decide o quanto)"
+               "Os Hakis recebem +5."
+               "+5 nos Hakis e +10 em todos os Subatributos"},
+    
+    "Tribo (Braço/Perna Longos)": { 
+                                   "V1": "Golpes com o membro respectivo recebem +7 em acerto"
+                                        "Fraqueza: Golpes mirando nos membros longos tem +10 de Acerto",
+                                   "V2": "Golpes com o membro respectivo recebem +7 em acerto."
+                                         "+13 de Dano com o membro, ataques com o membro são considerados Grandes"
+                                         "Fraqueza: Golpes mirando nos membros longos tem +10 de Acerto",
+                                   "V3": "Golpes com o membro respectivo recebem +7 em acerto." 
+                                        "+13 de Dano com o membro, ataques com o membro são considerados Grandes"
+                                        "+12 de Dano e +20 de Defesa com o membro"},
+    
+    "Tontata": {"V1": " +15 em Esquiva e Furtividade"
+                      " Fraqueza: -5 de Resistência, 19 também arranca membro", 
+                "V2": " +15 em Esquiva e Furtividade"
+                      " +23 em Esquiva e Furtividade"
+                      " Fraqueza: -5 de Resistência, 19 também arranca membro",
+                "V3": " +2 em Esquiva e Furtividade e ignora a imunidade a Furtividade do Haki da Observação"},
+    
     "Homem-Peixe": {"V1": "Em água, força e resistência x2.", "V2": "Em água, força e resistência x3."},
     "Gigante": {"V1": "+7 em força, ataque e resistência; golpes grandes.", "V2": "+14 em força, ataque e resistência; golpes gigantes."},
     "Lunarianos": {"V1": "+20 resistência com chama acesa e +20 velocidade com chamas apagadas.", "V2": "+25 resistência com chama acesa e +25 velocidade com chamas apagadas."},
@@ -308,6 +332,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
