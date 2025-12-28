@@ -109,7 +109,7 @@ if raca == "Híbrido":
     with col1:
         raca1 = st.selectbox(
             "Raça Primária",
-            racas base,
+            racas_base,
             key= "hibrido_raca_primaria"
         )
         versao1 = st.selectbox(
@@ -308,6 +308,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
