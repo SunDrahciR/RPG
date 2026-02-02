@@ -7,7 +7,10 @@ from io import StringIO
 # ===============================
 st.set_page_config(page_title="Ficha de Personagem - OnePica RPG", layout="wide")
 
-st.title("📜 Ficha de Personagem - OnePica RPG")
+st.title("Ficha de Personagem - One Pica RPG")
+
+modo_visual = st.toggle("Modo Visual da Ficha", value=True)
+
 st.markdown("---")
 
 # ===============================
@@ -65,20 +68,26 @@ if upload is not None:
         st.sidebar.error(f"Erro ao carregar ficha: {e}")
 
 # ===============================
-# INFORMAÇÕES BÁSICAS
+# PAINEL PRINCIPAL DA FICHA
 # ===============================
-st.header("Informações Gerais")
-col1, col2, col3 = st.columns(3)
-with col1:
-    nome = st.text_input("1. Nome", value=st.session_state["nome"])
-with col2:
-    titulo = st.text_input("2. Título", value=st.session_state["titulo"])
-with col3:
-    afiliacao = st.text_input("3. Afiliação", value=st.session_state["afiliacao"])
 
-col1, col2 = st.columns(2)
-with col1:
-    origem = st.text_input("5. Origem", value=st.session_state["origem"])
+colA, colB, colC = st.columns([1.2, 1.4, 1.4])
+
+# 🧍 IDENTIDADE
+with colA:
+    with st.container(border=True):
+        st.subheader("🧍 Identidade")
+
+        if modo_visual:
+            st.markdown(f"## {st.session_state['nome'] or 'Sem Nome'}")
+            st.caption(st.session_state['titulo'] or "—")
+            st.write(f"**Afiliação:** {st.session_state['afiliacao'] or '—'}")
+            st.write(f"**Origem:** {st.session_state['origem'] or '—'}")
+        else:
+            nome = st.text_input("Nome", value=st.session_state["nome"])
+            titulo = st.text_input("Título", value=st.session_state["titulo"])
+            afiliacao = st.text_input("Afiliação", value=st.session_state["afiliacao"])
+            origem = st.text_input("Origem", value=st.session_state["origem"])
 
 # ===============================
 # RAÇAS
@@ -232,87 +241,72 @@ if raca and raca != "Híbrido":
 
 
 
-# ===============================
-# ATRIBUTOS E HAKI
-# ===============================
-st.header("Atributos e Haki")
+# ❤️ VIDA + SUBATRIBUTOS
+with colB:
+    with st.container(border=True):
+        st.subheader("❤️ Vida")
 
-# Vida
-st.header("Vida")
-vida_maxima = st.number_input("Vida Máxima", min_value=1, value=int(st.session_state["vida_maxima"] or 100), step=10)
-vida_atual = st.number_input("Vida Atual", min_value=0, max_value=vida_maxima, value=int(st.session_state["vida_atual"] or vida_maxima), step=1)
+        vida_maxima = int(st.session_state["vida_maxima"] or 100)
+        vida_atual = int(st.session_state["vida_atual"] or vida_maxima)
 
-# Subatributos
-st.subheader("Subatributos")
-col1, col2, col3 = st.columns(3)
+        if modo_visual:
+            st.metric("Vida", f"{vida_atual} / {vida_maxima}")
+        else:
+            vida_maxima = st.number_input("Vida Máxima", min_value=1, value=vida_maxima, step=10)
+            vida_atual = st.number_input("Vida Atual", min_value=0, max_value=vida_maxima, value=vida_atual)
 
-with col1:
-    forca = st.number_input("Força", min_value=0, value=st.session_state["subatributos"]["forca"], step=1)
-    intelecto = st.number_input("Intelecto", min_value=0, value=st.session_state["subatributos"]["intelecto"], step=1)
+    with st.container(border=True):
+        st.subheader("🌀 Subatributos")
 
-with col2:
-    resistencia = st.number_input("Resistência", min_value=0, value=st.session_state["subatributos"]["resistencia"], step=1)
-    velocidade = st.number_input("Velocidade", min_value=0, value=st.session_state["subatributos"]["velocidade"], step=1)
+        sa = st.session_state["subatributos"]
 
-with col3:
-    elemental = st.number_input("Elemento", min_value=0, value=st.session_state["subatributos"]["elemental"], step=1)
-    ma = st.number_input("M.A", min_value=0, value=st.session_state["subatributos"]["ma"], step=1)
-    vontade = st.number_input("Vontade", min_value=0, value=st.session_state["subatributos"]["vontade"], step=1)
+        if modo_visual:
+            c1, c2, c3 = st.columns(3)
+            c1.metric("FOR", sa["forca"])
+            c1.metric("INT", sa["intelecto"])
+            c2.metric("RES", sa["resistencia"])
+            c2.metric("VEL", sa["velocidade"])
+            c3.metric("ELE", sa["elemental"])
+            c3.metric("M.A", sa["ma"])
+            c3.metric("VON", sa["vontade"])
+        else:
+            c1, c2, c3 = st.columns(3)
+            with c1:
+                sa["forca"] = st.number_input("Força", value=sa["forca"])
+                sa["intelecto"] = st.number_input("Intelecto", value=sa["intelecto"])
+            with c2:
+                sa["resistencia"] = st.number_input("Resistência", value=sa["resistencia"])
+                sa["velocidade"] = st.number_input("Velocidade", value=sa["velocidade"])
+            with c3:
+                sa["elemental"] = st.number_input("Elemento", value=sa["elemental"])
+                sa["ma"] = st.number_input("M.A", value=sa["ma"])
+                sa["vontade"] = st.number_input("Vontade", value=sa["vontade"])
 
-subatributos = {
-    "forca": forca,
-    "intelecto": intelecto,
-    "resistencia": resistencia,
-    "velocidade": velocidade,
-    "elemental": elemental,
-    "ma": ma,
-    "vontade": vontade
-}
+# 🔥 HAKI (CORE)
+with colC:
+    with st.container(border=True):
+        st.subheader("🔥 Haki")
 
-# Haki
-st.subheader("Haki")
-st.markdown("""
-**Haki do Armamento**  
-- V1: +10 dano/defesa  
-- V2: +15 dano/defesa  
-- V3: +20 dano/defesa + libertação de energia  
-- V4: +25 dano/defesa  
-- V5: +30 dano/defesa + libertação de energia com efeitos dobrados  
-
-**Haki da Observação**  
-- V1: +10 esquiva/acerto  
-- V2: +15 esquiva/acerto  
-- V3: +20 esquiva/acerto + ignora furtividade  
-- V4: +25 esquiva/acerto  
-- V5: +30 esquiva/acerto + acerto garantido  
-
-**Haki do Conquistador/Rei**  
-- V1: +50 em golpes não-nomeados e remove efeitos negativos  
-- V2: +55 e +1 ação de Haki do Rei  
-- V3: Pode ser usado em ataque nomeado  
-- V4: +60 e +1 ação  
-- V5: Uso ilimitado
-""")
-
-col1, col2, col3 = st.columns(3)
-with col1:
-    haki_armamento = st.selectbox(
-        "Haki do Armamento",
-        ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
-        key="haki_armamento"
-    )
-with col2:
-    haki_observacao = st.selectbox(
-        "Haki da Observação",
-        ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
-        key="haki_observacao"
-    )
-with col3:
-    haki_conquistador = st.selectbox(
-        "Haki do Conquistador/Rei",
-        ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
-        key="haki_conquistador"
-    )
+        if modo_visual:
+            st.write(f"🛡️ **Armamento:** {haki_armamento}")
+            st.write(f"👁️ **Observação:** {haki_observacao}")
+            st.write(f"👑 **Conquistador:** {haki_conquistador}")
+        else:
+            haki_armamento = st.selectbox(
+                "Haki do Armamento",
+                ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
+                key="haki_armamento"
+            )
+            haki_observacao = st.selectbox(
+                "Haki da Observação",
+                ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
+                key="haki_observacao"
+            )
+            haki_conquistador = st.selectbox(
+                "Haki do Conquistador/Rei",
+                ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
+                key="haki_conquistador"
+            )
 
 # ===============================
 # PROFICIÊNCIAS, ESTILO, HISTÓRIA, ETC
@@ -412,6 +406,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
