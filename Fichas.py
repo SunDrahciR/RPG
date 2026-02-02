@@ -92,6 +92,110 @@ with colA:
 # ===============================
 # RAÇAS
 # ===============================
+st.header("Raça")
+
+racas = {
+    "Humano": {
+        "V1": "Ganha mais bônus ao upar sub-atributos (mestre decide o quanto).",
+        "V2": "Os Hakis recebem +5.",
+        "V3": "+5 nos Hakis e +10 em todos os Subatributos",
+        "Fraqueza": "Quando a Raça do inimigo for maior que a sua, leva +10 de Dano"
+    },
+
+    "Tribo (Braço/Perna Longos)": {
+        "V1": "Golpes com o membro respectivo recebem +7 em acerto.",
+        "V2": "+13 de Dano com o membro, ataques com o membro são considerados Grandes",
+        "V3": "+12 de Dano e +20 de Defesa com o membro. (Total: +25 de Dano, +7 de Acerto, Ataques Grandes)",
+        "Fraqueza": "Golpes mirando nos membros longos tem +10 de Acerto"
+    },
+
+    "Tontata": {
+        "V1": "+15 em Esquiva e Furtividade",
+        "V2": "+23 em Esquiva e Furtividade (Total: +38)",
+        "V3": "+2 em Esquiva e Furtividade e ignora a imunidade a Furtividade do Haki da Observação (Total: +40)",
+        "Fraqueza": "-5 de Resistência, 19 também arranca membro"
+    },
+
+    "Homem-Peixe": {
+        "V1": "Dentro da água, seus dados são dobrados.",
+        "V2": "Dentro da água, seus dados são triplicados.",
+        "V3": "Dentro da água, Força e Resistência são dobradas.",
+        "Fraqueza": "Em ambientes secos, todos os resultados são cortados pela metade."
+    },
+
+    "Nativo do Céu": {
+        "V1": "+15 em testes e ações aéreas.",
+        "V2": "Em combate aéreo, o D20 é dobrado e recebe +10 de movimento no ar.",
+        "V3": "Todos os resultados de movimento aéreo são dobrados.",
+        "Fraqueza": "Enquanto estiver no ar, recebe +25 de dano elétrico."
+    },
+
+    "Oni": {
+        "V1": "+15 de dano em ambientes de fogo.",
+        "V2": "Em ambientes de fogo, o D20 é dobrado e causa +10 de dano.",
+        "V3": "Em ambientes de fogo, o D20 é quadruplicado.",
+        "Fraqueza": "Em ambientes de baixa temperatura, recebe -15 em Força e Resistência."
+    },
+
+    "Sereiano": {
+        "V1": "Dentro da água, recebe +25 de movimento.",
+        "V2": "Dentro da água, recebe 3D20 adicionais de movimento.",
+        "V3": "Dentro da água, todos os dados de movimento e ataque são dobrados.",
+        "Fraqueza": "Fora da água, não recebe bônus e fica incapacitado de se mover."
+    },
+
+    "Mink": {
+        "V1": "+14 de movimentação e rastreamento. No Modo Sulong: +35 de dano e Velocidade.",
+        "V2": "+16 de movimentação e rastreamento.",
+        "V3": "+20 de movimentação e rastreamento. No Modo Sulong: +15 adicionais de dano e Velocidade.",
+        "Fraqueza": "Ataques Sonoros ou Venenosos causam +30 de dano."
+    },
+
+    "Gigante": {
+        "V1": "+15 em Força e Resistência. Todos os golpes são Grandes.",
+        "V2": "+30 em Força e Resistência. Todos os golpes são Gigantes.",
+        "V3": "Golpes físicos se tornam ataques em área. +10 de dano por alvo adicional.",
+        "Fraqueza": "Todos os inimigos recebem +40 em testes de acerto contra Gigantes."
+    },
+
+    "Lunariano": {
+        "V1": "Chamas acesas: +20 de Resistência. Chamas apagadas: +20 de Velocidade.",
+        "V2": "Os bônus aumentam adicionalmente em +25.",
+        "V3": "Os bônus aumentam adicionalmente em +5 e pode alternar o estado das chamas como Reação.",
+        "Fraqueza": "Com as chamas apagadas, recebe dano proporcional ao bônus ativo."
+    },
+
+    "Bucaneiro": {
+        "V1": "+22 de Resistência.",
+        "V2": "Não é afetado por condições especiais de Grau 1.",
+        "V3": "+28 de Resistência e não é afetado por condições especiais de Grau 2.",
+        "Fraqueza": "Se um aliado perder membros, o Bucaneiro sofre Confusão Grau 3."
+    },
+
+    "Híbrido": {
+        "V1": "O gene predominante define o status.",
+        "V2": "A raça secundária começa a se desenvolver."
+    }
+}
+
+
+def descricao_raca_progressiva(racas, raca, versao):
+    textos = []
+
+    if versao == "V1":
+        textos.append(racas[raca]["V1"])
+
+    elif versao == "V2":
+        textos.append(racas[raca]["V1"])
+        textos.append(racas[raca]["V2"])
+
+    elif versao == "V3":
+        textos.append(racas[raca]["V1"])
+        textos.append(racas[raca]["V2"])
+        textos.append(racas[raca]["V3"])
+
+    return "\n".join(textos)
+    
 st.markdown("---")
 
 with st.container(border=True):
@@ -335,6 +439,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
