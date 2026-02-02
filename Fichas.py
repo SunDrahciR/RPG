@@ -272,15 +272,16 @@ with colB:
         else:
             c1, c2, c3 = st.columns(3)
             with c1:
-                sa["forca"] = st.number_input("Força", value=sa["forca"])
-                sa["intelecto"] = st.number_input("Intelecto", value=sa["intelecto"])
+                with c1:
+                st.number_input("Força", min_value=0, step=1, key="sub_forca")
+                st.number_input("Intelecto", min_value=0, step=1, key="sub_intelecto")
             with c2:
-                sa["resistencia"] = st.number_input("Resistência", value=sa["resistencia"])
-                sa["velocidade"] = st.number_input("Velocidade", value=sa["velocidade"])
+                st.number_input("Resistência", min_value=0, step=1, key="sub_resistencia")
+                st.number_input("Velocidade", min_value=0, step=1, key="sub_velocidade")
             with c3:
-                sa["elemental"] = st.number_input("Elemento", value=sa["elemental"])
-                sa["ma"] = st.number_input("M.A", value=sa["ma"])
-                sa["vontade"] = st.number_input("Vontade", value=sa["vontade"])
+                st.number_input("Elemento", min_value=0, step=1, key="sub_elemental")
+                st.number_input("M.A", min_value=0, step=1, key="sub_ma")
+                st.number_input("Vontade", min_value=0, step=1, key="sub_vontade")
 
 # 🔥 HAKI (CORE)
 with colC:
@@ -406,6 +407,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
