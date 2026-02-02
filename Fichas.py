@@ -174,70 +174,54 @@ racas = {
     "Híbrido": {"V1": "O gene predominante define o status.", "V2": "A raça secundária começa a se desenvolver."},
 }
 
-def descricao_raca_progressiva(racas, raca, versao):
-    textos = []
+st.markdown("---")
 
-    if versao == "V1":
-        textos.append(racas[raca]["V1"])
-    elif versao == "V2":
-        textos.append(racas[raca]["V1"])
-        textos.append(racas[raca]["V2"])
-    elif versao == "V3":
-        textos.append(racas[raca]["V1"])
-        textos.append(racas[raca]["V2"])
-        textos.append(racas[raca]["V3"])
+with st.container(border=True):
+    st.subheader("🧬 Raça")
 
-    return "\n".join(textos)
-    
-col1, col2 = st.columns(2)
-with col1:
-    raca = st.selectbox("4. Raça", list(racas.keys()), index=list(racas.keys()).index(st.session_state["raca"]) if st.session_state["raca"] else 0)
-with col2:
-    versao = st.selectbox(
-    "Versão da Raça",
-    ["V1", "V2", "V3"],
-    index=["V1","V2","V3"].index(st.session_state["versao"]) if st.session_state["versao"] else 0)
-        
-if raca == "Híbrido":
-    
-    racas_base = [r for r in racas.keys() if r != "Híbrido"]
-    col1, col2 = st.columns(2)
-    with col1:
-        raca1 = st.selectbox(
-            "Raça Primária",
-            racas_base,
-            key= "hibrido_raca_primaria"
-        )
-        versao1 = st.selectbox(
-            "Versão da Raça Primária",
-            ["V1", "V2"],
-             key = "hibrido_versao_primaria"
-        )
-    with col2:
-        racas_secundarias = [r for r in racas_base if r != raca1]
-        raca2 = st.selectbox(
-            "Raça Secundária",
-            racas_secundarias,
-            key="hibrido_raca_secundaria"
-        )
-        versao2 = st.selectbox(
-            "Versão da Raça Secundária",
-            ["V1", "V2"],
-            key="hibrido_versao_secundaria"
+    colR1, colR2 = st.columns(2)
+
+    with colR1:
+        raca = st.selectbox(
+            "Raça",
+            list(racas.keys()),
+            index=list(racas.keys()).index(st.session_state["raca"])
+            if st.session_state["raca"] else 0
         )
 
-    st.info(
-        f"🔹 **Primária:** {raca1} ({versao1})\n\n"
-        f"🔸 **Secundária:** {raca2} ({versao2})"
-    )
+    with colR2:
+        versao = st.selectbox(
+            "Versão",
+            ["V1", "V2", "V3"],
+            index=["V1", "V2", "V3"].index(st.session_state["versao"])
+            if st.session_state["versao"] else 0
+        )
 
-if raca and raca != "Híbrido":
-    st.markdown(f"### Descrição da Raça ({raca} - {versao})")
+    # Híbrido continua funcionando igual
+    if raca == "Híbrido":
+        racas_base = [r for r in racas.keys() if r != "Híbrido"]
+        colH1, colH2 = st.columns(2)
 
-    descricao = descricao_raca_progressiva(racas, raca, versao)
+        with colH1:
+            raca1 = st.selectbox("Raça Primária", racas_base, key="hibrido_raca_primaria")
+            versao1 = st.selectbox("Versão Primária", ["V1", "V2"], key="hibrido_versao_primaria")
 
-    st.text(descricao)
-    st.text(f"Fraqueza: {racas[raca]['Fraqueza']}")
+        with colH2:
+            racas_secundarias = [r for r in racas_base if r != raca1]
+            raca2 = st.selectbox("Raça Secundária", racas_secundarias, key="hibrido_raca_secundaria")
+            versao2 = st.selectbox("Versão Secundária", ["V1", "V2"], key="hibrido_versao_secundaria")
+
+        st.info(
+            f"🔹 **Primária:** {raca1} ({versao1})\n\n"
+            f"🔸 **Secundária:** {raca2} ({versao2})"
+        )
+
+    # Descrição escondida (isso é MUITO importante)
+    if raca and raca != "Híbrido":
+        with st.expander("📜 Descrição da Raça"):
+            descricao = descricao_raca_progressiva(racas, raca, versao)
+            st.markdown(descricao)
+            st.markdown(f"**Fraqueza:** {racas[raca]['Fraqueza']}")
 
 
 
@@ -406,6 +390,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
