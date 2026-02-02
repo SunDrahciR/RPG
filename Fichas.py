@@ -272,7 +272,6 @@ with colB:
         else:
             c1, c2, c3 = st.columns(3)
             with c1:
-                with c1:
                 st.number_input("Força", min_value=0, step=1, key="sub_forca")
                 st.number_input("Intelecto", min_value=0, step=1, key="sub_intelecto")
             with c2:
@@ -407,6 +406,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
