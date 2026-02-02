@@ -9,7 +9,7 @@ st.set_page_config(page_title="Ficha de Personagem - OnePica RPG", layout="wide"
 
 st.title("Ficha de Personagem - One Pica RPG")
 
-modo_visual = st.toggle("Modo Visual da Ficha", value=True)
+modo_visual = st.toggle("Modo Leitura", value=False)
 
 st.markdown("---")
 
@@ -406,6 +406,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
