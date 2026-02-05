@@ -379,12 +379,22 @@ modo = st.text_area("14. Modo", value=st.session_state["modo"], placeholder="Des
 # ===============================
 # SALVAR FICHA
 # ===============================
+sa = st.session_state["subatributos"]
+
+sa["forca"] = st.session_state.get("sub_forca", sa["forca"])
+sa["intelecto"] = st.session_state.get("sub_intelecto", sa["intelecto"])
+sa["resistencia"] = st.session_state.get("sub_resistencia", sa["resistencia"])
+sa["velocidade"] = st.session_state.get("sub_velocidade", sa["velocidade"])
+sa["elemental"] = st.session_state.get("sub_elemental", sa["elemental"])
+sa["ma"] = st.session_state.get("sub_ma", sa["ma"])
+sa["vontade"] = st.session_state.get("sub_vontade", sa["vontade"])
+
 ficha_data = {
     "nome": nome,
     "titulo": titulo,
     "afiliacao": afiliacao,
-    "raca": raca,
-    "versao": versao,
+    "raca": st.session_state["raca"],
+    "versao": st.session_state["versao"],
     "origem": origem,
     "vida_maxima": vida_maxima,
     "vida_atual": vida_atual,
@@ -405,6 +415,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
