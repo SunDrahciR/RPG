@@ -264,7 +264,7 @@ with st.container(border=True):
         )
 
     # ===============================
-    # DESCRIÇÃO (NÃO SOME!)
+    # DESCRIÇÃO
     # ===============================
     if raca and raca != "Híbrido":
         with st.expander("📜 Descrição da Raça"):
@@ -314,6 +314,14 @@ with colB:
                 st.number_input("Elemento", min_value=0, step=1, key="sub_elemental")
                 st.number_input("M.A", min_value=0, step=1, key="sub_ma")
                 st.number_input("Vontade", min_value=0, step=1, key="sub_vontade")
+
+st.session_state["subatributos"]["forca"] = st.session_state.get("sub_forca", 0)
+st.session_state["subatributos"]["intelecto"] = st.session_state.get("sub_intelecto", 0)
+st.session_state["subatributos"]["resistencia"] = st.session_state.get("sub_resistencia", 0)
+st.session_state["subatributos"]["velocidade"] = st.session_state.get("sub_velocidade", 0)
+st.session_state["subatributos"]["elemental"] = st.session_state.get("sub_elemental", 0)
+st.session_state["subatributos"]["ma"] = st.session_state.get("sub_ma", 0)
+st.session_state["subatributos"]["vontade"] = st.session_state.get("sub_vontade", 0)
 
 # HAKI
 with colC:
@@ -397,6 +405,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
