@@ -28,6 +28,35 @@ def salvar_ficha(data):
 def carregar_ficha(upload):
     stringio = StringIO(upload.getvalue().decode("utf-8"))
     return json.load(stringio)
+     # Subatributos antigos para novos keys
+    if "subatributos" in data:
+        sa = data["subatributos"]
+
+        st.session_state["subatributos"] = sa
+
+        st.session_state["sub_forca"] = sa.get("forca", 0)
+        st.session_state["sub_intelecto"] = sa.get("intelecto", 0)
+        st.session_state["sub_resistencia"] = sa.get("resistencia", 0)
+        st.session_state["sub_velocidade"] = sa.get("velocidade", 0)
+        st.session_state["sub_elemental"] = sa.get("elemental", 0)
+        st.session_state["sub_ma"] = sa.get("ma", 0)
+        st.session_state["sub_vontade"] = sa.get("vontade", 0)
+
+    # Raça e versão (garantia)
+    if "raca" in data:
+        st.session_state["raca"] = data["raca"]
+
+    if "versao" in data:
+        st.session_state["versao"] = data["versao"]
+
+    # Outros campos
+    for key, value in data.items():
+        if key not in ["subatributos"]:
+            st.session_state[key] = value
+
+    return data
+
+
 
 # ===============================
 # INICIALIZAÇÃO DO SESSION STATE
@@ -415,6 +444,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
