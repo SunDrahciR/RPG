@@ -388,7 +388,7 @@ ficha_data = {
     "origem": origem,
     "vida_maxima": vida_maxima,
     "vida_atual": vida_atual,
-    "subatributos": subatributos,
+    "subatributos": st.session_state["subatributos"],
     "proficiencias": proficiencias,
     "estilo_luta": estilo_luta,
     "historia": historia,
@@ -405,6 +405,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
