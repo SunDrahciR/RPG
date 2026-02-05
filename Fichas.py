@@ -366,49 +366,7 @@ ataques_nomeados = st.text_area("13. Ataques Nomeados", value=st.session_state["
 st.header("Modo")
 modo = st.text_area("14. Modo", value=st.session_state["modo"], placeholder="Descreva o modo especial ou transformação do personagem...")
 
-# ===============================
-# MOSTRAR FICHA COMPLETA
-# ===============================
-st.markdown("---")
-if st.button("📄 Mostrar Ficha Completa"):
-    st.subheader(f"Ficha de {nome or 'Personagem'}")
-    st.write(f"**Título:** {titulo}")
-    st.write(f"**Afiliação:** {afiliacao}")
-    st.write(f"**Raça:** {raca} ({versao}) — {racas[raca][versao]}")
-    st.write(f"**Origem:** {origem}")
 
-    st.markdown("###  Vida")
-    st.write(f"Vida Máxima: {vida_maxima}")
-    st.write(f"Vida Atual: {vida_atual}")
-
-    st.markdown("### 🌀 Subatributos")
-    st.write(f"Força: {forca}")
-    st.write(f"Inteligência: {intelecto}")
-    st.write(f"Resistência: {resistencia}")
-    st.write(f"Velocidade: {velocidade}")
-    st.write(f"Elemento: {elemental}")
-
-    st.markdown("### ✨ Haki")
-    st.write(f"Haki do Armamento: {haki_armamento}")
-    st.write(f"Haki da Observação: {haki_observacao}")
-    st.write(f"Haki do Conquistador/Rei: {haki_conquistador}")
-
-    st.markdown("### ⚔️ Proficiências")
-    st.write(proficiencias)
-    st.markdown("### 🥋 Estilo de Luta")
-    st.write(estilo_luta)
-    st.markdown("### 📖 História")
-    st.write(historia)
-    st.markdown("### 👤 Aparência")
-    st.write(aparencia)
-    st.markdown("### 🗡️ Armas")
-    st.write(armas)
-    st.markdown("### 💫 Habilidades Passivas")
-    st.write(habilidades_passivas)
-    st.markdown("### 🌪️ Ataques Nomeados")
-    st.write(ataques_nomeados)
-    st.markdown("### 🔥 Modo")
-    st.write(modo)
 
 # ===============================
 # SALVAR FICHA
@@ -439,6 +397,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
