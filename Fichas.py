@@ -450,14 +450,9 @@ with tab_passivas:
                 st.rerun()
         # Lista compacta
         for i, p in enumerate(st.session_state["passivas"]):
-            col1, col2 = st.columns([6, 1])
-    
-            with col1:
-                with st.expander(f"{p['nome']}"):
-                    st.markdown(p["descricao"])
-    
-            with col2:
-                if st.button("🗑", key=f"del_passiva_{i}"):
+            with st.expander (p["nome"]):
+                st.markdown(p["descricao"])
+                if st.button("🗑 Remover", key=f"del_passiva_{i}"):
                     st.session_state["passivas"].pop(i)
                     st.rerun()
 
@@ -739,6 +734,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 3.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
