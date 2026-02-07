@@ -563,67 +563,60 @@ if "arsenal" not in st.session_state:
     st.session_state["arsenal"] = []
 
 with st.container(border=True):
-    st.subheader("Configuração do Arsenal")
+    st.subheader("Equipamentos de Combate")
 
-    grau = st.selectbox(
-        "Grau do Arsenal",
-        [4, 3, 2, 1],
-        format_func=lambda g: f"Grau {g}",
-        key="arsenal_grau_cfg"
-    )
-
-    amaldicoada = st.checkbox(
-        "Arsenal Amaldiçoado (+15 bônus, +10 M.A.)",
-        key="arsenal_amald_cfg"
-    )
-
-    despertada = False
-    habilidade_despertada = ""
-
-    if grau == 1:
-        despertada = st.checkbox(
-            "Grau 1 Despertado",
-            key="arsenal_despertada_cfg"
-        )
-
-        if despertada:
-            habilidade_despertada = st.text_area(
-                "Habilidade Despertada do Arsenal",
-                height=100,
-                key="arsenal_hab_despertada_cfg"
-            )
-
-    bonus_final, ma_final = calcular_arsenal(grau, amaldicoada)
-
-    st.markdown(
-        f"""
-        **Bônus Total:** +{bonus_final}  
-        **M.A. Requerido:** {ma_final}
-        """
-    )
-
-with st.expander("➕ Novo Arsenal"):
-    with st.form("form_novo_arsenal"):
+    with st.expander("➕ Novo Arsenal", expanded=True):
 
         nome = st.text_input("Nome do Arsenal")
         tipo = st.text_input("Tipo (Espada, Arma de Fogo, etc)")
+
+        grau = st.selectbox(
+            "Grau do Arsenal",
+            [4, 3, 2, 1],
+            format_func=lambda g: f"Grau {g}"
+        )
+
+        amaldicoada = st.checkbox(
+            "Arsenal Amaldiçoado (+15 bônus, +10 M.A.)"
+        )
+
+        despertada = False
+        habilidade_despertada = ""
+
+        if grau == 1:
+            despertada = st.checkbox("Grau 1 Despertado")
+
+            if despertada:
+                habilidade_despertada = st.text_area(
+                    "Habilidade Despertada do Arsenal",
+                    height=100
+                )
+
+        bonus_final, ma_final = calcular_arsenal(grau, amaldicoada)
+
+        st.markdown(
+            f"""
+            **Bônus Total:** +{bonus_final}  
+            **M.A. Requerido:** {ma_final}
+            """
+        )
+
         descricao = st.text_area("Descrição Geral", height=120)
 
-        submit = st.form_submit_button("Adicionar Arsenal")
-
-        if submit and nome.strip():
-            st.session_state["arsenal"].append({
-                "nome": nome,
-                "tipo": tipo,
-                "grau": grau,
-                "bonus": bonus_final,
-                "ma_requerido": ma_final,
-                "amaldicoada": amaldicoada,
-                "despertada": despertada,
-                "habilidade_despertada": habilidade_despertada,
-                "descricao": descricao
-            })
-            st.rerun()
+        if st.button("Adicionar Arsenal"):
+            if nome.strip():
+                st.session_state["arsenal"].append({
+                    "nome": nome,
+                    "tipo": tipo,
+                    "grau": grau,
+                    "bonus": bonus_final,
+                    "ma_requerido": ma_final,
+                    "amaldicoada": amaldicoada,
+                    "despertada": despertada,
+                    "habilidade_despertada": habilidade_despertada,
+                    "descricao": descricao
+                })
+                st.rerun()
 
 
 # ===============================
@@ -686,6 +679,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
