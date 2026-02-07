@@ -576,10 +576,11 @@ with st.container(border=True):
             nome = st.text_input("Nome do Arsenal")
             tipo = st.text_input("Tipo")
 
-            grau = st.selectbox(
-                "Grau do Arsenal",
-                [4, 3, 2, 1],
-                format_func=lambda g: f"Grau {g}"
+           grau = st.selectbox(
+            "Grau do Arsenal",
+            options=[4, 3, 2, 1],
+            format_func=lambda g: f"Grau {g}",
+            key="arsenal_grau"
             )
 
             amaldicoada = st.checkbox("Arsenal Amaldiçoado (+15 bônus, +10 M.A.)")
@@ -690,6 +691,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
