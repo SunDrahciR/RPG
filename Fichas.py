@@ -566,14 +566,13 @@ if "arsenal" not in st.session_state:
     st.session_state["arsenal"] = []
 
 with st.container(border=True):
-    st.subheader("Equipamentos")
+    st.subheader("Equipamentos de Combate")
 
     # ===============================
     # NOVO ARSENAL
     # ===============================
-   with st.expander("➕ Novo Arsenal"):       
+    with st.expander("➕ Novo Arsenal"):
         with st.form("form_novo_arsenal"):
-            
             nome = st.text_input("Nome do Arsenal")
             tipo = st.text_input("Tipo")
 
@@ -581,7 +580,7 @@ with st.container(border=True):
                 "Grau do Arsenal",
                 [4, 3, 2, 1],
                 format_func=lambda g: f"Grau {g}"
-        )
+            )
 
             amaldicoada = st.checkbox("Arsenal Amaldiçoado (+15 bônus, +10 M.A.)")
 
@@ -589,41 +588,41 @@ with st.container(border=True):
             if grau == 1:
                 despertada = st.checkbox("Grau 1 Despertado")
 
-                bonus_final, ma_final = calcular_arsenal(grau, amaldicoada)
+            bonus_final, ma_final = calcular_arsenal(grau, amaldicoada)
 
             st.markdown(
                 f"""
                 **Bônus Total:** +{bonus_final}  
                 **M.A. Requerido:** {ma_final}
                 """
-        )
-
-        descricao = st.text_area("Descrição", height=120)
-
-        habilidades = []
-        if despertada:
-            hab = st.text_area(
-                "Habilidades do Arsenal Despertado",
-                height=120
             )
-            habilidades.append(hab)
 
-        submit = st.form_submit_button("Adicionar Arsenal")
+            descricao = st.text_area("Descrição", height=120)
 
-        if submit:
-            if nome.strip():
-                st.session_state["arsenal"].append({
-                    "nome": nome,
-                    "tipo": tipo,
-                    "grau": grau,
-                    "bonus": bonus_final,
-                    "ma_requerido": ma_final,
-                    "amaldicoada": amaldicoada,
-                    "despertada": despertada,
-                    "habilidades": habilidades,
-                    "descricao": descricao
-                })
-                st.rerun()
+            habilidades = []
+            if despertada:
+                hab = st.text_area(
+                    "Habilidades do Arsenal Despertado",
+                    height=120
+                )
+                habilidades.append(hab)
+
+            submit = st.form_submit_button("Adicionar Arsenal")
+
+            if submit:
+                if nome.strip():
+                    st.session_state["arsenal"].append({
+                        "nome": nome,
+                        "tipo": tipo,
+                        "grau": grau,
+                        "bonus": bonus_final,
+                        "ma_requerido": ma_final,
+                        "amaldicoada": amaldicoada,
+                        "despertada": despertada,
+                        "habilidades": habilidades,
+                        "descricao": descricao
+                    })
+                    st.rerun()
 
 
 
@@ -690,6 +689,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
