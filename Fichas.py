@@ -563,55 +563,67 @@ if "arsenal" not in st.session_state:
     st.session_state["arsenal"] = []
 
 with st.container(border=True):
-    st.subheader("Equipamentos de Combate")
+    st.subheader("Configuração do Arsenal")
 
-    with st.expander("➕ Novo Arsenal"):
-        with st.form("form_novo_arsenal"):
+    grau = st.selectbox(
+        "Grau do Arsenal",
+        [4, 3, 2, 1],
+        format_func=lambda g: f"Grau {g}",
+        key="arsenal_grau_cfg"
+    )
 
-            nome = st.text_input("Nome do Arsenal")
-            tipo = st.text_input("Tipo (Espada, Arma de Fogo, etc)")
+    amaldicoada = st.checkbox(
+        "Arsenal Amaldiçoado (+15 bônus, +10 M.A.)",
+        key="arsenal_amald_cfg"
+    )
 
-            grau = st.selectbox(
-                "Grau do Arsenal",
-                [4, 3, 2, 1],
-                format_func=lambda g: f"Grau {g}"
+    despertada = False
+    habilidade_despertada = ""
+
+    if grau == 1:
+        despertada = st.checkbox(
+            "Grau 1 Despertado",
+            key="arsenal_despertada_cfg"
+        )
+
+        if despertada:
+            habilidade_despertada = st.text_area(
+                "Habilidade Despertada do Arsenal",
+                height=100,
+                key="arsenal_hab_despertada_cfg"
             )
 
-            amaldicoada = st.checkbox(
-                "Arsenal Amaldiçoado (+15 bônus, +10 M.A.)"
-            )
+    bonus_final, ma_final = calcular_arsenal(grau, amaldicoada)
 
-            despertada = False
-            if grau == 1:
-                despertada = st.checkbox("Grau 1 Despertado")
+    st.markdown(
+        f"""
+        **Bônus Total:** +{bonus_final}  
+        **M.A. Requerido:** {ma_final}
+        """
+    )
 
-            bonus_final, ma_final = calcular_arsenal(grau, amaldicoada)
+with st.expander("➕ Novo Arsenal"):
+    with st.form("form_novo_arsenal"):
 
-            st.markdown(
-                f"""
-                **Bônus Total:** +{bonus_final}  
-                **M.A. Requerido:** {ma_final}
-                """
-            )
+        nome = st.text_input("Nome do Arsenal")
+        tipo = st.text_input("Tipo (Espada, Arma de Fogo, etc)")
+        descricao = st.text_area("Descrição Geral", height=120)
 
-            descricao = st.text_area("Descrição", height=120)
+        submit = st.form_submit_button("Adicionar Arsenal")
 
-            submit = st.form_submit_button("Adicionar Arsenal")
-
-            if submit and nome.strip():
-                st.session_state["arsenal"].append({
-                    "nome": nome,
-                    "tipo": tipo,
-                    "grau": grau,
-                    "bonus": bonus_final,
-                    "ma_requerido": ma_final,
-                    "amaldicoada": amaldicoada,
-                    "despertada": despertada,
-                    "descricao": descricao
-                })
-                st.rerun()
-
-
+        if submit and nome.strip():
+            st.session_state["arsenal"].append({
+                "nome": nome,
+                "tipo": tipo,
+                "grau": grau,
+                "bonus": bonus_final,
+                "ma_requerido": ma_final,
+                "amaldicoada": amaldicoada,
+                "despertada": despertada,
+                "habilidade_despertada": habilidade_despertada,
+                "descricao": descricao
+            })
+            st.rerun()
 
 
 # ===============================
@@ -626,9 +638,6 @@ estilo_luta = st.text_area("8. Estilo de Luta", value=st.session_state["estilo_l
 st.header("História e Aparência")
 historia = st.text_area("9. História", value=st.session_state["historia"], height=200)
 aparencia = st.text_area("10. Aparência", value=st.session_state["aparencia"], height=150)
-
-st.header("Armas")
-armas = st.text_area("11. Armas", value=st.session_state["armas"], placeholder="Liste as armas utilizadas pelo personagem...")
 
 
 
@@ -677,6 +686,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
