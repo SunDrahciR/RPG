@@ -468,13 +468,14 @@ with tab_habilidades:
         nome = st.text_input("Nome", key="nova_hab_nome")
         descricao = st.text_area("Descrição", key="nova_hab_desc", height=120)
 
-        if st.button("Adicionar Habilidade"):
+        if st.button("Adicionar Habilidade", key="btn_add_habilidade"):
             if nome.strip():
                 st.session_state["habilidades"].append({
                     "nome": nome,
                     "descricao": descricao
                 })
                 st.rerun()
+
 
     for i, h in enumerate(st.session_state["habilidades"]):
         with st.expander(h["nome"]):
@@ -735,6 +736,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 3.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
