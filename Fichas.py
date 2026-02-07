@@ -644,10 +644,18 @@ with st.container(border=True):
 
 
 st.header("Proficiências")
-proficiencias = st.text_input("7. Proficiências", value=st.session_state["proficiencias"], placeholder="Ex: Atirador, Corpo-a-Corpo, Armas Brancas...")
+st.text_input(
+    "Proficiências",
+    key="proficiencias",
+    placeholder="Ex: Atirador, Corpo-a-Corpo, Armas Brancas..."
+)
 
 st.header("Estilo de Luta")
-estilo_luta = st.text_area("8. Estilo de Luta", value=st.session_state["estilo_luta"], placeholder="Descreva o estilo de luta do personagem...")
+st.text_area(
+    "Estilo de Luta",
+    key="estilo_luta",
+    placeholder="Descreva o estilo de luta do personagem..."
+)
 
 # ===============================
 # HISTÓRIA E APARÊNCIA
@@ -728,5 +736,6 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 3.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
