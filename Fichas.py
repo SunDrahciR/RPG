@@ -83,6 +83,12 @@ chaves = [
     "historia", "aparencia"
 ]
 
+if "raca" not in st.session_state:
+    st.session_state["raca"] = ""
+
+if "versao" not in st.session_state:
+    st.session_state["versao"] = "V1"
+
 for chave in chaves:
     if "subatributos" not in st.session_state:
         st.session_state["subatributos"] = {
@@ -260,20 +266,26 @@ with st.container(border=True):
     col1, col2 = st.columns(2)
 
     with col1:
+        raca_keys = list(racas.keys())
+
         raca = st.selectbox(
             "Raça",
-            list(racas.keys()),
-            index=list(racas.keys()).index(st.session_state["raca"])
-            if st.session_state["raca"] else 0,
+            raca_keys,
+            index=raca_keys.index(st.session_state["raca"])
+            if st.session_state.get("raca") in raca_keys
+            else 0,
             key="raca_select"
         )
 
     with col2:
+        versoes = ["V1", "V2", "V3"]
+
         versao = st.selectbox(
             "Versão da Raça",
-            ["V1", "V2", "V3"],
-            index=["V1", "V2", "V3"].index(st.session_state["versao"])
-            if st.session_state["versao"] else 0,
+            versoes,
+            index=versoes.index(st.session_state["versao"])
+            if st.session_state.get("versao") in versoes
+            else 0,
             key="versao_raca_select"
         )
 
@@ -714,3 +726,4 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 3.0 — Ficha Interativa de Personagem | OnePica RPG")
+
