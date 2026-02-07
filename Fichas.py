@@ -440,7 +440,7 @@ with tab_passivas:
     with st.expander("➕ Nova Passiva"):
         nome = st.text_input("Nome", key="nova_passiva_nome")
         descricao = st.text_area("Descrição", key="nova_passiva_desc", height=120)
-    
+
         if st.button("Adicionar Passiva"):
             if nome.strip():
                 st.session_state["passivas"].append({
@@ -448,13 +448,14 @@ with tab_passivas:
                     "descricao": descricao
                 })
                 st.rerun()
-        # Lista compacta
-        for i, p in enumerate(st.session_state["passivas"]):
-            with st.expander (p["nome"]):
-                st.markdown(p["descricao"])
-                if st.button("🗑 Remover", key=f"del_passiva_{i}"):
-                    st.session_state["passivas"].pop(i)
-                    st.rerun()
+
+    for i, p in enumerate(st.session_state["passivas"]):
+        with st.expander(p["nome"]):
+            st.markdown(p["descricao"])
+
+            if st.button("🗑 Remover", key=f"del_passiva_{i}"):
+                st.session_state["passivas"].pop(i)
+                st.rerun()
 
 # ===============================
 # HABILIDADES
@@ -734,6 +735,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 3.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
