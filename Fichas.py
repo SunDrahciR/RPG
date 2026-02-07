@@ -449,7 +449,6 @@ with tab_passivas:
 with tab_habilidades:
     st.subheader("Habilidades")
 
-    # Criar nova habilidade
     with st.expander("➕ Nova Habilidade"):
         nome = st.text_input("Nome", key="nova_hab_nome")
         descricao = st.text_area("Descrição", key="nova_hab_desc", height=120)
@@ -460,18 +459,15 @@ with tab_habilidades:
                     "nome": nome,
                     "descricao": descricao
                 })
-                st.session_state["nova_hab_nome"] = ""
-                st.session_state["nova_hab_desc"] = ""
+                st.rerun()
 
-    # Lista compacta
     for i, h in enumerate(st.session_state["habilidades"]):
-        with st.expander(f"{h['nome']}"):
+        with st.expander(h["nome"]):
             st.markdown(h["descricao"])
 
             if st.button("🗑 Remover", key=f"del_hab_{i}"):
                 st.session_state["habilidades"].pop(i)
-                st.experimental_rerun()
-
+                st.rerun()
 # ===============================
 # ATAQUES
 # ===============================
@@ -486,21 +482,23 @@ with tab_ataques:
         descricao = st.text_area("Descrição", key="novo_atk_desc", height=120)
 
         if st.button("Adicionar Ataque"):
-            st.session_state["ataques"].append({
-                "nome": nome,
-                "bonus": bonus,
-                "tipo": tipo,
-                "descricao": descricao
-            })
+            if nome.strip():
+                st.session_state["ataques"].append({
+                    "nome": nome,
+                    "bonus": bonus,
+                    "tipo": tipo,
+                    "descricao": descricao
+                })
+                st.rerun()
 
     for i, a in enumerate(st.session_state["ataques"]):
-            header = f"{a['nome']} | {a['bonus']} | {a['tipo']}"
-            with st.expander(header):
-                st.markdown(a["descricao"])
-                if st.button("🗑", key=f"del_atk_{i}"):
-                    st.session_state["ataques"].pop(i)
-                    st.experimental_rerun()
+        header = f"{a['nome']} | {a['bonus']} | {a['tipo']}"
+        with st.expander(header):
+            st.markdown(a["descricao"])
 
+            if st.button("🗑 Remover", key=f"del_atk_{i}"):
+                st.session_state["ataques"].pop(i)
+                st.rerun()
 
 # ===============================
 # MODOS
@@ -523,16 +521,89 @@ with tab_modos:
                     "efeito": efeito_bonus,
                     "descricao": descricao
                 })
+                st.rerun()
+
     for i, m in enumerate(st.session_state["modos"]):
         with st.expander(m["nome"]):
             st.markdown(
-            f"**Condição:** {m['condicao']}\n\n"
-            f"**Efeito:** {m['efeito']}\n\n"
-            f"{m['descricao']}"
+                f"**Condição:** {m['condicao']}\n\n"
+                f"**Efeito:** {m['efeito']}\n\n"
+                f"{m['descricao']}"
+            )
+
+            if st.button("🗑 Remover", key=f"del_modo_{i}"):
+                st.session_state["modos"].pop(i)
+                st.rerun()
+
+    # ===============================
+    # ARSENAL
+    # ===============================
+
+st.markdown("---")
+st.header("Arsenal")
+
+with st.container(border=True):
+    st.subheader("Equipamentos")
+
+    # ===============================
+    # NOVO ARSENAL
+    # ===============================
+    with st.expander("➕ Novo Arsenal"):
+        nome = st.text_input("Nome do Arsenal", key="novo_arsenal_nome")
+        tipo = st.text_input("Tipo", key="novo_arsenal_tipo")
+
+        grau = st.selectbox(
+            "Grau do Arsenal",
+            [4, 3, 2, 1],
+            format_func=lambda g: f"Grau {g}"
         )
-        if st.button("🗑", key=f"del_modo_{i}"):
-            st.session_state["modos"].pop(i)
-            st.experimental_rerun()
+
+        amaldicoada = st.checkbox("Arsenal Amaldiçoado (+15 bônus, +10 M.A.)")
+        despertada = False
+
+        if grau == 1:
+            despertada = st.checkbox("Grau 1 Despertado")
+
+        base_bonus = GRAUS_ARSENAL[grau]["bonus"]
+        base_ma = GRAUS_ARSENAL[grau]["ma"]
+
+        bonus_final = base_bonus + (15 if amaldicoada else 0)
+        ma_final = base_ma + (10 if amaldicoada else 0)
+
+        st.markdown(
+            f"""
+            **Bônus Total:** +{bonus_final}  
+            **M.A. Requerido:** {ma_final}
+            """
+        )
+
+        descricao = st.text_area("Descrição", height=120)
+
+        habilidades = []
+        if despertada:
+            st.markdown("### Habilidades do Arsenal Despertado")
+            hab = st.text_area(
+                "Descreva as habilidades especiais",
+                height=120,
+                key="arsenal_habilidades"
+            )
+            habilidades.append(hab)
+
+        if st.button("Adicionar Arsenal"):
+            if nome.strip():
+                st.session_state["arsenal"].append({
+                    "nome": nome,
+                    "tipo": tipo,
+                    "grau": grau,
+                    "bonus": bonus_final,
+                    "ma_requerido": ma_final,
+                    "amaldicoada": amaldicoada,
+                    "despertada": despertada,
+                    "habilidades": habilidades,
+                    "descricao": descricao
+                })
+                st.rerun()
+
 
 
 # ===============================
@@ -598,6 +669,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
