@@ -556,51 +556,45 @@ def calcular_arsenal(grau, amaldicoada):
 
     return bonus, ma
 
-if "arsenal" not in st.session_state:
-    st.session_state["arsenal"] = []
-    
 st.markdown("---")
 st.header("Arsenal")
+
+if "arsenal" not in st.session_state:
+    st.session_state["arsenal"] = []
 
 with st.container(border=True):
     st.subheader("Equipamentos de Combate")
 
-    bonus_final, ma_final = calcular_arsenal(grau, amaldicoada)
-
-    st.markdown(
-        f"""
-        **Bônus Total:** +{bonus_final}  
-        **M.A. Requerido:** {ma_final}
-        """
-    )
-
-    # ===============================
-    # FORMULÁRIO DE ADIÇÃO
-    # ===============================
     with st.expander("➕ Novo Arsenal"):
         with st.form("form_novo_arsenal"):
+
             nome = st.text_input("Nome do Arsenal")
             tipo = st.text_input("Tipo (Espada, Arma de Fogo, etc)")
-            descricao = st.text_area("Descrição", height=120)
 
             grau = st.selectbox(
                 "Grau do Arsenal",
                 [4, 3, 2, 1],
-                format_func=lambda g: f"Grau {g}",
-                key="arsenal_grau"
+                format_func=lambda g: f"Grau {g}"
             )
 
-    amaldicoada = st.checkbox(
-        "Arsenal Amaldiçoado (+15 bônus, +10 M.A.)",
-        key="arsenal_amaldicoada"
-    )
+            amaldicoada = st.checkbox(
+                "Arsenal Amaldiçoado (+15 bônus, +10 M.A.)"
+            )
 
-    despertada = False
-    if grau == 1:
-        despertada = st.checkbox(
-            "Grau 1 Despertado",
-            key="arsenal_despertada"
-        )
+            despertada = False
+            if grau == 1:
+                despertada = st.checkbox("Grau 1 Despertado")
+
+            bonus_final, ma_final = calcular_arsenal(grau, amaldicoada)
+
+            st.markdown(
+                f"""
+                **Bônus Total:** +{bonus_final}  
+                **M.A. Requerido:** {ma_final}
+                """
+            )
+
+            descricao = st.text_area("Descrição", height=120)
 
             submit = st.form_submit_button("Adicionar Arsenal")
 
@@ -683,6 +677,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
