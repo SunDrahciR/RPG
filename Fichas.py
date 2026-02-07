@@ -539,12 +539,6 @@ with tab_modos:
     # ARSENAL
     # ===============================
 
-st.markdown("---")
-st.header("Arsenal")
-
-# ===============================
-# CONSTANTES — ARSENAL
-# ===============================
 GRAUS_ARSENAL = {
     4: {"bonus": 8, "ma": 0},
     3: {"bonus": 15, "ma": 10},
@@ -561,64 +555,64 @@ def calcular_arsenal(grau, amaldicoada):
         ma += 10
 
     return bonus, ma
-
-if "arsenal" not in st.session_state:
-    st.session_state["arsenal"] = []
+    
+st.markdown("---")
+st.header("Arsenal")
 
 with st.container(border=True):
     st.subheader("Equipamentos de Combate")
 
-    # ===============================
-    # NOVO ARSENAL
-    # ===============================
-   with st.expander("➕ Novo Arsenal"):
-    with st.form("form_novo_arsenal"):
-        nome = st.text_input("Nome do Arsenal")
-        tipo = st.text_input("Tipo")
+    grau = st.selectbox(
+        "Grau do Arsenal",
+        options=[4, 3, 2, 1],
+        format_func=lambda g: f"Grau {g}",
+        key="arsenal_grau"
+    )
 
-        grau = st.selectbox(
-            "Grau do Arsenal",
-            options=[4, 3, 2, 1],
-            format_func=lambda g: f"Grau {g}",
-            key="arsenal_grau"
-        )
+    with st.expander("➕ Novo Arsenal"):
+        with st.form("form_novo_arsenal"):
+            nome = st.text_input("Nome do Arsenal")
+            tipo = st.text_input("Tipo")
 
-        amaldicoada = st.checkbox("Arsenal Amaldiçoado (+15 bônus, +10 M.A.)")
+            amaldicoada = st.checkbox(
+                "Arsenal Amaldiçoado (+15 bônus, +10 M.A.)"
+            )
 
-        despertada = st.checkbox(
-            "Grau 1 Despertado",
-            disabled=(st.session_state["arsenal_grau"] != 1)
-        )
+            despertada = st.checkbox(
+                "Grau 1 Despertado",
+                disabled=(st.session_state["arsenal_grau"] != 1)
+            )
 
-        bonus_final, ma_final = calcular_arsenal(
-            st.session_state["arsenal_grau"],
-            amaldicoada
-        )
+            bonus_final, ma_final = calcular_arsenal(
+                st.session_state["arsenal_grau"],
+                amaldicoada
+            )
 
-        st.markdown(
-            f"""
-            **Bônus Total:** +{bonus_final}  
-            **M.A. Requerido:** {ma_final}
-            """
-        )
+            st.markdown(
+                f"""
+                **Bônus Total:** +{bonus_final}  
+                **M.A. Requerido:** {ma_final}
+                """
+            )
 
-        descricao = st.text_area("Descrição", height=120)
+            descricao = st.text_area("Descrição", height=120)
 
-        submit = st.form_submit_button("Adicionar Arsenal")
+            submit = st.form_submit_button("Adicionar Arsenal")
 
-        if submit:
-            if nome.strip():
-                st.session_state["arsenal"].append({
-                    "nome": nome,
-                    "tipo": tipo,
-                    "grau": st.session_state["arsenal_grau"],
-                    "bonus": bonus_final,
-                    "ma_requerido": ma_final,
-                    "amaldicoada": amaldicoada,
-                    "despertada": despertada,
-                    "descricao": descricao
-                })
-                st.rerun()
+            if submit:
+                if nome.strip():
+                    st.session_state["arsenal"].append({
+                        "nome": nome,
+                        "tipo": tipo,
+                        "grau": st.session_state["arsenal_grau"],
+                        "bonus": bonus_final,
+                        "ma_requerido": ma_final,
+                        "amaldicoada": amaldicoada,
+                        "despertada": despertada,
+                        "descricao": descricao
+                    })
+                    st.rerun()
+
 
 
 
@@ -685,6 +679,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
