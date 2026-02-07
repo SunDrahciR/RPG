@@ -526,8 +526,8 @@ with tab_modos:
                     "descricao": descricao
                 })
     for i, m in enumerate(st.session_state["modos"]):
-    with st.expander(m["nome"]):
-        st.markdown(
+        with st.expander(m["nome"]):
+            st.markdown(
             f"**Condição:** {m['condicao']}\n\n"
             f"**Efeito:** {m['efeito']}\n\n"
             f"{m['descricao']}"
@@ -600,6 +600,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
