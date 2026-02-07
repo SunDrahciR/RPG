@@ -109,6 +109,13 @@ for haki in ["haki_armamento", "haki_observacao", "haki_conquistador"]:
     if haki not in st.session_state:
         st.session_state[haki] = "Nenhum"
 
+if "vida_maxima" not in st.session_state or not isinstance(st.session_state["vida_maxima"], int):
+    st.session_state["vida_maxima"] = 100
+
+if "vida_atual" not in st.session_state or not isinstance(st.session_state["vida_atual"], int):
+    st.session_state["vida_atual"] = 100
+
+
 # ===============================
 # SIDEBAR — GERENCIAR FICHA
 # ===============================
@@ -331,6 +338,7 @@ with colB:
             "Vida Máxima",
             min_value=1,
             step=10,
+            value=st.session_state["vida_máxima"],
             key="vida_maxima"
         )
     
@@ -338,8 +346,10 @@ with colB:
             "Vida Atual",
             min_value=0,
             max_value=st.session_state["vida_maxima"],
+            value=min(st.session_state["vida_atual"], st.session_state["vida_maxima"]),
             key="vida_atual"
         )
+        
         
     with st.container(border=True):
         st.subheader("🌀 Subatributos")
@@ -703,73 +713,4 @@ ficha_data = {
 
 st.markdown("---")
 salvar_ficha(ficha_data)
-st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+st.caption("Versão 3.0 — Ficha Interativa de Personagem | OnePica RPG")
