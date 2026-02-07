@@ -620,18 +620,61 @@ with st.container(border=True):
 
 
 # ===============================
-# PROFICIÊNCIAS, ESTILO, HISTÓRIA, ETC
+# PROFICIÊNCIAS, ESTILO
 # ===============================
+
+
 st.header("Proficiências")
 proficiencias = st.text_input("7. Proficiências", value=st.session_state["proficiencias"], placeholder="Ex: Atirador, Corpo-a-Corpo, Armas Brancas...")
 
 st.header("Estilo de Luta")
 estilo_luta = st.text_area("8. Estilo de Luta", value=st.session_state["estilo_luta"], placeholder="Descreva o estilo de luta do personagem...")
 
-st.header("História e Aparência")
-historia = st.text_area("9. História", value=st.session_state["historia"], height=200)
-aparencia = st.text_area("10. Aparência", value=st.session_state["aparencia"], height=150)
+# ===============================
+# HISTÓRIA E APARÊNCIA
+# ===============================
 
+st.header("História e Aparência")
+
+if "imagem_personagem" not in st.session_state:
+    st.session_state["imagem_personagem"] = None
+
+with st.container(border=True):
+
+    if modo_visual:
+        if st.session_state["imagem_personagem"]:
+            st.image(
+                st.session_state["imagem_personagem"],
+                use_container_width=True
+            )
+
+        st.markdown("### História")
+        st.markdown(st.session_state["historia"] or "_Sem história_")
+
+        st.markdown("### Aparência")
+        st.markdown(st.session_state["aparencia"] or "_Sem descrição_")
+
+    else:
+        historia = st.text_area(
+            "História",
+            value=st.session_state["historia"],
+            height=220
+        )
+
+        aparencia = st.text_area(
+            "Aparência",
+            value=st.session_state["aparencia"],
+            height=150
+        )
+
+        imagem = st.file_uploader(
+            "Imagem do Personagem",
+            type=["png", "jpg", "jpeg", "webp"]
+        )
+
+        if imagem:
+            st.session_state["imagem_personagem"] = imagem
+            st.image(imagem, caption="Prévia da imagem", use_container_width=True)
 
 
 # ===============================
@@ -679,6 +722,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
