@@ -552,6 +552,19 @@ GRAUS_ARSENAL = {
     1: {"bonus": 35, "ma": 35},
 }
 
+def calcular_arsenal(grau, amaldicoada):
+    bonus = GRAUS_ARSENAL[grau]["bonus"]
+    ma = GRAUS_ARSENAL[grau]["ma"]
+
+    if amaldicoada:
+        bonus += 15
+        ma += 10
+
+    return bonus, ma
+
+if "arsenal" not in st.session_state:
+    st.session_state["arsenal"] = []
+
 with st.container(border=True):
     st.subheader("Equipamentos")
 
@@ -679,6 +692,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
