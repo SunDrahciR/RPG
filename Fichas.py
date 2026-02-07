@@ -667,26 +667,26 @@ if "imagem_personagem" not in st.session_state:
     st.session_state["imagem_personagem"] = None
 
 with st.container(border=True):
-        historia = st.text_area(
-            "História",
-            value=st.session_state["historia"],
-            height=220
-        )
+    st.text_area(
+    "História",
+    key="historia",
+    height=220
+)
+    
+    st.text_area(
+    "Aparência",
+    key="aparencia",
+    height=150
+)
 
-        aparencia = st.text_area(
-            "Aparência",
-            value=st.session_state["aparencia"],
-            height=150
-        )
+    imagem = st.file_uploader(
+        "Imagem do Personagem",
+        type=["png", "jpg", "jpeg", "webp"]
+    )
 
-        imagem = st.file_uploader(
-            "Imagem do Personagem",
-            type=["png", "jpg", "jpeg", "webp"]
-        )
-
-        if imagem:
-            st.session_state["imagem_personagem"] = imagem
-            st.image(imagem, caption="Prévia da imagem", use_container_width=True)
+    if imagem:
+        st.session_state["imagem_personagem"] = imagem
+        st.image(imagem, caption="Prévia da imagem", use_container_width=True)
 
 
 # ===============================
@@ -736,6 +736,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 3.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
