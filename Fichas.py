@@ -584,9 +584,10 @@ with st.container(border=True):
 
             amaldicoada = st.checkbox("Arsenal Amaldiçoado (+15 bônus, +10 M.A.)")
 
-            despertada = False
-            if grau == 1:
-                despertada = st.checkbox("Grau 1 Despertado")
+            despertada = st.checkbox(
+            "Grau 1 Despertado",
+            disabled=(grau != 1)
+            )
 
             bonus_final, ma_final = calcular_arsenal(grau, amaldicoada)
 
@@ -689,6 +690,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
