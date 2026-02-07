@@ -322,6 +322,12 @@ with st.container(border=True):
 # ===============================
 # VIDA + SUBATRIBUTOS
 # ===============================
+if st.session_state["vida_atual"] > st.session_state["vida_maxima"]:
+    st.session_state["vida_atual"] = st.session_state["vida_maxima"]
+
+if st.session_state["vida_maxima"] < 1:
+    st.session_state["vida_maxima"] = 1
+    
 with colB:
     with st.container(border=True):
         st.subheader("Vida")
@@ -336,10 +342,9 @@ with colB:
                 "Vida Máxima",
                 min_value=1,
                 step=10,
-                value=int(st.session_state["vida_maxima"])
+                value=st.session_state["vida_maxima"]
             )
     
-            # garante novamente após mudança
             if st.session_state["vida_atual"] > st.session_state["vida_maxima"]:
                 st.session_state["vida_atual"] = st.session_state["vida_maxima"]
     
@@ -347,7 +352,7 @@ with colB:
                 "Vida Atual",
                 min_value=0,
                 max_value=st.session_state["vida_maxima"],
-                value=int(st.session_state["vida_atual"])
+                value=st.session_state["vida_atual"]
             )
 
 
@@ -748,6 +753,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
