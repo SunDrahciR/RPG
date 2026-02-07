@@ -472,6 +472,28 @@ with tab_habilidades:
                 st.experimental_rerun()
 
 # ===============================
+# ATAQUES
+# ===============================
+
+with tab_ataques:
+    st.subheader("Ataques")
+
+    with st.expander("➕ Novo Ataque"):
+        nome = st.text_input("Nome", key="novo_atk_nome")
+        dano = st.text_input("Dano", key="novo_atk_dano")
+        tipo = st.text_input("Tipo", key="novo_atk_tipo")
+        descricao = st.text_area("Descrição", key="novo_atk_desc", height=120)
+
+        if st.button("Adicionar Ataque"):
+            st.session_state["ataques"].append({
+                "nome": nome,
+                "dano": dano,
+                "tipo": tipo,
+                "descricao": descricao
+            })
+
+
+# ===============================
 # PROFICIÊNCIAS, ESTILO, HISTÓRIA, ETC
 # ===============================
 st.header("Proficiências")
@@ -535,6 +557,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
