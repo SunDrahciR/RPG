@@ -29,6 +29,32 @@ def carregar_ficha(upload):
     stringio = StringIO(upload.getvalue().decode("utf-8"))
     return json.load(stringio)
      # Subatributos antigos para novos keys
+     campos_simples = [
+        "nome", "titulo", "afiliacao", "origem",
+        "vida_maxima", "vida_atual",
+        "proficiencias", "estilo_luta",
+        "historia", "aparencia", "armas",
+        "habilidades_passivas", "ataques_nomeados", "modo"
+    ]
+
+    for campo in campos_simples:
+        if campo in data:
+            st.session_state[campo] = data[campo]
+
+    # ===============================
+    # RAÇA
+    # ===============================
+    if "raca" in data:
+        st.session_state["raca"] = data["raca"]
+        st.session_state["raca_select"] = data["raca"]
+
+    if "versao" in data:
+        st.session_state["versao"] = data["versao"]
+        st.session_state["versao_raca_select"] = data["versao"]
+
+    # ===============================
+    # SUBATRIBUTOS
+    # ===============================
     if "subatributos" in data:
         sa = data["subatributos"]
 
@@ -42,17 +68,17 @@ def carregar_ficha(upload):
         st.session_state["sub_ma"] = sa.get("ma", 0)
         st.session_state["sub_vontade"] = sa.get("vontade", 0)
 
-    # Raça e versão (garantia)
-    if "raca" in data:
-        st.session_state["raca"] = data["raca"]
+    # ===============================
+    # HAKI
+    # ===============================
+    if "haki_armamento" in data:
+        st.session_state["haki_armamento"] = data["haki_armamento"]
 
-    if "versao" in data:
-        st.session_state["versao"] = data["versao"]
+    if "haki_observacao" in data:
+        st.session_state["haki_observacao"] = data["haki_observacao"]
 
-    # Outros campos
-    for key, value in data.items():
-        if key not in ["subatributos"]:
-            st.session_state[key] = value
+    if "haki_conquistador" in data:
+        st.session_state["haki_conquistador"] = data["haki_conquistador"]
 
     return data
 
@@ -378,6 +404,48 @@ with colC:
                 key="haki_conquistador"
             )
 
+st.markdown("---")
+st.header("Habilidades do Personagem")
+
+if "passivas" not in st.session_state:
+    st.session_state["passivas"] = []
+
+tab_passivas, tab_habilidades, tab_ataques = st.tabs(
+    ["Passivas", "Habilidades", "Ataques"]
+)
+
+# ===============================
+# PASSIVAS
+# ===============================
+with tab_passivas:
+    st.subheader("Passivas")
+
+    with st.expander("➕ Nova Passiva"):
+        nome = st.text_input("Nome", key="nova_passiva_nome")
+        descricao = st.text_area("Descrição", key="nova_passiva_desc", height=120)
+
+        if st.button("Adicionar Passiva"):
+            if nome.strip():
+                st.session_state["passivas"].append({
+                    "nome": nome,
+                    "descricao": descricao
+                })
+                st.session_state["nova_passiva_nome"] = ""
+                st.session_state["nova_passiva_desc"] = ""
+
+    # Lista compacta
+    for i, p in enumerate(st.session_state["passivas"]):
+        col1, col2 = st.columns([6, 1])
+
+        with col1:
+            with st.expander(f"{p['nome']}"):
+                st.markdown(p["descricao"])
+
+        with col2:
+            if st.button("🗑", key=f"del_passiva_{i}"):
+                st.session_state["passivas"].pop(i)
+                st.experimental_rerun()
+
 # ===============================
 # PROFICIÊNCIAS, ESTILO, HISTÓRIA, ETC
 # ===============================
@@ -393,9 +461,6 @@ aparencia = st.text_area("10. Aparência", value=st.session_state["aparencia"], 
 
 st.header("Armas")
 armas = st.text_area("11. Armas", value=st.session_state["armas"], placeholder="Liste as armas utilizadas pelo personagem...")
-
-st.header("Habilidades Passivas")
-habilidades_passivas = st.text_area("12. Habilidades Passivas", value=st.session_state["habilidades_passivas"], height=150)
 
 st.header("Ataques Nomeados")
 ataques_nomeados = st.text_area("13. Ataques Nomeados", value=st.session_state["ataques_nomeados"], height=150)
@@ -444,6 +509,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
