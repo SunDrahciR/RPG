@@ -571,30 +571,31 @@ with st.container(border=True):
     # ===============================
     # NOVO ARSENAL
     # ===============================
-   with st.expander("➕ Novo Arsenal"):
-    with st.form("form_novo_arsenal"):
-        nome = st.text_input("Nome do Arsenal")
-        tipo = st.text_input("Tipo")
+   with st.expander("➕ Novo Arsenal"):       
+        with st.form("form_novo_arsenal"):
+            
+            nome = st.text_input("Nome do Arsenal")
+            tipo = st.text_input("Tipo")
 
-        grau = st.selectbox(
-            "Grau do Arsenal",
-            [4, 3, 2, 1],
-            format_func=lambda g: f"Grau {g}"
+            grau = st.selectbox(
+                "Grau do Arsenal",
+                [4, 3, 2, 1],
+                format_func=lambda g: f"Grau {g}"
         )
 
-        amaldicoada = st.checkbox("Arsenal Amaldiçoado (+15 bônus, +10 M.A.)")
+            amaldicoada = st.checkbox("Arsenal Amaldiçoado (+15 bônus, +10 M.A.)")
 
-        despertada = False
-        if grau == 1:
-            despertada = st.checkbox("Grau 1 Despertado")
+            despertada = False
+            if grau == 1:
+                despertada = st.checkbox("Grau 1 Despertado")
 
-        bonus_final, ma_final = calcular_arsenal(grau, amaldicoada)
+                bonus_final, ma_final = calcular_arsenal(grau, amaldicoada)
 
-        st.markdown(
-            f"""
-            **Bônus Total:** +{bonus_final}  
-            **M.A. Requerido:** {ma_final}
-            """
+            st.markdown(
+                f"""
+                **Bônus Total:** +{bonus_final}  
+                **M.A. Requerido:** {ma_final}
+                """
         )
 
         descricao = st.text_area("Descrição", height=120)
@@ -689,6 +690,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
