@@ -565,6 +565,9 @@ st.header("Arsenal")
 with st.container(border=True):
     st.subheader("Equipamentos de Combate")
 
+    # ===============================
+    # CONFIGURAÇÃO DO ARSENAL
+    # ===============================
     grau = st.selectbox(
         "Grau do Arsenal",
         [4, 3, 2, 1],
@@ -577,7 +580,6 @@ with st.container(border=True):
         key="arsenal_amaldicoada"
     )
 
-    # Só aparece se for Grau 1 (igual você queria antes)
     despertada = False
     if grau == 1:
         despertada = st.checkbox(
@@ -585,7 +587,6 @@ with st.container(border=True):
             key="arsenal_despertada"
         )
 
-    # Cálculo em TEMPO REAL
     bonus_final, ma_final = calcular_arsenal(grau, amaldicoada)
 
     st.markdown(
@@ -594,6 +595,30 @@ with st.container(border=True):
         **M.A. Requerido:** {ma_final}
         """
     )
+
+    # ===============================
+    # FORMULÁRIO DE ADIÇÃO
+    # ===============================
+    with st.expander("➕ Novo Arsenal"):
+        with st.form("form_novo_arsenal"):
+            nome = st.text_input("Nome do Arsenal")
+            tipo = st.text_input("Tipo (Espada, Arma de Fogo, etc)")
+            descricao = st.text_area("Descrição", height=120)
+
+            submit = st.form_submit_button("Adicionar Arsenal")
+
+            if submit and nome.strip():
+                st.session_state["arsenal"].append({
+                    "nome": nome,
+                    "tipo": tipo,
+                    "grau": grau,
+                    "bonus": bonus_final,
+                    "ma_requerido": ma_final,
+                    "amaldicoada": amaldicoada,
+                    "despertada": despertada,
+                    "descricao": descricao
+                })
+                st.rerun()
 
 
 
@@ -661,6 +686,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
