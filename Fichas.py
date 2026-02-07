@@ -373,21 +373,21 @@ with colC:
         st.subheader("Haki")
 
         if modo_visual:
-            st.write(f" **Armamento:** {haki_armamento}")
-            st.write(f" **Observação:** {haki_observacao}")
-            st.write(f" **Conquistador:** {haki_conquistador}")
+            st.write(f" **Armamento:** {st.session_state.get('haki_armamento', 'Nenhum')}")
+            st.write(f" **Observação:** {st.session_state.get('haki_observacao', 'Nenhum')}")
+            st.write(f" **Conquistador:** {st.session_state.get('haki_conquistador', 'Nenhum')}")
         else:
-            haki_armamento = st.selectbox(
+            st.session_state["haki_armamento"] = st.selectbox(
                 "Haki do Armamento",
                 ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
                 key="haki_armamento"
             )
-            haki_observacao = st.selectbox(
+            st.session_state["haki_observacao"] = st.selectbox(
                 "Haki da Observação",
                 ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
                 key="haki_observacao"
             )
-            haki_conquistador = st.selectbox(
+            st.session_state["haki_conquistador"] = st.selectbox(
                 "Haki do Conquistador/Rei",
                 ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
                 key="haki_conquistador"
@@ -729,6 +729,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
