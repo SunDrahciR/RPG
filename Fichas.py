@@ -480,17 +480,55 @@ with tab_ataques:
 
     with st.expander("➕ Novo Ataque"):
         nome = st.text_input("Nome", key="novo_atk_nome")
-        dano = st.text_input("Dano", key="novo_atk_dano")
+        bonus = st.text_input("Bônus", key="novo_atk_bonus")
         tipo = st.text_input("Tipo", key="novo_atk_tipo")
         descricao = st.text_area("Descrição", key="novo_atk_desc", height=120)
 
         if st.button("Adicionar Ataque"):
             st.session_state["ataques"].append({
                 "nome": nome,
-                "dano": dano,
+                "Bônus": bonus,
                 "tipo": tipo,
                 "descricao": descricao
             })
+
+for i, a in enumerate(st.session_state["ataques"]):
+        header = f"{a['nome']} | {a['dano']} | {a['tipo']}"
+        with st.expander(header):
+            st.markdown(a["descricao"])
+            if st.button("🗑", key=f"del_atk_{i}"):
+                st.session_state["ataques"].pop(i)
+                st.experimental_rerun()
+
+
+# ===============================
+# MODOS
+# ===============================
+
+st.header("Modo")
+
+with st.container(border=True):
+    if modo_visual:
+        st.markdown(f"### {st.session_state.get('modo_nome', '—')}")
+        st.write(st.session_state.get("modo_descricao", ""))
+    else:
+        st.session_state["modo_nome"] = st.text_input(
+            "Nome do Modo",
+            value=st.session_state.get("modo_nome", "")
+        )
+        st.session_state["modo_condicao"] = st.text_input(
+            "Condição",
+            value=st.session_state.get("modo_condicao", "")
+        )
+        st.session_state["modo_efeitos"] = st.text_input(
+            "Efeitos",
+            value=st.session_state.get("modo_efeitos", "")
+        )
+        st.session_state["modo_descricao"] = st.text_area(
+            "Descrição",
+            value=st.session_state.get("modo_descricao", ""),
+            height=120
+        )
 
 
 # ===============================
@@ -548,7 +586,12 @@ ficha_data = {
     "passivas": st.session_state["passivas"],
     "habilidades": st.session_state["habilidades"],
     "ataques": st.session_state["ataques"],
-    "modo": modo,
+    "modo": {
+    "nome": st.session_state.get("modo_nome", ""),
+    "condicao": st.session_state.get("modo_condicao", ""),
+    "efeitos": st.session_state.get("modo_efeitos", ""),
+    "descricao": st.session_state.get("modo_descricao", "")
+},
     "haki_armamento": haki_armamento,
     "haki_observacao": haki_observacao,
     "haki_conquistador": haki_conquistador
@@ -557,6 +600,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
