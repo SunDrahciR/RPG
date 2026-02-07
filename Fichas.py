@@ -555,6 +555,9 @@ def calcular_arsenal(grau, amaldicoada):
         ma += 10
 
     return bonus, ma
+
+if "arsenal" not in st.session_state:
+    st.session_state["arsenal"] = []
     
 st.markdown("---")
 st.header("Arsenal")
@@ -658,6 +661,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
