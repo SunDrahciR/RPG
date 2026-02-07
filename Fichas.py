@@ -441,7 +441,7 @@ with tab_passivas:
         nome = st.text_input("Nome", key="nova_passiva_nome")
         descricao = st.text_area("Descrição", key="nova_passiva_desc", height=120)
 
-        if st.button("Adicionar Passiva"):
+        if st.button("Adicionar Passiva", key="btn_add_passiva"):
             if nome.strip():
                 st.session_state["passivas"].append({
                     "nome": nome,
@@ -735,6 +735,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 3.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
