@@ -27,61 +27,50 @@ def salvar_ficha(data):
 
 def carregar_ficha(upload):
     stringio = StringIO(upload.getvalue().decode("utf-8"))
-    return json.load(stringio)
-     # Subatributos antigos para novos keys
-     campos_simples = [
+    data = json.load(stringio)
+
+    # Campos simples
+    for campo in [
         "nome", "titulo", "afiliacao", "origem",
         "vida_maxima", "vida_atual",
         "proficiencias", "estilo_luta",
         "historia", "aparencia", "armas",
-        "habilidades_passivas", "ataques_nomeados", "modo"
-    ]
-
-    for campo in campos_simples:
+        "modo"
+    ]:
         if campo in data:
             st.session_state[campo] = data[campo]
 
-    # ===============================
-    # RAÇA
-    # ===============================
-    if "raca" in data:
-        st.session_state["raca"] = data["raca"]
-        st.session_state["raca_select"] = data["raca"]
+    # Raça
+    st.session_state["raca"] = data.get("raca", "")
+    st.session_state["versao"] = data.get("versao", "V1")
+    st.session_state["raca_select"] = st.session_state["raca"]
+    st.session_state["versao_raca_select"] = st.session_state["versao"]
 
-    if "versao" in data:
-        st.session_state["versao"] = data["versao"]
-        st.session_state["versao_raca_select"] = data["versao"]
+    # Subatributos
+    st.session_state["subatributos"] = data.get("subatributos", {
+        "forca": 0,
+        "intelecto": 0,
+        "resistencia": 0,
+        "velocidade": 0,
+        "elemental": 0,
+        "ma": 0,
+        "vontade": 0
+    })
 
-    # ===============================
-    # SUBATRIBUTOS
-    # ===============================
-    if "subatributos" in data:
-        sa = data["subatributos"]
+    for k, v in st.session_state["subatributos"].items():
+        st.session_state[f"sub_{k}"] = v
 
-        st.session_state["subatributos"] = sa
+    # Haki
+    st.session_state["haki_armamento"] = data.get("haki_armamento", "Nenhum")
+    st.session_state["haki_observacao"] = data.get("haki_observacao", "Nenhum")
+    st.session_state["haki_conquistador"] = data.get("haki_conquistador", "Nenhum")
 
-        st.session_state["sub_forca"] = sa.get("forca", 0)
-        st.session_state["sub_intelecto"] = sa.get("intelecto", 0)
-        st.session_state["sub_resistencia"] = sa.get("resistencia", 0)
-        st.session_state["sub_velocidade"] = sa.get("velocidade", 0)
-        st.session_state["sub_elemental"] = sa.get("elemental", 0)
-        st.session_state["sub_ma"] = sa.get("ma", 0)
-        st.session_state["sub_vontade"] = sa.get("vontade", 0)
-
-    # ===============================
-    # HAKI
-    # ===============================
-    if "haki_armamento" in data:
-        st.session_state["haki_armamento"] = data["haki_armamento"]
-
-    if "haki_observacao" in data:
-        st.session_state["haki_observacao"] = data["haki_observacao"]
-
-    if "haki_conquistador" in data:
-        st.session_state["haki_conquistador"] = data["haki_conquistador"]
+    # Listas
+    st.session_state["passivas"] = data.get("passivas", [])
+    st.session_state["habilidades"] = data.get("habilidades", [])
+    st.session_state["ataques"] = data.get("ataques", [])
 
     return data
-
 
 
 # ===============================
@@ -404,6 +393,17 @@ with colC:
                 key="haki_conquistador"
             )
 
+#APTIDÕES
+
+for key, default in {
+    "passivas": [],
+    "habilidades": [],
+    "ataques": []
+}.items():
+    if key not in st.session_state:
+        st.session_state[key] = default
+
+
 st.markdown("---")
 st.header("Habilidades do Personagem")
 
@@ -444,6 +444,35 @@ with tab_passivas:
         with col2:
             if st.button("🗑", key=f"del_passiva_{i}"):
                 st.session_state["passivas"].pop(i)
+                st.experimental_rerun()
+
+# ===============================
+# HABILIDADES
+# ===============================
+
+with tab_habilidades:
+    st.subheader("Habilidades")
+
+    with st.expander("➕ Nova Habilidade"):
+        nome = st.text_input("Nome", key="nova_hab_nome")
+        custo = st.text_input("Custo", key="nova_hab_custo")
+        recarga = st.text_input("Recarga", key="nova_hab_recarga")
+        descricao = st.text_area("Descrição", key="nova_hab_desc", height=120)
+
+        if st.button("Adicionar Habilidade"):
+            st.session_state["habilidades"].append({
+                "nome": nome,
+                "custo": custo,
+                "recarga": recarga,
+                "descricao": descricao
+            })
+
+    for i, h in enumerate(st.session_state["habilidades"]):
+        header = f"{h['nome']} | {h['custo']} | {h['recarga']}"
+        with st.expander(header):
+            st.markdown(h["descricao"])
+            if st.button("🗑", key=f"del_hab_{i}"):
+                st.session_state["habilidades"].pop(i)
                 st.experimental_rerun()
 
 # ===============================
@@ -498,8 +527,9 @@ ficha_data = {
     "historia": historia,
     "aparencia": aparencia,
     "armas": armas,
-    "habilidades_passivas": habilidades_passivas,
-    "ataques_nomeados": ataques_nomeados,
+    "passivas": st.session_state["passivas"],
+    "habilidades": st.session_state["habilidades"],
+    "ataques": st.session_state["ataques"],
     "modo": modo,
     "haki_armamento": haki_armamento,
     "haki_observacao": haki_observacao,
@@ -509,6 +539,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
