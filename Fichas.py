@@ -455,15 +455,11 @@ with tab_habilidades:
 
     with st.expander("➕ Nova Habilidade"):
         nome = st.text_input("Nome", key="nova_hab_nome")
-        custo = st.text_input("Custo", key="nova_hab_custo")
-        recarga = st.text_input("Recarga", key="nova_hab_recarga")
         descricao = st.text_area("Descrição", key="nova_hab_desc", height=120)
 
         if st.button("Adicionar Habilidade"):
             st.session_state["habilidades"].append({
                 "nome": nome,
-                "custo": custo,
-                "recarga": recarga,
                 "descricao": descricao
             })
 
@@ -539,6 +535,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
