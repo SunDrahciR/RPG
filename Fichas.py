@@ -128,10 +128,11 @@ with colA:
             st.write(f"**Afiliação:** {st.session_state['afiliacao'] or '—'}")
             st.write(f"**Origem:** {st.session_state['origem'] or '—'}")
         else:
-            nome = st.text_input("Nome", value=st.session_state["nome"])
-            titulo = st.text_input("Título", value=st.session_state["titulo"])
-            afiliacao = st.text_input("Afiliação", value=st.session_state["afiliacao"])
-            origem = st.text_input("Origem", value=st.session_state["origem"])
+            st.text_input("Nome", key="nome")
+            st.text_input("Título", key="titulo")
+            st.text_input("Afiliação", key="afiliacao")
+            st.text_input("Origem", key="origem")
+
 
 # ===============================
 # RAÇAS
@@ -321,16 +322,26 @@ with st.container(border=True):
 #VIDA + SUBATRIBUTOS
 with colB:
     with st.container(border=True):
-        st.subheader("Vida")
+    st.subheader("Vida")
 
-        vida_maxima = int(st.session_state["vida_maxima"] or 100)
-        vida_atual = int(st.session_state["vida_atual"] or vida_maxima)
-
-        if modo_visual:
-            st.metric("Vida", f"{vida_atual} / {vida_maxima}")
-        else:
-            vida_maxima = st.number_input("Vida Máxima", min_value=1, value=vida_maxima, step=10)
-            vida_atual = st.number_input("Vida Atual", min_value=0, max_value=vida_maxima, value=vida_atual)
+    if modo_visual:
+        st.metric(
+            "Vida",
+            f"{st.session_state['vida_atual']} / {st.session_state['vida_maxima']}"
+        )
+    else:
+        st.number_input(
+            "Vida Máxima",
+            min_value=1,
+            step=10,
+            key="vida_maxima"
+        )
+        st.number_input(
+            "Vida Atual",
+            min_value=0,
+            max_value=st.session_state["vida_maxima"],
+            key="vida_atual"
+        )
 
     with st.container(border=True):
         st.subheader("🌀 Subatributos")
@@ -359,13 +370,16 @@ with colB:
                 st.number_input("M.A", min_value=0, step=1, key="sub_ma")
                 st.number_input("Vontade", min_value=0, step=1, key="sub_vontade")
 
-st.session_state["subatributos"]["forca"] = st.session_state.get("sub_forca", 0)
-st.session_state["subatributos"]["intelecto"] = st.session_state.get("sub_intelecto", 0)
-st.session_state["subatributos"]["resistencia"] = st.session_state.get("sub_resistencia", 0)
-st.session_state["subatributos"]["velocidade"] = st.session_state.get("sub_velocidade", 0)
-st.session_state["subatributos"]["elemental"] = st.session_state.get("sub_elemental", 0)
-st.session_state["subatributos"]["ma"] = st.session_state.get("sub_ma", 0)
-st.session_state["subatributos"]["vontade"] = st.session_state.get("sub_vontade", 0)
+if not modo_visual:
+    st.session_state["subatributos"] = {
+        "forca": st.session_state.get("sub_forca", st.session_state["subatributos"]["forca"]),
+        "intelecto": st.session_state.get("sub_intelecto", st.session_state["subatributos"]["intelecto"]),
+        "resistencia": st.session_state.get("sub_resistencia", st.session_state["subatributos"]["resistencia"]),
+        "velocidade": st.session_state.get("sub_velocidade", st.session_state["subatributos"]["velocidade"]),
+        "elemental": st.session_state.get("sub_elemental", st.session_state["subatributos"]["elemental"]),
+        "ma": st.session_state.get("sub_ma", st.session_state["subatributos"]["ma"]),
+        "vontade": st.session_state.get("sub_vontade", st.session_state["subatributos"]["vontade"]),
+    }
 
 # HAKI
 with colC:
@@ -729,6 +743,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
