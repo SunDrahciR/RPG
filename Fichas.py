@@ -447,7 +447,8 @@ with tab_passivas:
                     "nome": nome,
                     "descricao": descricao
                 })
-                st.rerun()
+                st.session_state["nova_passiva_nome"] = ""
+                st.session_state["nova_passiva_desc"] = ""
 
     for i, p in enumerate(st.session_state["passivas"]):
         with st.expander(p["nome"]):
@@ -455,7 +456,6 @@ with tab_passivas:
 
             if st.button("🗑 Remover", key=f"del_passiva_{i}"):
                 st.session_state["passivas"].pop(i)
-                st.rerun()
 
 # ===============================
 # HABILIDADES
@@ -474,8 +474,8 @@ with tab_habilidades:
                     "nome": nome,
                     "descricao": descricao
                 })
-                st.rerun()
-
+                st.session_state["nova_hab_nome"] = ""
+                st.session_state["nova_hab_desc"] = ""
 
     for i, h in enumerate(st.session_state["habilidades"]):
         with st.expander(h["nome"]):
@@ -483,7 +483,6 @@ with tab_habilidades:
 
             if st.button("🗑 Remover", key=f"del_hab_{i}"):
                 st.session_state["habilidades"].pop(i)
-                st.rerun()
 # ===============================
 # ATAQUES
 # ===============================
@@ -736,6 +735,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 3.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
