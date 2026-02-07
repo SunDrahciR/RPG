@@ -377,17 +377,17 @@ with colC:
             st.write(f" **Observação:** {st.session_state.get('haki_observacao', 'Nenhum')}")
             st.write(f" **Conquistador:** {st.session_state.get('haki_conquistador', 'Nenhum')}")
         else:
-            st.session_state["haki_armamento"] = st.selectbox(
+            st.selectbox(
                 "Haki do Armamento",
                 ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
                 key="haki_armamento"
             )
-            st.session_state["haki_observacao"] = st.selectbox(
+            st.selectbox(
                 "Haki da Observação",
                 ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
                 key="haki_observacao"
             )
-            st.session_state["haki_conquistador"] = st.selectbox(
+            st.selectbox(
                 "Haki do Conquistador/Rei",
                 ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
                 key="haki_conquistador"
@@ -729,6 +729,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
