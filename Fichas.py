@@ -9,8 +9,6 @@ st.set_page_config(page_title="Ficha de Personagem - OnePica RPG", layout="wide"
 
 st.title("Ficha de Personagem - One Pica RPG")
 
-modo_visual = st.toggle("Modo Leitura", value=False)
-
 st.markdown("---")
 
 # ===============================
@@ -30,12 +28,11 @@ def carregar_ficha(upload):
     data = json.load(stringio)
 
     # Campos simples
-    for campo in [
+   for campo in [
         "nome", "titulo", "afiliacao", "origem",
         "vida_maxima", "vida_atual",
         "proficiencias", "estilo_luta",
-        "historia", "aparencia", "armas",
-        "modo"
+        "historia", "aparencia"
     ]:
         if campo in data:
             st.session_state[campo] = data[campo]
@@ -69,6 +66,8 @@ def carregar_ficha(upload):
     st.session_state["passivas"] = data.get("passivas", [])
     st.session_state["habilidades"] = data.get("habilidades", [])
     st.session_state["ataques"] = data.get("ataques", [])
+    st.session_state["modos"] = data.get("modos", [])
+    st.session_state["arsenal"] = data.get("arsenal", [])
 
     return data
 
@@ -77,16 +76,16 @@ def carregar_ficha(upload):
 # INICIALIZAÇÃO DO SESSION STATE
 # ===============================
 chaves = [
-    "nome", "titulo", "afiliacao", "raca", "versao", "origem",
+    "nome", "titulo", "afiliacao", "origem",
+    "raca", "versao",
     "vida_maxima", "vida_atual",
-    "subatributos", "proficiencias", "estilo_luta",
-    "historia", "aparencia", "armas",
-    "habilidades_passivas", "ataques_nomeados", "modo"
+    "proficiencias", "estilo_luta",
+    "historia", "aparencia"
 ]
 
 for chave in chaves:
-    if chave not in st.session_state:
-        st.session_state[chave] = "" if chave != "subatributos" else {
+    if "subatributos" not in st.session_state:
+        st.session_state["subatributos"] = {
             "forca": 0,
             "intelecto": 0,
             "resistencia": 0,
@@ -95,6 +94,20 @@ for chave in chaves:
             "ma": 0,
             "vontade": 0
         }
+
+for key, default in {
+    "passivas": [],
+    "habilidades": [],
+    "ataques": [],
+    "modos": [],
+    "arsenal": []
+}.items():
+    if key not in st.session_state:
+        st.session_state[key] = default
+
+for haki in ["haki_armamento", "haki_observacao", "haki_conquistador"]:
+    if haki not in st.session_state:
+        st.session_state[haki] = "Nenhum"
 
 # ===============================
 # SIDEBAR — GERENCIAR FICHA
@@ -105,11 +118,10 @@ upload = st.sidebar.file_uploader("Carregar Ficha (.json)", type="json")
 if upload is not None:
     try:
         dados_carregados = carregar_ficha(upload)
-        for key, value in dados_carregados.items():
-            st.session_state[key] = value
         st.sidebar.success("Ficha carregada com sucesso! Os campos foram atualizados.")
     except Exception as e:
         st.sidebar.error(f"Erro ao carregar ficha: {e}")
+
 
 # ===============================
 # PAINEL PRINCIPAL DA FICHA
@@ -121,17 +133,10 @@ colA, colB, colC = st.columns([1.2, 1.4, 1.4])
 with colA:
     with st.container(border=True):
         st.subheader("Identidade")
-
-        if modo_visual:
-            st.markdown(f"## {st.session_state['nome'] or 'Sem Nome'}")
-            st.caption(st.session_state['titulo'] or "—")
-            st.write(f"**Afiliação:** {st.session_state['afiliacao'] or '—'}")
-            st.write(f"**Origem:** {st.session_state['origem'] or '—'}")
-        else:
-            nome = st.text_input("Nome", value=st.session_state["nome"])
-            titulo = st.text_input("Título", value=st.session_state["titulo"])
-            afiliacao = st.text_input("Afiliação", value=st.session_state["afiliacao"])
-            origem = st.text_input("Origem", value=st.session_state["origem"])
+        st.text_input("Nome", key="nome")
+        st.text_input("Título", key="titulo")
+        st.text_input("Afiliação", key="afiliacao")
+        st.text_input("Origem", key="origem")
 
 # ===============================
 # RAÇAS
@@ -243,9 +248,8 @@ def descricao_raca_progressiva(racas, raca, versao):
 st.markdown("---")
 
 with st.container(border=True):
-    st.subheader("🧬 Raça")
+    st.subheader("Raça")
 
-    # Seleção principal (ESSA é a fonte da verdade)
     col1, col2 = st.columns(2)
 
     with col1:
@@ -266,7 +270,7 @@ with st.container(border=True):
             key="versao_raca_select"
         )
 
-    # Salva no session_state (importante)
+    
     st.session_state["raca"] = raca
     st.session_state["versao"] = versao
 
@@ -311,7 +315,7 @@ with st.container(border=True):
     # DESCRIÇÃO
     # ===============================
     if raca and raca != "Híbrido":
-        with st.expander("📜 Descrição da Raça"):
+        with st.expander("Descrição da Raça"):
             descricao = descricao_raca_progressiva(racas, raca, versao)
             st.markdown(descricao)
             st.markdown(f"**Fraqueza:** {racas[raca]['Fraqueza']}")
@@ -322,42 +326,36 @@ with st.container(border=True):
 with colB:
     with st.container(border=True):
         st.subheader("Vida")
-
-        vida_maxima = int(st.session_state["vida_maxima"] or 100)
-        vida_atual = int(st.session_state["vida_atual"] or vida_maxima)
-
-        if modo_visual:
-            st.metric("Vida", f"{vida_atual} / {vida_maxima}")
-        else:
-            vida_maxima = st.number_input("Vida Máxima", min_value=1, value=vida_maxima, step=10)
-            vida_atual = st.number_input("Vida Atual", min_value=0, max_value=vida_maxima, value=vida_atual)
-
+    
+        vida_maxima = st.number_input(
+            "Vida Máxima",
+            min_value=1,
+            step=10,
+            key="vida_maxima"
+        )
+    
+        vida_atual = st.number_input(
+            "Vida Atual",
+            min_value=0,
+            max_value=st.session_state["vida_maxima"],
+            key="vida_atual"
+        )
+        
     with st.container(border=True):
         st.subheader("🌀 Subatributos")
 
         sa = st.session_state["subatributos"]
-
-        if modo_visual:
-            c1, c2, c3 = st.columns(3)
-            c1.metric("FOR", sa["forca"])
-            c1.metric("INT", sa["intelecto"])
-            c2.metric("RES", sa["resistencia"])
-            c2.metric("VEL", sa["velocidade"])
-            c3.metric("ELE", sa["elemental"])
-            c3.metric("M.A", sa["ma"])
-            c3.metric("VON", sa["vontade"])
-        else:
-            c1, c2, c3 = st.columns(3)
-            with c1:
-                st.number_input("Força", min_value=0, step=1, key="sub_forca")
-                st.number_input("Intelecto", min_value=0, step=1, key="sub_intelecto")
-            with c2:
-                st.number_input("Resistência", min_value=0, step=1, key="sub_resistencia")
-                st.number_input("Velocidade", min_value=0, step=1, key="sub_velocidade")
-            with c3:
-                st.number_input("Elemento", min_value=0, step=1, key="sub_elemental")
-                st.number_input("M.A", min_value=0, step=1, key="sub_ma")
-                st.number_input("Vontade", min_value=0, step=1, key="sub_vontade")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            st.number_input("Força", min_value=0, step=1, key="sub_forca")
+            st.number_input("Intelecto", min_value=0, step=1, key="sub_intelecto")
+        with c2:
+            st.number_input("Resistência", min_value=0, step=1, key="sub_resistencia")
+            st.number_input("Velocidade", min_value=0, step=1, key="sub_velocidade")
+        with c3:
+            st.number_input("Elemento", min_value=0, step=1, key="sub_elemental")
+            st.number_input("M.A", min_value=0, step=1, key="sub_ma")
+            st.number_input("Vontade", min_value=0, step=1, key="sub_vontade")
 
 st.session_state["subatributos"]["forca"] = st.session_state.get("sub_forca", 0)
 st.session_state["subatributos"]["intelecto"] = st.session_state.get("sub_intelecto", 0)
@@ -371,27 +369,24 @@ st.session_state["subatributos"]["vontade"] = st.session_state.get("sub_vontade"
 with colC:
     with st.container(border=True):
         st.subheader("Haki")
-
-        if modo_visual:
-            st.write(f" **Armamento:** {st.session_state.get('haki_armamento', 'Nenhum')}")
-            st.write(f" **Observação:** {st.session_state.get('haki_observacao', 'Nenhum')}")
-            st.write(f" **Conquistador:** {st.session_state.get('haki_conquistador', 'Nenhum')}")
-        else:
-            st.selectbox(
-                "Haki do Armamento",
-                ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
-                key="haki_armamento"
-            )
-            st.selectbox(
-                "Haki da Observação",
-                ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
-                key="haki_observacao"
-            )
-            st.selectbox(
-                "Haki do Conquistador/Rei",
-                ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
-                key="haki_conquistador"
-            )
+    
+        st.selectbox(
+            "Haki do Armamento",
+            ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
+            key="haki_armamento"
+        )
+    
+        st.selectbox(
+            "Haki da Observação",
+            ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
+            key="haki_observacao"
+        )
+    
+        st.selectbox(
+            "Haki do Conquistador/Rei",
+            ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
+            key="haki_conquistador"
+        )
 
 #APTIDÕES
 
@@ -418,16 +413,9 @@ tab_passivas, tab_habilidades, tab_ataques, tab_modos = st.tabs(
 with tab_passivas:
     st.subheader("Passivas")
 
-    if modo_visual:
-        if not st.session_state["passivas"]:
-            st.caption("Nenhuma passiva cadastrada.")
-        for p in st.session_state["passivas"]:
-            with st.expander(p["nome"]):
-                st.markdown(p["descricao"])
-    else:   
-        with st.expander("➕ Nova Passiva"):
-            nome = st.text_input("Nome", key="nova_passiva_nome")
-            descricao = st.text_area("Descrição", key="nova_passiva_desc", height=120)
+    with st.expander("➕ Nova Passiva"):
+        nome = st.text_input("Nome", key="nova_passiva_nome")
+        descricao = st.text_area("Descrição", key="nova_passiva_desc", height=120)
     
         if st.button("Adicionar Passiva"):
             if nome.strip():
@@ -647,21 +635,6 @@ if "imagem_personagem" not in st.session_state:
     st.session_state["imagem_personagem"] = None
 
 with st.container(border=True):
-
-    if modo_visual:
-        if st.session_state["imagem_personagem"]:
-            st.image(
-                st.session_state["imagem_personagem"],
-                use_container_width=True
-            )
-
-        st.markdown("### História")
-        st.markdown(st.session_state["historia"] or "_Sem história_")
-
-        st.markdown("### Aparência")
-        st.markdown(st.session_state["aparencia"] or "_Sem descrição_")
-
-    else:
         historia = st.text_area(
             "História",
             value=st.session_state["historia"],
@@ -698,37 +671,40 @@ sa["ma"] = st.session_state.get("sub_ma", sa["ma"])
 sa["vontade"] = st.session_state.get("sub_vontade", sa["vontade"])
 
 ficha_data = {
-    "nome": nome,
-    "titulo": titulo,
-    "afiliacao": afiliacao,
+    "nome": st.session_state["nome"],
+    "titulo": st.session_state["titulo"],
+    "afiliacao": st.session_state["afiliacao"],
+    "origem": st.session_state["origem"],
+    
     "raca": st.session_state["raca"],
     "versao": st.session_state["versao"],
-    "origem": origem,
-    "vida_maxima": vida_maxima,
-    "vida_atual": vida_atual,
+    
+    "vida_maxima": st.session_state["vida_maxima"],
+    "vida_atual": st.session_state["vida_atual"],
     "subatributos": st.session_state["subatributos"],
-    "proficiencias": proficiencias,
-    "estilo_luta": estilo_luta,
-    "historia": historia,
-    "aparencia": aparencia,
-    "armas": armas,
+    
+    "haki_armamento": st.session_state["haki_armamento"],
+    "haki_observacao": st.session_state["haki_observacao"],
+    "haki_conquistador": st.session_state["haki_conquistador"],
+
+    "proficiencias": st.session_state["proficiencias"],
+    "estilo_luta": st.session_state["estilo_luta"],
+
+    "historia": st.session_state["historia"],
+    "aparencia": st.session_state["aparencia"],
+
     "passivas": st.session_state["passivas"],
     "habilidades": st.session_state["habilidades"],
     "ataques": st.session_state["ataques"],
-    "modo": {
-    "nome": st.session_state.get("modo_nome", ""),
-    "condicao": st.session_state.get("modo_condicao", ""),
-    "efeitos": st.session_state.get("modo_efeitos", ""),
-    "descricao": st.session_state.get("modo_descricao", "")
-},
-    "haki_armamento": haki_armamento,
-    "haki_observacao": haki_observacao,
-    "haki_conquistador": haki_conquistador
+    "modos": st.session_state["modos"],
+
+    "arsenal": st.session_state["arsenal"]
 }
 
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
