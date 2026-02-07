@@ -418,29 +418,36 @@ tab_passivas, tab_habilidades, tab_ataques, tab_modos = st.tabs(
 with tab_passivas:
     st.subheader("Passivas")
 
-    with st.expander("➕ Nova Passiva"):
-        nome = st.text_input("Nome", key="nova_passiva_nome")
-        descricao = st.text_area("Descrição", key="nova_passiva_desc", height=120)
-
-    if st.button("Adicionar Passiva"):
-        if nome.strip():
-            st.session_state["passivas"].append({
-                "nome": nome,
-                "descricao": descricao
-            })
-            st.rerun()
-    # Lista compacta
-    for i, p in enumerate(st.session_state["passivas"]):
-        col1, col2 = st.columns([6, 1])
-
-        with col1:
-            with st.expander(f"{p['nome']}"):
+    if modo_visual:
+        if not st.session_state["passivas"]:
+            st.caption("Nenhuma passiva cadastrada.")
+        for p in st.session_state["passivas"]:
+            with st.expander(p["nome"]):
                 st.markdown(p["descricao"])
-
-        with col2:
-            if st.button("🗑", key=f"del_passiva_{i}"):
-                st.session_state["passivas"].pop(i)
+    else:   
+        with st.expander("➕ Nova Passiva"):
+            nome = st.text_input("Nome", key="nova_passiva_nome")
+            descricao = st.text_area("Descrição", key="nova_passiva_desc", height=120)
+    
+        if st.button("Adicionar Passiva"):
+            if nome.strip():
+                st.session_state["passivas"].append({
+                    "nome": nome,
+                    "descricao": descricao
+                })
                 st.rerun()
+        # Lista compacta
+        for i, p in enumerate(st.session_state["passivas"]):
+            col1, col2 = st.columns([6, 1])
+    
+            with col1:
+                with st.expander(f"{p['nome']}"):
+                    st.markdown(p["descricao"])
+    
+            with col2:
+                if st.button("🗑", key=f"del_passiva_{i}"):
+                    st.session_state["passivas"].pop(i)
+                    st.rerun()
 
 # ===============================
 # HABILIDADES
@@ -722,6 +729,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
