@@ -410,8 +410,8 @@ st.header("Habilidades do Personagem")
 if "passivas" not in st.session_state:
     st.session_state["passivas"] = []
 
-tab_passivas, tab_habilidades, tab_ataques = st.tabs(
-    ["Passivas", "Habilidades", "Ataques"]
+tab_passivas, tab_habilidades, tab_ataques, tab_modos = st.tabs(
+    ["Passivas", "Habilidades", "Ataques", "Modos"]
 )
 
 # ===============================
@@ -453,21 +453,26 @@ with tab_passivas:
 with tab_habilidades:
     st.subheader("Habilidades")
 
+    # Criar nova habilidade
     with st.expander("➕ Nova Habilidade"):
         nome = st.text_input("Nome", key="nova_hab_nome")
         descricao = st.text_area("Descrição", key="nova_hab_desc", height=120)
 
         if st.button("Adicionar Habilidade"):
-            st.session_state["habilidades"].append({
-                "nome": nome,
-                "descricao": descricao
-            })
+            if nome.strip():
+                st.session_state["habilidades"].append({
+                    "nome": nome,
+                    "descricao": descricao
+                })
+                st.session_state["nova_hab_nome"] = ""
+                st.session_state["nova_hab_desc"] = ""
 
+    # Lista compacta
     for i, h in enumerate(st.session_state["habilidades"]):
-        header = f"{h['nome']} | {h['custo']} | {h['recarga']}"
-        with st.expander(header):
+        with st.expander(f"{h['nome']}"):
             st.markdown(h["descricao"])
-            if st.button("🗑", key=f"del_hab_{i}"):
+
+            if st.button("🗑 Remover", key=f"del_hab_{i}"):
                 st.session_state["habilidades"].pop(i)
                 st.experimental_rerun()
 
@@ -505,30 +510,21 @@ for i, a in enumerate(st.session_state["ataques"]):
 # MODOS
 # ===============================
 
-st.header("Modo")
+with tab_modos:
+    st.subheader("Modos")
+    with st.expander("➕ Novo Modo"):
+        nome = st.text_input("Nome", key="novo_modo_nome")
+        condicao = st.text_input("Condiçao", key="novo_modo_condicao")
+        efeitoBonus = st.text_input("Efeito/Bônus", key="novo_modo_efeitoBonus")
+        descricao = st.text_input("Descrição", key="novo_modo_descricao, height=120")
 
-with st.container(border=True):
-    if modo_visual:
-        st.markdown(f"### {st.session_state.get('modo_nome', '—')}")
-        st.write(st.session_state.get("modo_descricao", ""))
-    else:
-        st.session_state["modo_nome"] = st.text_input(
-            "Nome do Modo",
-            value=st.session_state.get("modo_nome", "")
-        )
-        st.session_state["modo_condicao"] = st.text_input(
-            "Condição",
-            value=st.session_state.get("modo_condicao", "")
-        )
-        st.session_state["modo_efeitos"] = st.text_input(
-            "Efeitos",
-            value=st.session_state.get("modo_efeitos", "")
-        )
-        st.session_state["modo_descricao"] = st.text_area(
-            "Descrição",
-            value=st.session_state.get("modo_descricao", ""),
-            height=120
-        )
+        if st.button("Adicionar Modo"):
+            st.session_state["modos"].append ({
+                "nome": nome,
+                "condição": condicao,
+                "efeitoBonus": efeitoBonus,
+                "descricao": descricao
+            })
 
 
 # ===============================
@@ -600,6 +596,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
