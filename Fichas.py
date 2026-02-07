@@ -28,7 +28,7 @@ def carregar_ficha(upload):
     data = json.load(stringio)
 
     # Campos simples
-   for campo in [
+    for campo in [
         "nome", "titulo", "afiliacao", "origem",
         "vida_maxima", "vida_atual",
         "proficiencias", "estilo_luta",
@@ -704,6 +704,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
