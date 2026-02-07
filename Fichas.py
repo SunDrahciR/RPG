@@ -571,9 +571,10 @@ with st.container(border=True):
     # ===============================
     # NOVO ARSENAL
     # ===============================
-    with st.expander("➕ Novo Arsenal"):
-        nome = st.text_input("Nome do Arsenal", key="novo_arsenal_nome")
-        tipo = st.text_input("Tipo", key="novo_arsenal_tipo")
+   with st.expander("➕ Novo Arsenal"):
+    with st.form("form_novo_arsenal"):
+        nome = st.text_input("Nome do Arsenal")
+        tipo = st.text_input("Tipo")
 
         grau = st.selectbox(
             "Grau do Arsenal",
@@ -582,16 +583,12 @@ with st.container(border=True):
         )
 
         amaldicoada = st.checkbox("Arsenal Amaldiçoado (+15 bônus, +10 M.A.)")
-        despertada = False
 
+        despertada = False
         if grau == 1:
             despertada = st.checkbox("Grau 1 Despertado")
 
-        base_bonus = GRAUS_ARSENAL[grau]["bonus"]
-        base_ma = GRAUS_ARSENAL[grau]["ma"]
-
-        bonus_final = base_bonus + (15 if amaldicoada else 0)
-        ma_final = base_ma + (10 if amaldicoada else 0)
+        bonus_final, ma_final = calcular_arsenal(grau, amaldicoada)
 
         st.markdown(
             f"""
@@ -604,15 +601,15 @@ with st.container(border=True):
 
         habilidades = []
         if despertada:
-            st.markdown("### Habilidades do Arsenal Despertado")
             hab = st.text_area(
-                "Descreva as habilidades especiais",
-                height=120,
-                key="arsenal_habilidades"
+                "Habilidades do Arsenal Despertado",
+                height=120
             )
             habilidades.append(hab)
 
-        if st.button("Adicionar Arsenal"):
+        submit = st.form_submit_button("Adicionar Arsenal")
+
+        if submit:
             if nome.strip():
                 st.session_state["arsenal"].append({
                     "nome": nome,
@@ -692,6 +689,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
