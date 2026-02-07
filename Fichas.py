@@ -319,30 +319,36 @@ with st.container(border=True):
 
 
 
-#VIDA + SUBATRIBUTOS
+# ===============================
+# VIDA + SUBATRIBUTOS
+# ===============================
 with colB:
     with st.container(border=True):
         st.subheader("Vida")
-    
+
         if modo_visual:
             st.metric(
                 "Vida",
                 f"{st.session_state['vida_atual']} / {st.session_state['vida_maxima']}"
             )
         else:
-            st.number_input(
+            st.session_state["vida_maxima"] = st.number_input(
                 "Vida Máxima",
                 min_value=1,
                 step=10,
-                key="vida_maxima"
+                value=st.session_state["vida_maxima"]
             )
-            st.number_input(
+
+            st.session_state["vida_atual"] = st.number_input(
                 "Vida Atual",
                 min_value=0,
                 max_value=st.session_state["vida_maxima"],
-                key="vida_atual"
+                value=st.session_state["vida_atual"]
             )
 
+    # ===============================
+    # SUBATRIBUTOS
+    # ===============================
     with st.container(border=True):
         st.subheader("🌀 Subatributos")
 
@@ -357,29 +363,23 @@ with colB:
             c3.metric("ELE", sa["elemental"])
             c3.metric("M.A", sa["ma"])
             c3.metric("VON", sa["vontade"])
+
         else:
             c1, c2, c3 = st.columns(3)
-            with c1:
-                st.number_input("Força", min_value=0, step=1, key="sub_forca")
-                st.number_input("Intelecto", min_value=0, step=1, key="sub_intelecto")
-            with c2:
-                st.number_input("Resistência", min_value=0, step=1, key="sub_resistencia")
-                st.number_input("Velocidade", min_value=0, step=1, key="sub_velocidade")
-            with c3:
-                st.number_input("Elemento", min_value=0, step=1, key="sub_elemental")
-                st.number_input("M.A", min_value=0, step=1, key="sub_ma")
-                st.number_input("Vontade", min_value=0, step=1, key="sub_vontade")
 
-if not modo_visual:
-    st.session_state["subatributos"] = {
-        "forca": st.session_state.get("sub_forca", st.session_state["subatributos"]["forca"]),
-        "intelecto": st.session_state.get("sub_intelecto", st.session_state["subatributos"]["intelecto"]),
-        "resistencia": st.session_state.get("sub_resistencia", st.session_state["subatributos"]["resistencia"]),
-        "velocidade": st.session_state.get("sub_velocidade", st.session_state["subatributos"]["velocidade"]),
-        "elemental": st.session_state.get("sub_elemental", st.session_state["subatributos"]["elemental"]),
-        "ma": st.session_state.get("sub_ma", st.session_state["subatributos"]["ma"]),
-        "vontade": st.session_state.get("sub_vontade", st.session_state["subatributos"]["vontade"]),
-    }
+            with c1:
+                sa["forca"] = st.number_input("Força", min_value=0, step=1, value=sa["forca"])
+                sa["intelecto"] = st.number_input("Intelecto", min_value=0, step=1, value=sa["intelecto"])
+
+            with c2:
+                sa["resistencia"] = st.number_input("Resistência", min_value=0, step=1, value=sa["resistencia"])
+                sa["velocidade"] = st.number_input("Velocidade", min_value=0, step=1, value=sa["velocidade"])
+
+            with c3:
+                sa["elemental"] = st.number_input("Elemento", min_value=0, step=1, value=sa["elemental"])
+                sa["ma"] = st.number_input("M.A", min_value=0, step=1, value=sa["ma"])
+                sa["vontade"] = st.number_input("Vontade", min_value=0, step=1, value=sa["vontade"])
+
 
 # HAKI
 with colC:
@@ -743,6 +743,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 2.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
