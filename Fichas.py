@@ -685,9 +685,12 @@ with st.container(border=True):
     )
 
     if imagem:
-        st.session_state["imagem_personagem"] = imagem
-        st.image(imagem, caption="Prévia da imagem", use_container_width=True)
-
+    st.session_state["imagem_personagem"] = imagem
+    st.image(
+        imagem,
+        caption="Prévia da imagem",
+        width=250
+    )
 
 # ===============================
 # SALVAR FICHA
@@ -736,6 +739,7 @@ ficha_data = {
 st.markdown("---")
 salvar_ficha(ficha_data)
 st.caption("Versão 3.0 — Ficha Interativa de Personagem | OnePica RPG")
+
 
 
 
