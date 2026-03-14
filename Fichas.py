@@ -158,24 +158,24 @@ st.header("Raça")
 
 racas = {
     "Humano": {
-        "V1": "Ganha mais bônus ao upar sub-atributos (mestre decide o quanto).",
-        "V2": "Os Hakis recebem +5.",
-        "V3": "+5 nos Hakis e +10 em todos os Subatributos",
-        "Fraqueza": "Quando a Raça do inimigo for maior que a sua, leva +10 de Dano"
+        "V1": "Ganha 50% a mais de Atributo em relação ao Arco",
+        "V2": "Os Hakis recebem +10.",
+        "V3": " +10 nos Hakis e ganham 50% a mais em todos os Subatributos",
+        "Fraqueza": " Leva 25% de dano a mais caso o atacante tenha uma raça de nível superior"
     },
 
     "Tribo (Braço/Perna Longos)": {
-        "V1": "Golpes com o membro respectivo recebem +7 em acerto.",
-        "V2": "+13 de Dano com o membro, ataques com o membro são considerados Grandes",
-        "V3": "+12 de Dano e +20 de Defesa com o membro. (Total: +25 de Dano, +7 de Acerto, Ataques Grandes)",
-        "Fraqueza": "Golpes mirando nos membros longos tem +10 de Acerto"
+        "V1": "Golpes com o membro respectivo recebem +14 em acerto.",
+        "V2": "Ganha 1d20 a mais em ações com o membro, ataques com o membro são considerados Grandes",
+        "V3": " Ganha +1d20 com o membro e +30 de Defesa com o membro",
+        "Fraqueza": "Golpes mirando nos membros longos tem um bônus equivalente a Grande no Acerto"
     },
 
     "Tontata": {
         "V1": "+15 em Esquiva e Furtividade",
-        "V2": "+23 em Esquiva e Furtividade (Total: +38)",
-        "V3": "+2 em Esquiva e Furtividade e ignora a imunidade a Furtividade do Haki da Observação (Total: +40)",
-        "Fraqueza": "-5 de Resistência, 19 também arranca membro"
+        "V2": "+23 em Esquiva e Furtividade e ignora a imunidade a Furtividade do Haki da Observação, desde que o nivel de Haki do Tontata seja superior ou equivalente",
+        "V3": "+22 em Esquiva e Furtividade",
+        "Fraqueza": " Ataques direcionados a um Tontata recebem um bônus equivalente a Grande em Dano e Acerto"
     },
 
     "Homem-Peixe": {
@@ -186,52 +186,52 @@ racas = {
     },
 
     "Nativo do Céu": {
-        "V1": "+15 em testes e ações aéreas.",
-        "V2": "Em combate aéreo, o D20 é dobrado e recebe +10 de movimento no ar.",
-        "V3": "Todos os resultados de movimento aéreo são dobrados.",
-        "Fraqueza": "Enquanto estiver no ar, recebe +25 de dano elétrico."
+        "V1": "+25 em Aéreo",
+        "V2": "D20 é triplicado no ar e recebe +20 em Movimentação Aérea",
+        "V3": "Todos os resultados de movimento aéreo são triplicados.",
+        "Fraqueza": "Leva o dobro de dano elétrico estando no ar."
     },
 
     "Oni": {
-        "V1": "+15 de dano em ambientes de fogo.",
-        "V2": "Em ambientes de fogo, o D20 é dobrado e causa +10 de dano.",
+        "V1": "+25 de dano em ambientes de fogo.",
+        "V2": "Em ambientes de fogo, o D20 é triplicado e causa +25 de dano.",
         "V3": "Em ambientes de fogo, o D20 é quadruplicado.",
-        "Fraqueza": "Em ambientes de baixa temperatura, recebe -15 em Força e Resistência."
+        "Fraqueza": "Em ambientes de baixa temperatura, todos os resultados são cortados pela metade."
     },
 
     "Sereiano": {
-        "V1": "Dentro da água, recebe +25 de movimento.",
-        "V2": "Dentro da água, recebe 3D20 adicionais de movimento.",
+        "V1": "Dentro da água, d20 de movimento é dobrado.",
+        "V2": "Dentro da água, recebe +50 em Força, Elemento e Velocidade",
         "V3": "Dentro da água, todos os dados de movimento e ataque são dobrados.",
-        "Fraqueza": "Fora da água, não recebe bônus e fica incapacitado de se mover."
+        "Fraqueza": "Fora da água, não recebe bônus"
     },
 
     "Mink": {
-        "V1": "+14 de movimentação e rastreamento. No Modo Sulong: +35 de dano e Velocidade.",
-        "V2": "+16 de movimentação e rastreamento.",
-        "V3": "+20 de movimentação e rastreamento. No Modo Sulong: +15 adicionais de dano e Velocidade.",
+        "V1": "+20 de movimentação e rastreamento. No Modo Sulong: +35 em atributos físicos e elemental e os atributos base são dobrados",
+        "V2": "+20 de movimentação e rastreamento.",
+        "V3": "+30 de movimentação e rastreamento. No Modo Sulong: +15 adicionais de dano e Velocidade.",
         "Fraqueza": "Ataques Sonoros ou Venenosos causam +30 de dano."
     },
 
     "Gigante": {
-        "V1": "+15 em Força e Resistência. Todos os golpes são Grandes.",
-        "V2": "+30 em Força e Resistência. Todos os golpes são Gigantes.",
-        "V3": "Golpes físicos se tornam ataques em área. +10 de dano por alvo adicional.",
-        "Fraqueza": "Todos os inimigos recebem +40 em testes de acerto contra Gigantes."
+        "V1": "+25 em Força e Resistência. Todos os golpes são Grandes.",
+        "V2": "+45 em Força e Resistência. Todos os golpes são Gigantes.",
+        "V3": "Todos os golpes físicos são em área, e pra cada pessoa na área é +25 de dano.",
+        "Fraqueza": "Todos tem +20 a cada nivel da raça para acertar um Gigante "
     },
 
     "Lunariano": {
-        "V1": "Chamas acesas: +20 de Resistência. Chamas apagadas: +20 de Velocidade.",
-        "V2": "Os bônus aumentam adicionalmente em +25.",
-        "V3": "Os bônus aumentam adicionalmente em +5 e pode alternar o estado das chamas como Reação.",
-        "Fraqueza": "Com as chamas apagadas, recebe dano proporcional ao bônus ativo."
+        "V1": "Chamas acesas: +30 de Resistência. Chamas apagadas: +30 de Velocidade.",
+        "V2": "Os bônus aumentam adicionalmente em +20.",
+        "V3": "Os bônus aumentam em +20 e pode alternar o estado das chamas como Reação.",
+        "Fraqueza": "Com as chamas apagadas, leva o dobro de dano."
     },
 
     "Bucaneiro": {
-        "V1": "+22 de Resistência.",
-        "V2": "Não é afetado por condições especiais de Grau 1.",
-        "V3": "+28 de Resistência e não é afetado por condições especiais de Grau 2.",
-        "Fraqueza": "Se um aliado perder membros, o Bucaneiro sofre Confusão Grau 3."
+        "V1": "+40 de Resistência.",
+        "V2": "+30 de Resistência e não é afetado por condições especiais de Grau 1.",
+        "V3": "+30 de Resistência e não é afetado por condições especiais de Grau 2.",
+        "Fraqueza": "Se um aliado perder membros, o Bucaneiro sofre Confusão Grau 3 e Paralisia Grau 3."
     },
 
     "Híbrido": {
