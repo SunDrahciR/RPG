@@ -412,13 +412,13 @@ with colC:
             key="haki_conquistador"
         )
         with st.container(border=True):
-        st.subheader("Anotações")
-
-        st.text_area(
-            "Anotações de Combate / Observações",
-            key="anotacoes",
-            height=180
-        )
+            st.subheader("Anotações")
+    
+            st.text_area(
+                "Anotações de Combate / Observações",
+                key="anotacoes",
+                height=180
+            )
 
 #APTIDÕES
 
