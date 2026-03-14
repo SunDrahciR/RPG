@@ -411,6 +411,14 @@ with colC:
             ["Nenhum", "V1", "V2", "V3", "V4", "V5"],
             key="haki_conquistador"
         )
+        with st.container(border=True):
+        st.subheader("Anotações")
+
+        st.text_area(
+            "Anotações de Combate / Observações",
+            key="anotacoes",
+            height=180
+        )
 
 #APTIDÕES
 
