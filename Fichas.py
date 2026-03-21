@@ -554,50 +554,50 @@ with tab_ataques:
         )
 
     for i, a in enumerate(st.session_state["ataques"]):
-    header = f"{a['nome']} | {a['bonus']} | {a['tipo']}"
-
-    with st.expander(header):
-
-        novo_nome = st.text_input(
-            "Nome",
-            value=a["nome"],
-            key=f"edit_atk_nome_{i}"
-        )
-
-        novo_bonus = st.text_input(
-            "Bônus",
-            value=a["bonus"],
-            key=f"edit_atk_bonus_{i}"
-        )
-
-        novo_tipo = st.text_input(
-            "Tipo",
-            value=a["tipo"],
-            key=f"edit_atk_tipo_{i}"
-        )
-
-        nova_desc = st.text_area(
-            "Descrição",
-            value=a["descricao"],
-            key=f"edit_atk_desc_{i}"
-        )
-
-        col1, col2 = st.columns(2)
-
-        with col1:
-            if st.button("💾 Salvar", key=f"save_atk_{i}"):
-                st.session_state["ataques"][i] = {
-                    "nome": novo_nome,
-                    "bonus": novo_bonus,
-                    "tipo": novo_tipo,
-                    "descricao": nova_desc
-                }
-                st.rerun()
-
-        with col2:
-            if st.button("🗑 Remover", key=f"del_atk_{i}"):
-                st.session_state["ataques"].pop(i)
-                st.rerun()
+        header = f"{a['nome']} | {a['bonus']} | {a['tipo']}"
+    
+        with st.expander(header):
+    
+            novo_nome = st.text_input(
+                "Nome",
+                value=a["nome"],
+                key=f"edit_atk_nome_{i}"
+            )
+    
+            novo_bonus = st.text_input(
+                "Bônus",
+                value=a["bonus"],
+                key=f"edit_atk_bonus_{i}"
+            )
+    
+            novo_tipo = st.text_input(
+                "Tipo",
+                value=a["tipo"],
+                key=f"edit_atk_tipo_{i}"
+            )
+    
+            nova_desc = st.text_area(
+                "Descrição",
+                value=a["descricao"],
+                key=f"edit_atk_desc_{i}"
+            )
+    
+            col1, col2 = st.columns(2)
+    
+            with col1:
+                if st.button("💾 Salvar", key=f"save_atk_{i}"):
+                    st.session_state["ataques"][i] = {
+                        "nome": novo_nome,
+                        "bonus": novo_bonus,
+                        "tipo": novo_tipo,
+                        "descricao": nova_desc
+                    }
+                    st.rerun()
+    
+            with col2:
+                if st.button("🗑 Remover", key=f"del_atk_{i}"):
+                    st.session_state["ataques"].pop(i)
+                    st.rerun()
 
 # ===============================
 # MODOS
