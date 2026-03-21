@@ -32,7 +32,7 @@ def carregar_ficha(upload):
         "nome", "titulo", "afiliacao", "origem",
         "vida_maxima", "vida_atual",
         "proficiencias", "estilo_luta",
-        "historia", "aparencia"
+        "historia", "aparencia", "anotacoes"
     ]:
         if campo in data:
             st.session_state[campo] = data[campo]
@@ -80,8 +80,11 @@ chaves = [
     "raca", "versao",
     "vida_maxima", "vida_atual",
     "proficiencias", "estilo_luta",
-    "historia", "aparencia"
+    "historia", "aparencia", "anotacoes"
 ]
+
+if "anotacoes" not in st.session_state:
+    st.session_state["anotacoes"] = ""
 
 if "raca" not in st.session_state:
     st.session_state["raca"] = ""
@@ -838,6 +841,7 @@ ficha_data = {
     "haki_armamento": st.session_state["haki_armamento"],
     "haki_observacao": st.session_state["haki_observacao"],
     "haki_conquistador": st.session_state["haki_conquistador"],
+    "anotacoes": st.session_state["anotacoes"],
 
     "proficiencias": st.session_state["proficiencias"],
     "estilo_luta": st.session_state["estilo_luta"],
