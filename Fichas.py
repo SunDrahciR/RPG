@@ -471,14 +471,185 @@ with tab_passivas:
             on_click=adicionar_passiva
         )
 
+    def adicionar_passiva():
+    nome = st.session_state["nova_passiva_nome"]
+    desc = st.session_state["nova_passiva_desc"]
+
+    if nome.strip():
+        st.session_state["passivas"].append({
+            "nome": nome,
+            "descricao": desc
+        })
+        st.session_state["nova_passiva_nome"] = ""
+        st.session_state["nova_passiva_desc"] = ""
+
+with tab_passivas:
+    st.subheader("Passivas")
+
+    with st.expander("➕ Nova Passiva"):
+        st.text_input("Nome", key="nova_passiva_nome")
+        st.text_area("Descrição", key="nova_passiva_desc", height=120)
+
+        st.button(
+            "Adicionar Passiva",
+            key="btn_add_passiva",
+            on_click=adicionar_passiva
+        )
+
     for i, p in enumerate(st.session_state["passivas"]):
         with st.expander(p["nome"]):
-            st.markdown(p["descricao"])
 
-            if st.button("🗑 Remover", key=f"del_passiva_{i}"):
-                st.session_state["passivas"].pop(i)
-                st.rerun()
+            novo_nome = st.text_input(
+                "Nome",
+                value=p["nome"],
+                key=f"edit_passiva_nome_{i}"
+            )
+            nova_desc = st.text_area(
+                "Descrição",
+                value=p["descricao"],
+                key=f"edit_passiva_desc_{i}",
+                height=120
+            )
+        
+            col1, col2 = st.columns(2)
+        
+            with col1:
+                if st.button("💾 Salvar", key=f"save_passiva_{i}"):
+                    st.session_state["passivas"][i] = {
+                        "nome": novo_nome,
+                        "descricao": nova_desc
+                    }
+                    st.rerun()
+            with col2:
+                if st.button("🗑 Remover", key=f"del_passiva_{i}"):
+                    st.session_state["passivas"].pop(i)
+                    st.rerun()
 
+# ===============================
+# HABILIDADES
+# ===============================
+
+def adicionar_habilidade():
+    nome = st.session_state["nova_hab_nome"]
+    desc = st.session_state["nova_hab_desc"]
+
+    if nome.strip():
+        st.session_state["habilidades"].append({
+            "nome": nome,
+            "descricao": desc
+        })
+        st.session_state["nova_hab_nome"] = ""
+        st.session_state["nova_hab_desc"] = ""
+        
+with tab_habilidades:
+    st.subheader("Habilidades")
+
+    with st.expander("➕ Nova Habilidade"):
+        st.text_input("Nome", key="nova_hab_nome")
+        st.text_area("Descrição", key="nova_hab_desc", height=120)
+
+        st.button(
+            "Adicionar Habilidade",
+            key="btn_add_habilidade",
+            on_click=adicionar_habilidade
+        )
+
+    for i, p in enumerate(st.session_state["passivas"]):
+        with st.expander(p["nome"]):
+    
+            key_nome = f"edit_passiva_nome_{i}"
+            key_desc = f"edit_passiva_desc_{i}"
+    
+            if key_nome not in st.session_state:
+                st.session_state[key_nome] = p["nome"]
+    
+            if key_desc not in st.session_state:
+                st.session_state[key_desc] = p["descricao"]
+    
+            novo_nome = st.text_input("Nome", key=key_nome)
+            nova_desc = st.text_area("Descrição", key=key_desc, height=120)
+    
+            col1, col2 = st.columns(2)
+    
+            with col1:
+                if st.button("💾 Salvar", key=f"save_passiva_{i}"):
+                    st.session_state["passivas"][i] = {
+                        "nome": st.session_state[key_nome],
+                        "descricao": st.session_state[key_desc]
+                    }
+                    st.rerun()
+    
+            with col2:
+                if st.button("🗑 Remover", key=f"del_passiva_{i}"):
+                    st.session_state["passivas"].pop(i)
+                    st.rerun()
+# ===============================
+# ATAQUES
+# ===============================
+
+def adicionar_ataque():
+    nome = st.session_state["novo_atk_nome"]
+    bonus = st.session_state["novo_atk_bonus"]
+    tipo = st.session_state["novo_atk_tipo"]
+    desc = st.session_state["novo_atk_desc"]
+
+    if nome.strip():
+        st.session_state["ataques"].append({
+            "nome": nome,
+            "bonus": bonus,
+            "tipo": tipo,
+            "descricao": desc
+        })
+
+        st.session_state["novo_atk_nome"] = ""
+        st.session_state["novo_atk_bonus"] = ""
+        st.session_state["novo_atk_tipo"] = ""
+        st.session_state["novo_atk_desc"] = ""
+        
+with tab_ataques:
+    st.subheader("Ataques")
+
+    with st.expander("➕ Novo Ataque"):
+        st.text_input("Nome", key="novo_atk_nome")
+        st.text_input("Bônus", key="novo_atk_bonus")
+        st.text_input("Tipo", key="novo_atk_tipo")
+        st.text_area("Descrição", key="novo_atk_desc", height=120)
+
+        st.button(
+            "Adicionar Ataque",
+            key="btn_add_ataque",
+            on_click=adicionar_ataque
+        )
+
+    for i, h in enumerate(st.session_state["habilidades"]):
+        with st.expander(h["nome"]):
+    
+            key_nome = f"edit_hab_nome_{i}"
+            key_desc = f"edit_hab_desc_{i}"
+    
+            if key_nome not in st.session_state:
+                st.session_state[key_nome] = h["nome"]
+    
+            if key_desc not in st.session_state:
+                st.session_state[key_desc] = h["descricao"]
+    
+            novo_nome = st.text_input("Nome", key=key_nome)
+            nova_desc = st.text_area("Descrição", key=key_desc, height=120)
+    
+            col1, col2 = st.columns(2)
+    
+            with col1:
+                if st.button("💾 Salvar", key=f"save_hab_{i}"):
+                    st.session_state["habilidades"][i] = {
+                        "nome": st.session_state[key_nome],
+                        "descricao": st.session_state[key_desc]
+                    }
+                    st.rerun()
+    
+            with col2:
+                if st.button("🗑 Remover", key=f"del_hab_{i}"):
+                    st.session_state["habilidades"].pop(i)
+                    st.rerun()
 # ===============================
 # HABILIDADES
 # ===============================
@@ -510,11 +681,34 @@ with tab_habilidades:
 
     for i, h in enumerate(st.session_state["habilidades"]):
         with st.expander(h["nome"]):
-            st.markdown(h["descricao"])
 
-            if st.button("🗑 Remover", key=f"del_hab_{i}"):
-                st.session_state["habilidades"].pop(i)
-                st.rerun()
+            novo_nome = st.text_input(
+                "Nome",
+                value=h["nome"],
+                key=f"edit_hab_nome_{i}"
+            )
+        
+            nova_desc = st.text_area(
+                "Descrição",
+                value=h["descricao"],
+                key=f"edit_hab_desc_{i}",
+                height=120
+            )
+        
+            col1, col2 = st.columns(2)
+        
+            with col1:
+                if st.button("💾 Salvar", key=f"save_hab_{i}"):
+                    st.session_state["habilidades"][i] = {
+                        "nome": novo_nome,
+                        "descricao": nova_desc
+                    }
+                    st.rerun()
+        
+            with col2:
+                if st.button("🗑 Remover", key=f"del_hab_{i}"):
+                    st.session_state["habilidades"].pop(i)
+                    st.rerun()
 # ===============================
 # ATAQUES
 # ===============================
@@ -558,39 +752,37 @@ with tab_ataques:
     
         with st.expander(header):
     
-            novo_nome = st.text_input(
-                "Nome",
-                value=a["nome"],
-                key=f"edit_atk_nome_{i}"
-            )
+            key_nome = f"edit_atk_nome_{i}"
+            key_bonus = f"edit_atk_bonus_{i}"
+            key_tipo = f"edit_atk_tipo_{i}"
+            key_desc = f"edit_atk_desc_{i}"
     
-            novo_bonus = st.text_input(
-                "Bônus",
-                value=a["bonus"],
-                key=f"edit_atk_bonus_{i}"
-            )
+            if key_nome not in st.session_state:
+                st.session_state[key_nome] = a["nome"]
     
-            novo_tipo = st.text_input(
-                "Tipo",
-                value=a["tipo"],
-                key=f"edit_atk_tipo_{i}"
-            )
+            if key_bonus not in st.session_state:
+                st.session_state[key_bonus] = a["bonus"]
     
-            nova_desc = st.text_area(
-                "Descrição",
-                value=a["descricao"],
-                key=f"edit_atk_desc_{i}"
-            )
+            if key_tipo not in st.session_state:
+                st.session_state[key_tipo] = a["tipo"]
+    
+            if key_desc not in st.session_state:
+                st.session_state[key_desc] = a["descricao"]
+    
+            st.text_input("Nome", key=key_nome)
+            st.text_input("Bônus", key=key_bonus)
+            st.text_input("Tipo", key=key_tipo)
+            st.text_area("Descrição", key=key_desc, height=120)
     
             col1, col2 = st.columns(2)
     
             with col1:
                 if st.button("💾 Salvar", key=f"save_atk_{i}"):
                     st.session_state["ataques"][i] = {
-                        "nome": novo_nome,
-                        "bonus": novo_bonus,
-                        "tipo": novo_tipo,
-                        "descricao": nova_desc
+                        "nome": st.session_state[key_nome],
+                        "bonus": st.session_state[key_bonus],
+                        "tipo": st.session_state[key_tipo],
+                        "descricao": st.session_state[key_desc]
                     }
                     st.rerun()
     
