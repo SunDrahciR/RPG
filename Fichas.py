@@ -465,61 +465,33 @@ with tab_passivas:
         st.text_input("Nome", key="nova_passiva_nome")
         st.text_area("Descrição", key="nova_passiva_desc", height=120)
 
-        st.button(
-            "Adicionar Passiva",
-            key="btn_add_passiva",
-            on_click=adicionar_passiva
-        )
-
-    def adicionar_passiva():
-    nome = st.session_state["nova_passiva_nome"]
-    desc = st.session_state["nova_passiva_desc"]
-
-    if nome.strip():
-        st.session_state["passivas"].append({
-            "nome": nome,
-            "descricao": desc
-        })
-        st.session_state["nova_passiva_nome"] = ""
-        st.session_state["nova_passiva_desc"] = ""
-
-with tab_passivas:
-    st.subheader("Passivas")
-
-    with st.expander("➕ Nova Passiva"):
-        st.text_input("Nome", key="nova_passiva_nome")
-        st.text_area("Descrição", key="nova_passiva_desc", height=120)
-
-        st.button(
-            "Adicionar Passiva",
-            key="btn_add_passiva",
-            on_click=adicionar_passiva
-        )
+        st.button("Adicionar Passiva", on_click=adicionar_passiva)
 
     for i, p in enumerate(st.session_state["passivas"]):
         with st.expander(p["nome"]):
 
-            novo_nome = st.text_input(
-                "Nome",
-                value=p["nome"],
-                key=f"edit_passiva_nome_{i}"
-            )
-            nova_desc = st.text_area(
-                "Descrição",
-                value=p["descricao"],
-                key=f"edit_passiva_desc_{i}",
-                height=120
-            )
-        
+            key_nome = f"edit_passiva_nome_{i}"
+            key_desc = f"edit_passiva_desc_{i}"
+
+            if key_nome not in st.session_state:
+                st.session_state[key_nome] = p["nome"]
+
+            if key_desc not in st.session_state:
+                st.session_state[key_desc] = p["descricao"]
+
+            st.text_input("Nome", key=key_nome)
+            st.text_area("Descrição", key=key_desc, height=120)
+
             col1, col2 = st.columns(2)
-        
+
             with col1:
                 if st.button("💾 Salvar", key=f"save_passiva_{i}"):
                     st.session_state["passivas"][i] = {
-                        "nome": novo_nome,
-                        "descricao": nova_desc
+                        "nome": st.session_state[key_nome],
+                        "descricao": st.session_state[key_desc]
                     }
                     st.rerun()
+
             with col2:
                 if st.button("🗑 Remover", key=f"del_passiva_{i}"):
                     st.session_state["passivas"].pop(i)
