@@ -63,12 +63,20 @@ def carregar_ficha(upload):
     st.session_state["haki_conquistador"] = data.get("haki_conquistador", "Nenhum")
 
     # Listas
-    st.session_state["passivas"] = data.get("passivas", [])
-    st.session_state["habilidades"] = data.get("habilidades", [])
-    st.session_state["ataques"] = data.get("ataques", [])
-    st.session_state["modos"] = data.get("modos", [])
-    st.session_state["arsenal"] = data.get("arsenal", [])
+    if "passivas" in data:
+        st.session_state["passivas"] = data["passivas"].copy()
 
+    if "habilidades" in data:
+        st.session_state["habilidades"] = data["habilidades"].copy()
+    
+    if "ataques" in data:
+        st.session_state["ataques"] = data["ataques"].copy()
+    
+    if "modos" in data:
+        st.session_state["modos"] = data["modos"].copy()
+    
+    if "arsenal" in data:
+        st.session_state["arsenal"] = data["arsenal"].copy()
     return data
 
 
@@ -92,17 +100,16 @@ if "raca" not in st.session_state:
 if "versao" not in st.session_state:
     st.session_state["versao"] = "V1"
 
-for chave in chaves:
-    if "subatributos" not in st.session_state:
-        st.session_state["subatributos"] = {
-            "forca": 0,
-            "intelecto": 0,
-            "resistencia": 0,
-            "velocidade": 0,
-            "elemental": 0,
-            "ma": 0,
-            "vontade": 0
-        }
+if "subatributos" not in st.session_state:
+    st.session_state["subatributos"] = {
+        "forca": 0,
+        "intelecto": 0,
+        "resistencia": 0,
+        "velocidade": 0,
+        "elemental": 0,
+        "ma": 0,
+        "vontade": 0
+    }
 
 for key, default in {
     "passivas": [],
@@ -112,7 +119,7 @@ for key, default in {
     "arsenal": []
 }.items():
     if key not in st.session_state:
-        st.session_state[key] = default
+        st.session_state[key] = default.copy()
 
 for haki in ["haki_armamento", "haki_observacao", "haki_conquistador"]:
     if haki not in st.session_state:
@@ -367,9 +374,13 @@ with colB:
             ),
             key="vida_atual"
         )
+
+    for k, v in st.session_state["subatributos"].items():
+        if f"sub_{k}" not in st.session_state:
+            st.session_state[f"sub_{k}"] = v
       
     with st.container(border=True):
-        st.subheader("🌀 Subatributos")
+        st.subheader("Subatributos")
 
         sa = st.session_state["subatributos"]
         c1, c2, c3 = st.columns(3)
@@ -384,13 +395,26 @@ with colB:
             st.number_input("M.A", min_value=0, step=1, key="sub_ma")
             st.number_input("Vontade", min_value=0, step=1, key="sub_vontade")
 
-st.session_state["subatributos"]["forca"] = st.session_state.get("sub_forca", 0)
-st.session_state["subatributos"]["intelecto"] = st.session_state.get("sub_intelecto", 0)
-st.session_state["subatributos"]["resistencia"] = st.session_state.get("sub_resistencia", 0)
-st.session_state["subatributos"]["velocidade"] = st.session_state.get("sub_velocidade", 0)
-st.session_state["subatributos"]["elemental"] = st.session_state.get("sub_elemental", 0)
-st.session_state["subatributos"]["ma"] = st.session_state.get("sub_ma", 0)
-st.session_state["subatributos"]["vontade"] = st.session_state.get("sub_vontade", 0)
+if "sub_forca" in st.session_state:
+    st.session_state["subatributos"]["forca"] = st.session_state["sub_forca"]
+
+if "sub_intelecto" in st.session_state:
+    st.session_state["subatributos"]["intelecto"] = st.session_state["sub_intelecto"]
+
+if "sub_resistencia" in st.session_state:
+    st.session_state["subatributos"]["resistencia"] = st.session_state["sub_resistencia"]
+
+if "sub_velocidade" in st.session_state:
+    st.session_state["subatributos"]["velocidade"] = st.session_state["sub_velocidade"]
+
+if "sub_elemental" in st.session_state:
+    st.session_state["subatributos"]["elemental"] = st.session_state["sub_elemental"]
+
+if "sub_ma" in st.session_state:
+    st.session_state["subatributos"]["ma"] = st.session_state["sub_ma"]
+
+if "sub_vontade" in st.session_state:
+    st.session_state["subatributos"]["vontade"] = st.session_state["sub_vontade"]
 
 # HAKI
 with colC:
