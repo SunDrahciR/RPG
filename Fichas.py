@@ -448,17 +448,6 @@ with colC:
             )
 
 #APTIDÕES
-
-for key, default in {
-    "passivas": [],
-    "habilidades": [],
-    "ataques": [],
-    "modos": []
-}.items():
-    if key not in st.session_state:
-        st.session_state[key] = default
-
-
 st.markdown("---")
 st.header("Habilidades do Personagem")
 
