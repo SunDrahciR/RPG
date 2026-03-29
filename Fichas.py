@@ -18,6 +18,21 @@ img {
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+.avatar-img img {
+    transition: 0.25s;
+    cursor: pointer;
+}
+
+.avatar-img img:hover {
+    transform: scale(2.2);
+    z-index: 999;
+    position: relative;
+}
+</style>
+""", unsafe_allow_html=True)
+
 st.markdown("---")
 
 # ===============================
@@ -176,7 +191,9 @@ with colA:
         #Imagem
         with col_img:
             if st.session_state.get("imagem_personagem"):
+                st.markdown('<div class="avatar-img">', unsafe_allow_html=True)
                 st.image(st.session_state["imagem_personagem"], width=120)
+                st.markdown('</div>', unsafe_allow_html=True)
             else:
                 st.markdown("### 👤")
         
