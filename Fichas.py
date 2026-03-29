@@ -848,24 +848,73 @@ if st.session_state["arsenal"]:
     st.subheader("Arsenais Equipados")
 
     for i, a in enumerate(st.session_state["arsenal"]):
-        titulo = f"{a['nome']} | Grau {a['grau']} | +{a['bonus']}"
+
+        key_nome = f"edit_arsenal_nome_{i}"
+        key_tipo = f"edit_arsenal_tipo_{i}"
+        key_grau = f"edit_arsenal_grau_{i}"
+        key_amald = f"edit_arsenal_amald_{i}"
+        key_desc = f"edit_arsenal_desc_{i}"
+    
+        if key_nome not in st.session_state:
+            st.session_state[key_nome] = a["nome"]
+    
+        if key_tipo not in st.session_state:
+            st.session_state[key_tipo] = a["tipo"]
+    
+        if key_grau not in st.session_state:
+            st.session_state[key_grau] = a["grau"]
+    
+        if key_amald not in st.session_state:
+            st.session_state[key_amald] = a["amaldicoada"]
+    
+        if key_desc not in st.session_state:
+            st.session_state[key_desc] = a["descricao"]
+    
+        titulo = f"{st.session_state[key_nome]} | Grau {st.session_state[key_grau]}"
 
         with st.expander(titulo):
-            st.markdown(f"**Tipo:** {a['tipo']}")
-            st.markdown(f"**M.A. Requerido:** {a['ma_requerido']}")
-
-            if a["amaldicoada"]:
-                st.markdown("⚠️ **Arsenal Amaldiçoado**")
-
-            if a.get("despertada"):
-                st.markdown("✨ **Despertado**")
-                st.markdown(a.get("habilidade_despertada", ""))
-
-            st.markdown(a["descricao"])
-
-            if st.button("🗑 Remover Arsenal", key=f"del_arsenal_{i}"):
-                st.session_state["arsenal"].pop(i)
-                st.rerun()
+    
+            st.text_input("Nome", key=key_nome)
+            st.text_input("Tipo", key=key_tipo)
+    
+            st.selectbox(
+                "Grau",
+                [4, 3, 2, 1],
+                key=key_grau
+            )
+    
+            st.checkbox("Amaldiçoado", key=key_amald)
+    
+            bonus, ma = calcular_arsenal(
+                st.session_state[key_grau],
+                st.session_state[key_amald]
+            )
+    
+            st.markdown(f"**Bônus:** +{bonus} | **M.A.:** {ma}")
+    
+            st.text_area("Descrição", key=key_desc, height=120)
+    
+            col1, col2 = st.columns(2)
+    
+            with col1:
+                if st.button("💾 Salvar", key=f"save_arsenal_{i}"):
+                    st.session_state["arsenal"][i] = {
+                        "nome": st.session_state[key_nome],
+                        "tipo": st.session_state[key_tipo],
+                        "grau": st.session_state[key_grau],
+                        "bonus": bonus,
+                        "ma_requerido": ma,
+                        "amaldicoada": st.session_state[key_amald],
+                        "despertada": a.get("despertada", False),
+                        "habilidade_despertada": a.get("habilidade_despertada", ""),
+                        "descricao": st.session_state[key_desc]
+                    }
+                    st.rerun()
+    
+            with col2:
+                if st.button("🗑 Remover", key=f"del_arsenal_{i}"):
+                    st.session_state["arsenal"].pop(i)
+                    st.rerun()
 
 
 # ===============================
