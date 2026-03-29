@@ -1,6 +1,7 @@
 import streamlit as st
 import json
 from io import StringIO
+from io import BytesIO
 
 # ===============================
 # CONFIGURAÇÃO
@@ -36,6 +37,9 @@ def carregar_ficha(upload):
     ]:
         if campo in data:
             st.session_state[campo] = data[campo]
+
+    if "imagem" in data and data["imagem"]:
+        st.session_state["imagem_personagem"] = BytesIO(data["imagem"].encode("latin1"))
 
     # Raça
     st.session_state["raca"] = data.get("raca", "")
@@ -90,6 +94,9 @@ chaves = [
     "proficiencias", "estilo_luta",
     "historia", "aparencia", "anotacoes"
 ]
+
+if "imagem_personagem" not in st.session_state:
+    st.session_state["imagem_personagem"] = None
 
 if "anotacoes" not in st.session_state:
     st.session_state["anotacoes"] = ""
@@ -156,10 +163,33 @@ colA, colB, colC = st.columns([1.2, 1.4, 1.4])
 with colA:
     with st.container(border=True):
         st.subheader("Identidade")
-        st.text_input("Nome", key="nome")
-        st.text_input("Título", key="titulo")
-        st.text_input("Afiliação", key="afiliacao")
-        st.text_input("Origem", key="origem")
+        col_img, col_info = st.columns([1, 2])
+
+        #Imagem
+        with col_img:
+            imagem = st.file_uploader(
+                "Imagem",
+                type=["png", "jpg", "jpeg", "webp"],
+                key="upload_imagem"
+            )
+
+            if imagem:
+                st.session_state["imagem_personagem"] = imagem
+
+            if st.session_state.get("imagem_personagem"):
+                st.image(
+                    st.session_state["imagem_personagem"],
+                    width=120
+                )
+            else:
+                st.write("👤")
+
+        #Info
+        with col_info:
+            st.text_input("Nome", key="nome")
+            st.text_input("Título", key="titulo")
+            st.text_input("Afiliação", key="afiliacao")
+            st.text_input("Origem", key="origem")
 
 # ===============================
 # RAÇAS
@@ -934,7 +964,6 @@ if st.session_state["arsenal"]:
                     st.session_state["arsenal"].pop(i)
                     st.rerun()
 
-
 # ===============================
 # PROFICIÊNCIAS, ESTILO
 # ===============================
@@ -960,9 +989,6 @@ st.text_area(
 
 st.header("História e Aparência")
 
-if "imagem_personagem" not in st.session_state:
-    st.session_state["imagem_personagem"] = None
-
 with st.container(border=True):
     st.text_area(
     "História",
@@ -975,19 +1001,6 @@ with st.container(border=True):
     key="aparencia",
     height=150
 )
-
-    imagem = st.file_uploader(
-        "Imagem do Personagem",
-        type=["png", "jpg", "jpeg", "webp"]
-    )
-
-    if imagem:
-        st.session_state["imagem_personagem"] = imagem
-        st.image(
-            imagem,
-            caption="Prévia da imagem",
-            width=250
-        )
 
 # ===============================
 # SALVAR FICHA
@@ -1007,6 +1020,7 @@ ficha_data = {
     "titulo": st.session_state["titulo"],
     "afiliacao": st.session_state["afiliacao"],
     "origem": st.session_state["origem"],
+    "imagem": None,
     
     "raca": st.session_state["raca"],
     "versao": st.session_state["versao"],
@@ -1034,19 +1048,10 @@ ficha_data = {
     "arsenal": st.session_state["arsenal"]
 }
 
+if st.session_state.get("imagem_personagem"):
+    ficha_data["imagem"] = st.session_state["imagem_personagem"].getvalue().decode("latin1")
+
+
 st.markdown("---")
 salvar_ficha(ficha_data)
-st.caption("Versão 3.0 — Ficha Interativa de Personagem | OnePica RPG")
-
-
-
-
-
-
-
-
-
-
-
-
-
+st.caption("Versão 5.0 — Ficha Interativa de Personagem | OnePica RPG")
