@@ -175,25 +175,25 @@ with colA:
 
         #Imagem
         with col_img:
-            st.markdown('<div class="avatar-upload">', unsafe_allow_html=True)
-        
             if st.session_state.get("imagem_personagem"):
                 st.image(st.session_state["imagem_personagem"], width=120)
             else:
                 st.markdown("### 👤")
         
-            imagem = st.file_uploader(
-                "",
-                type=["png", "jpg", "jpeg", "webp"],
-                key="upload_imagem",
-                label_visibility="collapsed"
-            )
+            if st.button("🖼️ Trocar imagem"):
+                st.session_state["mostrar_upload"] = True
         
-            st.markdown('</div>', unsafe_allow_html=True)
+            if st.session_state.get("mostrar_upload"):
+                imagem = st.file_uploader(
+                    "",
+                    type=["png", "jpg", "jpeg", "webp"],
+                    key="upload_imagem"
+                )
         
-            if imagem:
-                st.session_state["imagem_personagem"] = imagem
-                st.rerun()
+                if imagem:
+                    st.session_state["imagem_personagem"] = imagem
+                    st.session_state["mostrar_upload"] = False
+                    st.rerun()
 
         #Info
         with col_info:
