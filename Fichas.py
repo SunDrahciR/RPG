@@ -892,7 +892,7 @@ if st.session_state["arsenal"]:
             )
 
             if st.session_state[key_grau] == 1:
-            st.checkbox("Despertado", key=key_despertada)
+                st.checkbox("Despertado", key=key_despertada)
 
             if st.session_state[key_despertada]:
                 st.text_area(
