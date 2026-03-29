@@ -180,7 +180,7 @@ with colA:
             else:
                 st.markdown("### 👤")
         
-            if st.button("🖼️ Trocar imagem"):
+            if st.button("Imagem"):
                 st.session_state["mostrar_upload"] = True
         
             if st.session_state.get("mostrar_upload"):
