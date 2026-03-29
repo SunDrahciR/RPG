@@ -12,18 +12,6 @@ st.title("Ficha de Personagem - One Pica RPG")
 
 st.markdown("""
 <style>
-[data-testid="stFileUploader"] div div {
-    display: none;
-}
-
-[data-testid="stFileUploader"] button {
-    width: 100%;
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
 img {
     border-radius: 50%;
 }
@@ -191,12 +179,15 @@ with colA:
             st.markdown("""
                 <style>
                 .avatar-upload [data-testid="stFileUploader"] {
-                    height: 0px;
-                    overflow: hidden;
+                    position: absolute;
+                    opacity: 0;
+                    width: 120px;
+                    height: 120px;
+                    cursor: pointer;
                 }
                 
-                .avatar-upload [data-testid="stFileUploader"] button {
-                    display: none;
+                .avatar-upload img {
+                    cursor: pointer;
                 }
                 </style>
                 """, unsafe_allow_html=True)
