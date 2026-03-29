@@ -682,15 +682,45 @@ with tab_modos:
 
     for i, m in enumerate(st.session_state["modos"]):
         with st.expander(m["nome"]):
-            st.markdown(
-                f"**Condição:** {m['condicao']}\n\n"
-                f"**Efeito:** {m['efeito']}\n\n"
-                f"{m['descricao']}"
-            )
 
-            if st.button("🗑 Remover", key=f"del_modo_{i}"):
-                st.session_state["modos"].pop(i)
-                st.rerun()
+            key_nome = f"edit_modo_nome_{i}"
+            key_cond = f"edit_modo_cond_{i}"
+            key_efeito = f"edit_modo_efeito_{i}"
+            key_desc = f"edit_modo_desc_{i}"
+        
+            if key_nome not in st.session_state:
+                st.session_state[key_nome] = m["nome"]
+        
+            if key_cond not in st.session_state:
+                st.session_state[key_cond] = m["condicao"]
+        
+            if key_efeito not in st.session_state:
+                st.session_state[key_efeito] = m["efeito"]
+        
+            if key_desc not in st.session_state:
+                st.session_state[key_desc] = m["descricao"]
+        
+            st.text_input("Nome", key=key_nome)
+            st.text_input("Condição", key=key_cond)
+            st.text_input("Efeito", key=key_efeito)
+            st.text_area("Descrição", key=key_desc, height=120)
+        
+            col1, col2 = st.columns(2)
+        
+            with col1:
+                if st.button("💾 Salvar", key=f"save_modo_{i}"):
+                    st.session_state["modos"][i] = {
+                        "nome": st.session_state[key_nome],
+                        "condicao": st.session_state[key_cond],
+                        "efeito": st.session_state[key_efeito],
+                        "descricao": st.session_state[key_desc]
+                    }
+                    st.rerun()
+        
+            with col2:
+                if st.button("🗑 Remover", key=f"del_modo_{i}"):
+                    st.session_state["modos"].pop(i)
+                    st.rerun()
 
     # ===============================
     # ARSENAL
