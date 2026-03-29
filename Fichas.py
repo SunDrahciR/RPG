@@ -10,6 +10,18 @@ st.set_page_config(page_title="Ficha de Personagem - OnePica RPG", layout="wide"
 
 st.title("Ficha de Personagem - One Pica RPG")
 
+st.markdown("""
+<style>
+[data-testid="stFileUploader"] div div {
+    display: none;
+}
+
+[data-testid="stFileUploader"] button {
+    width: 100%;
+}
+</style>
+""", unsafe_allow_html=True)
+
 st.markdown("---")
 
 # ===============================
