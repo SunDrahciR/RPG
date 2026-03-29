@@ -852,6 +852,8 @@ if st.session_state["arsenal"]:
         key_nome = f"edit_arsenal_nome_{i}"
         key_tipo = f"edit_arsenal_tipo_{i}"
         key_grau = f"edit_arsenal_grau_{i}"
+        key_despertada = f"edit_arsenal_despertada_{i}"
+        key_hab_despertada = f"edit_arsenal_hab_{i}"
         key_amald = f"edit_arsenal_amald_{i}"
         key_desc = f"edit_arsenal_desc_{i}"
     
@@ -866,6 +868,12 @@ if st.session_state["arsenal"]:
     
         if key_amald not in st.session_state:
             st.session_state[key_amald] = a["amaldicoada"]
+
+        if key_despertada not in st.session_state:
+            st.session_state[key_despertada] = a.get("despertada", False)
+
+        if key_hab_despertada not in st.session_state:
+            st.session_state[key_hab_despertada] = a.get("habilidade_despertada", "")
     
         if key_desc not in st.session_state:
             st.session_state[key_desc] = a["descricao"]
@@ -882,6 +890,16 @@ if st.session_state["arsenal"]:
                 [4, 3, 2, 1],
                 key=key_grau
             )
+
+            if st.session_state[key_grau] == 1:
+            st.checkbox("Despertado", key=key_despertada)
+
+            if st.session_state[key_despertada]:
+                st.text_area(
+                    "Habilidade Despertada",
+                    key=key_hab_despertada,
+                    height=100
+                )
     
             st.checkbox("Amaldiçoado", key=key_amald)
     
@@ -905,8 +923,8 @@ if st.session_state["arsenal"]:
                         "bonus": bonus,
                         "ma_requerido": ma,
                         "amaldicoada": st.session_state[key_amald],
-                        "despertada": a.get("despertada", False),
-                        "habilidade_despertada": a.get("habilidade_despertada", ""),
+                        "despertada": st.session_state[key_despertada] if st.session_state[key_grau] == 1 else False,
+                        "habilidade_despertada": st.session_state[key_hab_despertada] if st.session_state[key_despertada] else "",
                         "descricao": st.session_state[key_desc]
                     }
                     st.rerun()
