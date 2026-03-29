@@ -22,6 +22,14 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+img {
+    border-radius: 50%;
+}
+</style>
+""", unsafe_allow_html=True)
+
 st.markdown("---")
 
 # ===============================
@@ -179,22 +187,21 @@ with colA:
 
         #Imagem
         with col_img:
+            if st.session_state.get("imagem_personagem"):
+                st.image(st.session_state["imagem_personagem"], width=120)
+            else:
+                st.markdown("### 👤")
+
             imagem = st.file_uploader(
-                "Imagem",
+                "Trocar imagem",
                 type=["png", "jpg", "jpeg", "webp"],
-                key="upload_imagem"
+                key="upload_imagem",
+                label_visibility="collapsed"
             )
 
             if imagem:
                 st.session_state["imagem_personagem"] = imagem
-
-            if st.session_state.get("imagem_personagem"):
-                st.image(
-                    st.session_state["imagem_personagem"],
-                    width=120
-                )
-            else:
-                st.write("👤")
+                st.rerun()
 
         #Info
         with col_info:
