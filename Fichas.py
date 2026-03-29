@@ -176,29 +176,14 @@ with colA:
         #Imagem
         with col_img:
             st.markdown('<div class="avatar-upload">', unsafe_allow_html=True)
-            st.markdown("""
-                <style>
-                .avatar-upload [data-testid="stFileUploader"] {
-                    position: absolute;
-                    opacity: 0;
-                    width: 120px;
-                    height: 120px;
-                    cursor: pointer;
-                }
-                
-                .avatar-upload img {
-                    cursor: pointer;
-                }
-                </style>
-                """, unsafe_allow_html=True)
-
+        
             if st.session_state.get("imagem_personagem"):
                 st.image(st.session_state["imagem_personagem"], width=120)
             else:
                 st.markdown("### 👤")
         
             imagem = st.file_uploader(
-                "trocar",
+                "",
                 type=["png", "jpg", "jpeg", "webp"],
                 key="upload_imagem",
                 label_visibility="collapsed"
