@@ -20,18 +20,27 @@ img {
 
 st.markdown("""
 <style>
-.avatar-img img {
-    transition: 0.25s;
+.avatar-img div img {
+    transition: 0.25s ease;
     cursor: pointer;
 }
 
-.avatar-img img:hover {
+.avatar-img div img:hover {
     transform: scale(2.2);
-    z-index: 999;
     position: relative;
+    z-index: 999;
 }
 </style>
 """, unsafe_allow_html=True)
+st.markdown("""
+<style>
+.avatar-img {
+    overflow: visible !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 
 st.markdown("---")
 
