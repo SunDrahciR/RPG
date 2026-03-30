@@ -219,7 +219,6 @@ with colA:
                 if imagem:
                     st.session_state["imagem_personagem"] = imagem
                     st.session_state["mostrar_upload"] = False
-                    st.rerun()
 
         #Info
         with col_info:
