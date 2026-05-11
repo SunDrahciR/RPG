@@ -78,6 +78,27 @@ def carregar_ficha(upload):
     st.session_state["versao"] = data.get("versao", "V1")
     st.session_state["raca_select"] = st.session_state["raca"]
     st.session_state["versao_raca_select"] = st.session_state["versao"]
+    
+    #Hibrido
+    st.session_state["hibrido_raca_primaria"] = data.get(
+    "hibrido_raca_primaria",
+    ""
+)
+
+    st.session_state["hibrido_versao_primaria"] = data.get(
+    "hibrido_versao_primaria",
+    "V1"
+)
+
+    st.session_state["hibrido_raca_secundaria"] = data.get(
+    "hibrido_raca_secundaria",
+    ""
+)
+
+    st.session_state["hibrido_versao_secundaria"] = data.get(
+    "hibrido_versao_secundaria",
+    "V1"
+)
 
     # Subatributos
     st.session_state["subatributos"] = data.get("subatributos", {
@@ -234,105 +255,79 @@ st.header("Raça")
 
 racas = {
     "Humano": {
-        "V1": "Ganha 50% a mais de Atributo em relação ao Arco",
-        "V2": "Os Hakis recebem +10.",
-        "V3": " +10 nos Hakis e ganham 50% a mais em todos os Subatributos",
-        "Fraqueza": " Leva 25% de dano a mais caso o atacante tenha uma raça de nível superior"
+        "V1": "",
+        "V2": "",
+        "V3": "",
     },
 
     "Tribo (Braço/Perna Longos)": {
-        "V1": "Golpes com o membro respectivo recebem +14 em acerto.",
-        "V2": "Ganha 1d20 a mais em ações com o membro, ataques com o membro são considerados Grandes",
-        "V3": " Ganha +1d20 com o membro e +30 de Defesa com o membro",
-        "Fraqueza": "Golpes mirando nos membros longos tem um bônus equivalente a Grande no Acerto"
+        "V1": "",
+        "V2": "",
+        "V3": "",
     },
 
     "Tontata": {
-        "V1": "+15 em Esquiva e Furtividade",
-        "V2": "+23 em Esquiva e Furtividade e ignora a imunidade a Furtividade do Haki da Observação, desde que o nivel de Haki do Tontata seja superior ou equivalente",
-        "V3": "+22 em Esquiva e Furtividade",
-        "Fraqueza": " Ataques direcionados a um Tontata recebem um bônus equivalente a Grande em Dano e Acerto"
+        "V1": "",
+        "V2": "",
+        "V3": "",
     },
 
     "Homem-Peixe": {
-        "V1": "Dentro da água, seus dados são dobrados.",
-        "V2": "Dentro da água, seus dados são triplicados.",
-        "V3": "Dentro da água, Força e Resistência são dobradas.",
-        "Fraqueza": "Em ambientes secos, todos os resultados são cortados pela metade."
+        "V1": "",
+        "V2": "",
+        "V3": "",
     },
 
     "Nativo do Céu": {
-        "V1": "+25 em Aéreo",
-        "V2": "D20 é triplicado no ar e recebe +20 em Movimentação Aérea",
-        "V3": "Todos os resultados de movimento aéreo são triplicados.",
-        "Fraqueza": "Leva o dobro de dano elétrico estando no ar."
+        "V1": "",
+        "V2": "",
+        "V3": "",
     },
 
     "Oni": {
-        "V1": "+25 de dano em ambientes de fogo.",
-        "V2": "Em ambientes de fogo, o D20 é triplicado e causa +25 de dano.",
-        "V3": "Em ambientes de fogo, o D20 é quadruplicado.",
-        "Fraqueza": "Em ambientes de baixa temperatura, todos os resultados são cortados pela metade."
+        "V1": "",
+        "V2": "",
+        "V3": "",
     },
 
     "Sereiano": {
-        "V1": "Dentro da água, d20 de movimento é dobrado.",
-        "V2": "Dentro da água, recebe +50 em Força, Elemento e Velocidade",
-        "V3": "Dentro da água, todos os dados de movimento e ataque são dobrados.",
-        "Fraqueza": "Fora da água, não recebe bônus"
+        "V1": "",
+        "V2": "",
+        "V3": "",
+        "Fraqueza": ""
     },
 
     "Mink": {
-        "V1": "+20 de movimentação e rastreamento. No Modo Sulong: +35 em atributos físicos e elemental e os atributos base são dobrados",
-        "V2": "+20 de movimentação e rastreamento.",
-        "V3": "+30 de movimentação e rastreamento. No Modo Sulong: +15 adicionais de dano e Velocidade.",
-        "Fraqueza": "Ataques Sonoros ou Venenosos causam +30 de dano."
+        "V1": "",
+        "V2": "",
+        "V3": "+",
     },
 
     "Gigante": {
-        "V1": "+25 em Força e Resistência. Todos os golpes são Grandes.",
-        "V2": "+45 em Força e Resistência. Todos os golpes são Gigantes.",
-        "V3": "Todos os golpes físicos são em área, e pra cada pessoa na área é +25 de dano.",
-        "Fraqueza": "Todos tem +20 a cada nivel da raça para acertar um Gigante "
+        "V1": "",
+        "V2": "",
+        "V3": "",
     },
 
     "Lunariano": {
-        "V1": "Chamas acesas: +30 de Resistência. Chamas apagadas: +30 de Velocidade.",
-        "V2": "Os bônus aumentam adicionalmente em +20.",
-        "V3": "Os bônus aumentam em +20 e pode alternar o estado das chamas como Reação.",
-        "Fraqueza": "Com as chamas apagadas, leva o dobro de dano."
+        "V1": "",
+        "V2": "",
+        "V3": "",
     },
 
     "Bucaneiro": {
-        "V1": "+40 de Resistência.",
-        "V2": "+30 de Resistência e não é afetado por condições especiais de Grau 1.",
-        "V3": "+30 de Resistência e não é afetado por condições especiais de Grau 2.",
-        "Fraqueza": "Se um aliado perder membros, o Bucaneiro sofre Confusão Grau 3 e Paralisia Grau 3."
+        "V1": "",
+        "V2": "",
+        "V3": "",
     },
 
     "Híbrido": {
-        "V1": "O gene predominante define o status.",
-        "V2": "A raça secundária começa a se desenvolver."
+        "V1": "",
+        "V2": "",
+        "V3": ""
     }
 }
 
-
-def descricao_raca_progressiva(racas, raca, versao):
-    textos = []
-
-    if versao == "V1":
-        textos.append(racas[raca]["V1"])
-
-    elif versao == "V2":
-        textos.append(racas[raca]["V1"])
-        textos.append(racas[raca]["V2"])
-
-    elif versao == "V3":
-        textos.append(racas[raca]["V1"])
-        textos.append(racas[raca]["V2"])
-        textos.append(racas[raca]["V3"])
-
-    return "\n".join(textos)
     
 st.markdown("---")
 
@@ -372,50 +367,74 @@ with st.container(border=True):
     # ===============================
     # HÍBRIDO
     # ===============================
+
     if raca == "Híbrido":
         racas_base = [r for r in racas.keys() if r != "Híbrido"]
+    
         colH1, colH2 = st.columns(2)
-
+    
         with colH1:
             raca1 = st.selectbox(
                 "Raça Primária",
                 racas_base,
+                index=racas_base.index(
+                    st.session_state.get(
+                        "hibrido_raca_primaria",
+                        racas_base[0]
+                    )
+                ) if st.session_state.get(
+                    "hibrido_raca_primaria"
+                ) in racas_base else 0,
                 key="hibrido_raca_primaria"
             )
+    
             versao1 = st.selectbox(
                 "Versão da Raça Primária",
                 ["V1", "V2"],
+                index=["V1", "V2"].index(
+                    st.session_state.get(
+                        "hibrido_versao_primaria",
+                        "V1"
+                    )
+                ),
                 key="hibrido_versao_primaria"
             )
-
+    
         with colH2:
-            racas_secundarias = [r for r in racas_base if r != raca1]
+            racas_secundarias = [
+                r for r in racas_base if r != raca1
+            ]
+    
             raca2 = st.selectbox(
                 "Raça Secundária",
                 racas_secundarias,
+                index=racas_secundarias.index(
+                    st.session_state.get(
+                        "hibrido_raca_secundaria",
+                        racas_secundarias[0]
+                    )
+                ) if st.session_state.get(
+                    "hibrido_raca_secundaria"
+                ) in racas_secundarias else 0,
                 key="hibrido_raca_secundaria"
             )
+    
             versao2 = st.selectbox(
                 "Versão da Raça Secundária",
                 ["V1", "V2"],
+                index=["V1", "V2"].index(
+                    st.session_state.get(
+                        "hibrido_versao_secundaria",
+                        "V1"
+                    )
+                ),
                 key="hibrido_versao_secundaria"
             )
-
+    
         st.info(
-            f"🔹 **Primária:** {raca1} ({versao1})\n\n"
-            f"🔸 **Secundária:** {raca2} ({versao2})"
+            f"**Primária:** {raca1} ({versao1})\n\n"
+            f"**Secundária:** {raca2} ({versao2})"
         )
-
-    # ===============================
-    # DESCRIÇÃO
-    # ===============================
-    if raca and raca != "Híbrido":
-        with st.expander("Descrição da Raça"):
-            descricao = descricao_raca_progressiva(racas, raca, versao)
-            st.markdown(descricao)
-            st.markdown(f"**Fraqueza:** {racas[raca]['Fraqueza']}")
-
-
 
 #VIDA + SUBATRIBUTOS
 with colB:
@@ -1060,6 +1079,26 @@ ficha_data = {
     
     "raca": st.session_state["raca"],
     "versao": st.session_state["versao"],
+    
+    "hibrido_raca_primaria": st.session_state.get(
+        "hibrido_raca_primaria",
+        ""
+    ),
+
+    "hibrido_versao_primaria": st.session_state.get(
+        "hibrido_versao_primaria",
+        "V1"
+    ),
+
+"hibrido_raca_secundaria": st.session_state.get(
+    "hibrido_raca_secundaria",
+    ""
+),
+
+"hibrido_versao_secundaria": st.session_state.get(
+    "hibrido_versao_secundaria",
+    "V1"
+),
     
     "vida_maxima": st.session_state["vida_maxima"],
     "vida_atual": st.session_state["vida_atual"],
