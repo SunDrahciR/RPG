@@ -812,19 +812,22 @@ with tab_modos:
     # ===============================
 
 GRAUS_ARSENAL = {
-    4: {"bonus": 8, "ma": 0},
-    3: {"bonus": 15, "ma": 10},
-    2: {"bonus": 23, "ma": 20},
-    1: {"bonus": 35, "ma": 35},
+    4: {"bonus": 12, "ma": 10},
+    3: {"bonus": 25, "ma": 30},
+    2: {"bonus": 50, "ma": 50},
+    1: {"bonus": 75, "ma": 100},
+    "Especial": {"bonus": 100, "ma": 150},
 }
+
+BONUS_AMALDICOADA = 1.5
 
 def calcular_arsenal(grau, amaldicoada):
     bonus = GRAUS_ARSENAL[grau]["bonus"]
     ma = GRAUS_ARSENAL[grau]["ma"]
 
     if amaldicoada:
-        bonus += 15
-        ma += 10
+        bonus = int(bonus * BONUS_AMALDICOADA)
+        ma = int(ma * BONUS_AMALDICOADA)
 
     return bonus, ma
 
@@ -883,13 +886,13 @@ with st.container(border=True):
 
         st.selectbox(
             "Grau do Arsenal",
-            [4, 3, 2, 1],
+            [4, 3, 2, 1, "Especial"],
             format_func=lambda g: f"Grau {g}",
             key="novo_arsenal_grau"
         )
 
         st.checkbox(
-            "Arsenal Amaldiçoado (+15 bônus, +10 M.A.)",
+            "Arsenal Amaldiçoado (+50% bônus, +50% M.A.)",
             key="novo_arsenal_amaldicoada"
         )
 
@@ -972,7 +975,7 @@ if st.session_state["arsenal"]:
     
             st.selectbox(
                 "Grau",
-                [4, 3, 2, 1],
+                [4, 3, 2, 1, "Especial"],
                 key=key_grau
             )
 
