@@ -1,7 +1,128 @@
 import streamlit as st
 import json
+import hashlib
 from io import StringIO
 from io import BytesIO
+
+# ===============================
+# DEFINIÇÕES DAS VIRTUDES
+# ===============================
+
+TEXTOS_VIRTUDES = {
+    "Ardiloso": {
+        "descricao": "Um caminho de golpes sujos, batalhas travadas na mente.",
+        "efeito": (
+            "Dano e Resistência reduzidos pela metade. Possui +50% de Acerto. "
+            "Críticos são reduzidos em 1 (Crítico só arranca membro caso seja 20 Natural)."
+        ),
+    },
+    "Protetor": {
+        "descricao": (
+            "A proteção de quem você se importa sempre vem a ser sua prioridade, "
+            "sempre querendo os acompanhar em situações de risco e tomando a frente do perigo."
+        ),
+        "efeito": (
+            "35% de sua Defesa entra como Vida Temporária. Ela não se recupera por curas "
+            "normais; ao fim da batalha, recupera-se ao máximo. Tem 25% de Velocidade a menos "
+            "e 20% de Defesa a mais."
+        ),
+    },
+    "Brutalidade": {
+        "descricao": (
+            "Você não se importa com mais nada durante a batalha, pois seu único objetivo "
+            "é matar e destruir seus inimigos. Não para de bater até seus inimigos morrerem "
+            "e, se tentarem fugir, fará de tudo para ir atrás."
+        ),
+        "efeito": "+25% de Dano e +10% de Acerto. Não possui ação de bloqueio.",
+    },
+    "Sagacidade": {
+        "descricao": (
+            "Aquele que pensa antes de agir, tomando decisões rápidas e certeiras, com alta "
+            "desconfiança de todos, e incapaz de tomar atitudes que coloquem sua vida em risco rapidamente."
+        ),
+        "efeito": "+25% de Velocidade. 30% da Velocidade vai para Acerto. -20% de Dano.",
+    },
+    "Honra": {
+        "descricao": (
+            "Você não é capaz de quebrar seus ideais do que é o certo. Não pode atacar alguém "
+            "que esteja com enfermidade causada por outra pessoa."
+        ),
+        "efeito": (
+            "25% de sua Vontade atual vai para Dano e Acerto. Em testes de Vontade para fazer "
+            "algo contra sua honra, o teste se torna 30% maior."
+        ),
+    },
+    "Duelista": {
+        "descricao": (
+            "Você se enxerga como o único capaz de carregar o peso da batalha, evitando que "
+            "seus aliados entrem em combate o máximo possível."
+        ),
+        "efeito": (
+            "Ao escolher um alvo, ambos entram em um estado de Duelo Justo, recebendo +15% "
+            "em Acerto e Dano um contra o outro. Se um dos duelistas atacar ou for atacado "
+            "por um terceiro, ambos sofrem -25% em Acerto e Dano."
+        ),
+    },
+    "Determinação": {
+        "descricao": (
+            "Uma mentalidade baseada em persistência, resistência e força. Quanto mais difícil "
+            "fica a batalha, mais o personagem se recusa a desistir."
+        ),
+        "efeito": (
+            "Ganha +10% de Defesa e Dano a cada 20% de Vida perdida. Ao escolher um inimigo "
+            "como alvo, deve continuar tentando enfrentá-lo enquanto ele estiver consciente "
+            "e em combate. Caso abandone voluntariamente esse confronto para atacar outro alvo, "
+            "sofre -25% em todas as rolagens por 2 turnos."
+        ),
+    },
+    "Ego": {
+        "descricao": (
+            "Você se enxerga como poderoso em batalha, não obedecendo ou dando importância para quem é mais fraco."
+        ),
+        "efeito": (
+            "Na primeira metade da Vida, tem -25% de Dano. Na segunda metade, ganha +30% de Dano. "
+            "Quando tem mais atributo que o oponente, ganha um D4 a mais no resultado do dado, "
+            "em rolagens desse atributo."
+        ),
+    },
+    "Pacifismo": {
+        "descricao": (
+            "Não é capaz de matar e tenta impedir que assim o façam, pois toda a vida é sagrada."
+        ),
+        "efeito": (
+            "Só consegue contra-atacar. Contra-ataques são uma ação garantida com +50% no Dano. "
+            "O oponente fica com, no mínimo, 1 ponto de Vida, e não são arrancados membros."
+        ),
+    },
+    "Coletivista": {
+        "descricao": (
+            "Lutar é um fardo grande demais para se fazer sozinho. Sempre tenta apoiar seus aliados "
+            "em qualquer decisão."
+        ),
+        "efeito": (
+            "Quando está com outras pessoas, você e seus aliados recebem +10% de Vontade e +20% "
+            "de Acerto, e não há penalidade ao fazer Ação em Conjunto com você. Caso esteja sozinho, "
+            "recebe -10% de Vontade e -20% de Acerto."
+        ),
+    },
+    "Impulsividade": {
+        "descricao": "Sempre age antes de pensar, pois pensar muito é pra nerds.",
+        "efeito": "25% da Velocidade vai para Dano. Sofre -20% em Acerto em todos os ataques.",
+    },
+}
+
+
+def criar_virtudes_padrao():
+    return {
+        nome: {
+            "descricao": dados["descricao"],
+            "efeito": dados["efeito"],
+            "habilidades": [],
+        }
+        for nome, dados in TEXTOS_VIRTUDES.items()
+    }
+
+
 
 # ===============================
 # CONFIGURAÇÃO
@@ -132,6 +253,34 @@ def carregar_ficha(upload):
     if "modos" in data:
         st.session_state["modos"] = data["modos"].copy()
     
+    # Virtudes: mantém compatibilidade com fichas antigas
+    virtudes_carregadas = data.get("virtudes", {})
+    virtudes_padrao = criar_virtudes_padrao()
+    virtudes_final = {}
+
+    for nome, padrao in virtudes_padrao.items():
+        carregada = virtudes_carregadas.get(nome, {})
+        virtudes_final[nome] = {
+            "descricao": carregada.get("descricao", padrao["descricao"]),
+            "efeito": carregada.get("efeito", padrao["efeito"]),
+            "habilidades": carregada.get("habilidades", []).copy(),
+        }
+
+    # Preserva também eventuais virtudes extras presentes no JSON
+    for nome, dados_virtude in virtudes_carregadas.items():
+        if nome not in virtudes_final:
+            virtudes_final[nome] = {
+                "descricao": dados_virtude.get("descricao", ""),
+                "efeito": dados_virtude.get("efeito", ""),
+                "habilidades": dados_virtude.get("habilidades", []).copy(),
+            }
+
+    st.session_state["virtudes"] = virtudes_final
+    virtude_salva = data.get("virtude_selecionada", "Ardiloso")
+    st.session_state["virtude_selecionada"] = (
+        virtude_salva if virtude_salva in virtudes_final else "Ardiloso"
+    )
+
     if "arsenal" in data:
         st.session_state["arsenal"] = data["arsenal"].copy()
     return data
@@ -181,6 +330,12 @@ for key, default in {
     if key not in st.session_state:
         st.session_state[key] = default.copy()
 
+if "virtudes" not in st.session_state:
+    st.session_state["virtudes"] = criar_virtudes_padrao()
+
+if "virtude_selecionada" not in st.session_state:
+    st.session_state["virtude_selecionada"] = "Ardiloso"
+
 for haki in ["haki_armamento", "haki_observacao", "haki_conquistador"]:
     if haki not in st.session_state:
         st.session_state[haki] = "Nenhum"
@@ -199,11 +354,17 @@ st.sidebar.header("Gerenciar Ficha")
 upload = st.sidebar.file_uploader("Carregar Ficha (.json)", type="json")
 
 if upload is not None:
-    try:
-        dados_carregados = carregar_ficha(upload)
-        st.sidebar.success("Ficha carregada com sucesso! Os campos foram atualizados.")
-    except Exception as e:
-        st.sidebar.error(f"Erro ao carregar ficha: {e}")
+    # O Streamlit reexecuta o script a cada interação. Este hash impede
+    # que a mesma ficha seja recarregada e sobrescreva as edições a cada rerun.
+    hash_upload = hashlib.sha256(upload.getvalue()).hexdigest()
+
+    if st.session_state.get("_ultima_ficha_carregada_hash") != hash_upload:
+        try:
+            carregar_ficha(upload)
+            st.session_state["_ultima_ficha_carregada_hash"] = hash_upload
+            st.sidebar.success("Ficha carregada com sucesso! Os campos foram atualizados.")
+        except Exception as e:
+            st.sidebar.error(f"Erro ao carregar ficha: {e}")
 
 
 # ===============================
@@ -536,8 +697,8 @@ with colC:
 st.markdown("---")
 st.header("Habilidades do Personagem")
 
-tab_passivas, tab_habilidades, tab_ataques, tab_modos = st.tabs(
-    ["Passivas", "Habilidades", "Ataques", "Modos"]
+tab_passivas, tab_habilidades, tab_ataques, tab_modos, tab_virtude = st.tabs(
+    ["Passivas", "Habilidades", "Ataques", "Modos", "Virtude"]
 )
 
 # ===============================
@@ -810,6 +971,122 @@ with tab_modos:
     # ===============================
     # ARSENAL
     # ===============================
+
+# ===============================
+# VIRTUDE
+# ===============================
+
+def adicionar_habilidade_virtude():
+    nome_virtude = st.session_state["virtude_selecionada"]
+    nome = st.session_state["nova_virtude_hab_nome"]
+    descricao = st.session_state["nova_virtude_hab_desc"]
+
+    if nome.strip():
+        st.session_state["virtudes"][nome_virtude]["habilidades"].append({
+            "nome": nome.strip(),
+            "descricao": descricao,
+        })
+        st.session_state["nova_virtude_hab_nome"] = ""
+        st.session_state["nova_virtude_hab_desc"] = ""
+
+
+with tab_virtude:
+    st.subheader("Virtude")
+
+    nomes_virtudes = list(TEXTOS_VIRTUDES.keys())
+
+    # Se a ficha carregada tiver uma virtude selecionada válida, preserva-a.
+    if st.session_state.get("virtude_selecionada") not in nomes_virtudes:
+        st.session_state["virtude_selecionada"] = nomes_virtudes[0]
+
+    st.selectbox(
+        "Escolher Virtude",
+        options=nomes_virtudes,
+        key="virtude_selecionada",
+    )
+
+    virtude_atual = st.session_state["virtude_selecionada"]
+    dados_virtude = st.session_state["virtudes"].setdefault(
+        virtude_atual,
+        {
+            "descricao": TEXTOS_VIRTUDES[virtude_atual]["descricao"],
+            "efeito": TEXTOS_VIRTUDES[virtude_atual]["efeito"],
+            "habilidades": [],
+        },
+    )
+
+    st.markdown(f"### {virtude_atual}")
+    st.write(dados_virtude.get("descricao", ""))
+    st.markdown("**Efeito da Virtude**")
+    st.info(dados_virtude.get("efeito", ""))
+
+    st.divider()
+
+    with st.expander("➕ Adicionar Habilidade de Virtude"):
+        st.text_input(
+            "Nome da Habilidade",
+            key="nova_virtude_hab_nome",
+        )
+        st.text_area(
+            "Descrição",
+            key="nova_virtude_hab_desc",
+            height=120,
+        )
+        st.button(
+            "Adicionar Habilidade",
+            key="btn_add_virtude_hab",
+            on_click=adicionar_habilidade_virtude,
+        )
+
+    habilidades_virtude = dados_virtude.setdefault("habilidades", [])
+
+    if not habilidades_virtude:
+        st.caption("Nenhuma habilidade adicionada a esta Virtude ainda.")
+
+    for i, habilidade in enumerate(habilidades_virtude):
+        key_nome = f"edit_virtude_{virtude_atual}_{i}_nome"
+        key_desc = f"edit_virtude_{virtude_atual}_{i}_desc"
+
+        if key_nome not in st.session_state:
+            st.session_state[key_nome] = habilidade.get("nome", "")
+
+        if key_desc not in st.session_state:
+            st.session_state[key_desc] = habilidade.get("descricao", "")
+
+        with st.expander(habilidade.get("nome", "Habilidade sem nome")):
+            st.text_input("Nome", key=key_nome)
+            st.text_area("Descrição", key=key_desc, height=120)
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+                if st.button(
+                    "💾 Salvar",
+                    key=f"save_virtude_{virtude_atual}_{i}",
+                ):
+                    habilidades_virtude[i] = {
+                        "nome": st.session_state[key_nome],
+                        "descricao": st.session_state[key_desc],
+                    }
+                    st.rerun()
+
+            with col2:
+                if st.button(
+                    "🗑 Remover",
+                    key=f"del_virtude_{virtude_atual}_{i}",
+                ):
+                    habilidades_virtude.pop(i)
+                    # Limpa os campos de edição dessa virtude para evitar
+                    # que valores antigos sejam associados a outra habilidade.
+                    for j in range(len(habilidades_virtude) + 1):
+                        st.session_state.pop(
+                            f"edit_virtude_{virtude_atual}_{j}_nome", None
+                        )
+                        st.session_state.pop(
+                            f"edit_virtude_{virtude_atual}_{j}_desc", None
+                        )
+                    st.rerun()
+
 
 GRAUS_ARSENAL = {
     4: {"bonus": 12, "ma": 10},
@@ -1122,6 +1399,8 @@ ficha_data = {
     "habilidades": st.session_state["habilidades"],
     "ataques": st.session_state["ataques"],
     "modos": st.session_state["modos"],
+    "virtude_selecionada": st.session_state["virtude_selecionada"],
+    "virtudes": st.session_state["virtudes"],
 
     "arsenal": st.session_state["arsenal"]
 }
